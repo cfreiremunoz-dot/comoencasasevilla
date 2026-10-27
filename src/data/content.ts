@@ -606,7 +606,7 @@ export const places: Place[] = [
     id: 'p-plaza-nueva',
     slug: 'plaza-nueva',
     name: 'Plaza Nueva',
-    category: 'encuentro',
+    category: 'encuentro' as CategoryId,
     zone: 'centro',
     budget: 'gratis',
     tags: ['vida-barrio', 'historia', 'gastronomia'],
