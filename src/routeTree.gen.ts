@@ -10,33 +10,141 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ComunidadRouteImport } from './routes/comunidad'
+import { Route as ExploraRouteImport } from './routes/explora'
+import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as ExperienciasIndexRouteImport } from './routes/experiencias.index'
+import { Route as ExperienciasSlugRouteImport } from './routes/experiencias.$slug'
+import { Route as LugarSlugRouteImport } from './routes/lugar.$slug'
+import { Route as RutasIndexRouteImport } from './routes/rutas.index'
+import { Route as RutasSlugRouteImport } from './routes/rutas.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ComunidadRoute = ComunidadRouteImport.update({
+  id: '/comunidad',
+  path: '/comunidad',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExploraRoute = ExploraRouteImport.update({
+  id: '/explora',
+  path: '/explora',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SobreRoute = SobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienciasIndexRoute = ExperienciasIndexRouteImport.update({
+  id: '/experiencias/',
+  path: '/experiencias/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExperienciasSlugRoute = ExperienciasSlugRouteImport.update({
+  id: '/experiencias/$slug',
+  path: '/experiencias/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LugarSlugRoute = LugarSlugRouteImport.update({
+  id: '/lugar/$slug',
+  path: '/lugar/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RutasIndexRoute = RutasIndexRouteImport.update({
+  id: '/rutas/',
+  path: '/rutas/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RutasSlugRoute = RutasSlugRouteImport.update({
+  id: '/rutas/$slug',
+  path: '/rutas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/comunidad': typeof ComunidadRoute
+  '/explora': typeof ExploraRoute
+  '/sobre': typeof SobreRoute
+  '/experiencias/$slug': typeof ExperienciasSlugRoute
+  '/lugar/$slug': typeof LugarSlugRoute
+  '/rutas/$slug': typeof RutasSlugRoute
+  '/experiencias/': typeof ExperienciasIndexRoute
+  '/rutas/': typeof RutasIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/comunidad': typeof ComunidadRoute
+  '/explora': typeof ExploraRoute
+  '/sobre': typeof SobreRoute
+  '/experiencias/$slug': typeof ExperienciasSlugRoute
+  '/lugar/$slug': typeof LugarSlugRoute
+  '/rutas/$slug': typeof RutasSlugRoute
+  '/experiencias': typeof ExperienciasIndexRoute
+  '/rutas': typeof RutasIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/comunidad': typeof ComunidadRoute
+  '/explora': typeof ExploraRoute
+  '/sobre': typeof SobreRoute
+  '/experiencias/$slug': typeof ExperienciasSlugRoute
+  '/lugar/$slug': typeof LugarSlugRoute
+  '/rutas/$slug': typeof RutasSlugRoute
+  '/experiencias/': typeof ExperienciasIndexRoute
+  '/rutas/': typeof RutasIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/comunidad'
+    | '/explora'
+    | '/sobre'
+    | '/experiencias/$slug'
+    | '/lugar/$slug'
+    | '/rutas/$slug'
+    | '/experiencias/'
+    | '/rutas/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/comunidad'
+    | '/explora'
+    | '/sobre'
+    | '/experiencias/$slug'
+    | '/lugar/$slug'
+    | '/rutas/$slug'
+    | '/experiencias'
+    | '/rutas'
+  id:
+    | '__root__'
+    | '/'
+    | '/comunidad'
+    | '/explora'
+    | '/sobre'
+    | '/experiencias/$slug'
+    | '/lugar/$slug'
+    | '/rutas/$slug'
+    | '/experiencias/'
+    | '/rutas/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ComunidadRoute: typeof ComunidadRoute
+  ExploraRoute: typeof ExploraRoute
+  SobreRoute: typeof SobreRoute
+  ExperienciasSlugRoute: typeof ExperienciasSlugRoute
+  LugarSlugRoute: typeof LugarSlugRoute
+  RutasSlugRoute: typeof RutasSlugRoute
+  ExperienciasIndexRoute: typeof ExperienciasIndexRoute
+  RutasIndexRoute: typeof RutasIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +156,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/comunidad': {
+      id: '/comunidad'
+      path: '/comunidad'
+      fullPath: '/comunidad'
+      preLoaderRoute: typeof ComunidadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/explora': {
+      id: '/explora'
+      path: '/explora'
+      fullPath: '/explora'
+      preLoaderRoute: typeof ExploraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sobre': {
+      id: '/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof SobreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiencias/': {
+      id: '/experiencias/'
+      path: '/experiencias'
+      fullPath: '/experiencias/'
+      preLoaderRoute: typeof ExperienciasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/experiencias/$slug': {
+      id: '/experiencias/$slug'
+      path: '/experiencias/$slug'
+      fullPath: '/experiencias/$slug'
+      preLoaderRoute: typeof ExperienciasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lugar/$slug': {
+      id: '/lugar/$slug'
+      path: '/lugar/$slug'
+      fullPath: '/lugar/$slug'
+      preLoaderRoute: typeof LugarSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rutas/': {
+      id: '/rutas/'
+      path: '/rutas'
+      fullPath: '/rutas/'
+      preLoaderRoute: typeof RutasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rutas/$slug': {
+      id: '/rutas/$slug'
+      path: '/rutas/$slug'
+      fullPath: '/rutas/$slug'
+      preLoaderRoute: typeof RutasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ComunidadRoute: ComunidadRoute,
+  ExploraRoute: ExploraRoute,
+  SobreRoute: SobreRoute,
+  ExperienciasSlugRoute: ExperienciasSlugRoute,
+  LugarSlugRoute: LugarSlugRoute,
+  RutasSlugRoute: RutasSlugRoute,
+  ExperienciasIndexRoute: ExperienciasIndexRoute,
+  RutasIndexRoute: RutasIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
