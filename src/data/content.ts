@@ -1,4 +1,4 @@
-import type { Category, Zone, Interest, Place, Route, Experience, CommunityPost } from './types';
+import type { CategoryId, Category, Zone, Interest, Place, Route, Experience, CommunityPost } from './types';
 
 export const categories: Category[] = [
   {
