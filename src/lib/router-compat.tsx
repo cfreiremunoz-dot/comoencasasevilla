@@ -32,7 +32,10 @@ export function Link({ to, ...rest }: LinkProps) {
   return <L to={path} search={search} {...rest} />;
 }
 
-type NavLinkProps = Omit<LinkProps, "className" | "children"> & {
+type NavLinkProps = {
+  to: string;
+  style?: CSSProperties;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
   className?: string | ((s: { isActive: boolean }) => string);
   children?: ReactNode | ((s: { isActive: boolean }) => ReactNode);
   end?: boolean;
@@ -61,7 +64,8 @@ export function Navigate({ to, replace }: { to: string; replace?: boolean }) {
 }
 
 export function useParams<T extends Record<string, string | undefined>>() {
-  return tUseParams({ strict: false }) as T;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (tUseParams as any)({ strict: false }) as T;
 }
 
 export function useLocation() {
