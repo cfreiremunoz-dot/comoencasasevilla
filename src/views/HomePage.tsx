@@ -4,6 +4,7 @@ import { ArrowDown, ArrowRight, Compass, Heart, Search, Users } from 'lucide-rea
 import { SearchBar } from '@/components/SearchBar';
 import { RouteCard } from '@/components/RouteCard';
 import { ExperienceCard } from '@/components/ExperienceCard';
+import { places, routes, experiences, heroImageSecondary } from '@/data/content';
 import heroPlazaEspana from '@/assets/hero-plaza-espana.jpg';
 
 const discoveryBlocks = [
