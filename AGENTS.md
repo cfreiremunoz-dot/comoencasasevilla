@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Imported pages live in src/views and use `@/lib/router-compat` (a react-router-style adapter over TanStack Router) for links/navigation — keeps the original page code intact.
+- Map (Leaflet) is loaded only in the browser via src/components/MapView.tsx wrapper — Leaflet touches `window` and breaks server rendering.
