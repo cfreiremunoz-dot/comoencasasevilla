@@ -117,10 +117,10 @@ export function MapView({
 
     if (routeLine && routeLine.length >= 2) {
       if (routeLineRef.current) {
-        routeLineRef.current.setLatLngs(routeLine.map((p) => [p.lat, p.lng]));
+        routeLineRef.current.setLatLngs(routeLine.map((p) => [p.lat, p.lng] as L.LatLngTuple));
       } else {
         routeLineRef.current = L.polyline(
-          routeLine.map((p) => [p.lat, p.lng]),
+          routeLine.map((p) => [p.lat, p.lng] as L.LatLngTuple),
           { color: '#a9473d', weight: 3, opacity: 0.7, dashArray: '6 8' },
         ).addTo(map);
       }
@@ -133,7 +133,7 @@ export function MapView({
     if (fitToMarkers && bounds.length > 1) {
       map.fitBounds(L.latLngBounds(bounds), { padding: [40, 40] });
     } else if (bounds.length === 1) {
-      map.setView(bounds[0], zoom);
+      map.setView(bounds[0]!, zoom);
     }
   }, [markers, userCoords, routeLine, fitToMarkers, zoom]);
 
