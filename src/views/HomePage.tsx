@@ -4,7 +4,8 @@ import { ArrowDown, ArrowRight, Compass, Heart, Search, Users } from 'lucide-rea
 import { SearchBar } from '@/components/SearchBar';
 import { RouteCard } from '@/components/RouteCard';
 import { ExperienceCard } from '@/components/ExperienceCard';
-import { places, routes, experiences, heroImage, heroImageSecondary } from '@/data/content';
+import { places, routes, experiences, heroImageSecondary } from '@/data/content';
+import heroPlazaEspana from '@/assets/hero-plaza-espana.jpg';
 
 const discoveryBlocks = [
   {
@@ -102,8 +103,10 @@ export function HomePage() {
     <div className="animate-fade-in overflow-hidden">
       <section className="relative flex min-h-[min(760px,100svh)] items-end overflow-hidden bg-tinta-800">
         <img
-          src={heroImage}
-          alt="Calle histórica de Sevilla iluminada al atardecer"
+          src={heroPlazaEspana}
+          alt="Plaza de España de Sevilla al atardecer"
+          width={1920}
+          height={1280}
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-tinta-900/90 via-tinta-900/35 to-tinta-900/20" />
