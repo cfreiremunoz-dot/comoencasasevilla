@@ -18,10 +18,10 @@ function split(to: string) {
 
 type LinkProps = {
   to: string;
-  className?: string;
-  style?: CSSProperties;
+  className?: string | undefined;
+  style?: CSSProperties | undefined;
   children?: ReactNode;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
+  onClick?: MouseEventHandler<HTMLAnchorElement> | undefined;
   [key: string]: unknown;
 };
 
@@ -34,8 +34,8 @@ export function Link({ to, ...rest }: LinkProps) {
 
 type NavLinkProps = {
   to: string;
-  style?: CSSProperties;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
+  style?: CSSProperties | undefined;
+  onClick?: MouseEventHandler<HTMLAnchorElement> | undefined;
   className?: string | ((s: { isActive: boolean }) => string);
   children?: ReactNode | ((s: { isActive: boolean }) => ReactNode);
   end?: boolean;
