@@ -6,6 +6,7 @@ import { RouteCard } from '@/components/RouteCard';
 import { ExperienceCard } from '@/components/ExperienceCard';
 import { places, routes, experiences, heroImageSecondary } from '@/data/content';
 import heroPlazaEspana from '@/assets/hero-plaza-espana.jpg';
+import { useSiteTexts } from '@/lib/recommendations';
 
 const discoveryBlocks = [
   {
@@ -65,6 +66,7 @@ interface HomeSearchResult {
 }
 
 export function HomePage() {
+  const siteTexts = useSiteTexts();
   const [searchQuery, setSearchQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
 
@@ -118,12 +120,12 @@ export function HomePage() {
               <span className="h-px w-8 bg-terracota-300" /> Turismo local · Sevilla
             </p>
             <h1 className="max-w-3xl font-serif text-4xl font-semibold leading-[1] tracking-tight text-white text-shadow-soft sm:text-6xl lg:text-7xl">
-              Sevilla no solo se visita.
+              {siteTexts.hero_title_1}
               <br />
-              <span className="text-terracota-300">Se vive.</span>
+              <span className="text-terracota-300">{siteTexts.hero_title_2}</span>
             </h1>
             <p className="mt-5 max-w-md text-base leading-relaxed text-crema-200 sm:text-lg">
-              Descubre la ciudad desde dentro, con mirada local.
+              {siteTexts.hero_subtitle}
             </p>
 
             <div className="mt-8 max-w-2xl sm:mt-10">

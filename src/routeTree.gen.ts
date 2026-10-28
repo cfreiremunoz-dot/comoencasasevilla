@@ -10,9 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as ExploraRouteImport } from './routes/explora'
+import { Route as RecomendacionesRouteImport } from './routes/recomendaciones'
+import { Route as RecomendarRouteImport } from './routes/recomendar'
 import { Route as SobreRouteImport } from './routes/sobre'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ExperienciasIndexRouteImport } from './routes/experiencias.index'
 import { Route as ExperienciasSlugRouteImport } from './routes/experiencias.$slug'
 import { Route as LugarSlugRouteImport } from './routes/lugar.$slug'
@@ -22,6 +27,15 @@ import { Route as RutasSlugRouteImport } from './routes/rutas.$slug'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComunidadRoute = ComunidadRouteImport.update({
@@ -34,10 +48,25 @@ const ExploraRoute = ExploraRouteImport.update({
   path: '/explora',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RecomendacionesRoute = RecomendacionesRouteImport.update({
+  id: '/recomendaciones',
+  path: '/recomendaciones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecomendarRoute = RecomendarRouteImport.update({
+  id: '/recomendar',
+  path: '/recomendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SobreRoute = SobreRouteImport.update({
   id: '/sobre',
   path: '/sobre',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ExperienciasIndexRoute = ExperienciasIndexRouteImport.update({
   id: '/experiencias/',
@@ -67,9 +96,13 @@ const RutasSlugRoute = RutasSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/recomendaciones': typeof RecomendacionesRoute
+  '/recomendar': typeof RecomendarRoute
   '/sobre': typeof SobreRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/rutas/$slug': typeof RutasSlugRoute
@@ -78,9 +111,13 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/recomendaciones': typeof RecomendacionesRoute
+  '/recomendar': typeof RecomendarRoute
   '/sobre': typeof SobreRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/rutas/$slug': typeof RutasSlugRoute
@@ -90,9 +127,14 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/recomendaciones': typeof RecomendacionesRoute
+  '/recomendar': typeof RecomendarRoute
   '/sobre': typeof SobreRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/rutas/$slug': typeof RutasSlugRoute
@@ -103,9 +145,13 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/comunidad'
     | '/explora'
+    | '/recomendaciones'
+    | '/recomendar'
     | '/sobre'
+    | '/admin'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/rutas/$slug'
@@ -114,9 +160,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/comunidad'
     | '/explora'
+    | '/recomendaciones'
+    | '/recomendar'
     | '/sobre'
+    | '/admin'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/rutas/$slug'
@@ -125,9 +175,14 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
+    | '/auth'
     | '/comunidad'
     | '/explora'
+    | '/recomendaciones'
+    | '/recomendar'
     | '/sobre'
+    | '/_authenticated/admin'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/rutas/$slug'
@@ -137,8 +192,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ComunidadRoute: typeof ComunidadRoute
   ExploraRoute: typeof ExploraRoute
+  RecomendacionesRoute: typeof RecomendacionesRoute
+  RecomendarRoute: typeof RecomendarRoute
   SobreRoute: typeof SobreRoute
   ExperienciasSlugRoute: typeof ExperienciasSlugRoute
   LugarSlugRoute: typeof LugarSlugRoute
@@ -156,6 +215,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/comunidad': {
       id: '/comunidad'
       path: '/comunidad'
@@ -170,12 +243,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExploraRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/recomendaciones': {
+      id: '/recomendaciones'
+      path: '/recomendaciones'
+      fullPath: '/recomendaciones'
+      preLoaderRoute: typeof RecomendacionesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recomendar': {
+      id: '/recomendar'
+      path: '/recomendar'
+      fullPath: '/recomendar'
+      preLoaderRoute: typeof RecomendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sobre': {
       id: '/sobre'
       path: '/sobre'
       fullPath: '/sobre'
       preLoaderRoute: typeof SobreRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/experiencias/': {
       id: '/experiencias/'
@@ -215,10 +309,25 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ComunidadRoute: ComunidadRoute,
   ExploraRoute: ExploraRoute,
+  RecomendacionesRoute: RecomendacionesRoute,
+  RecomendarRoute: RecomendarRoute,
   SobreRoute: SobreRoute,
   ExperienciasSlugRoute: ExperienciasSlugRoute,
   LugarSlugRoute: LugarSlugRoute,

@@ -7,6 +7,7 @@ const navItems = [
   { to: '/rutas', label: 'Rutas' },
   { to: '/experiencias', label: 'Experiencias' },
   { to: '/comunidad', label: 'Comunidad' },
+  { to: '/recomendaciones', label: 'Recomendaciones' },
   { to: '/sobre', label: 'Sobre el proyecto' },
 ];
 
