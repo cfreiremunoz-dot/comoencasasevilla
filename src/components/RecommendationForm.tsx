@@ -2,19 +2,20 @@ import { useState } from 'react';
 import { Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { categories, zones } from '@/data/content';
-import { recommendationSchema, uploadPhoto, type Recommendation, type RecommendationInput } from '@/lib/recommendations';
+import { POST_TYPES, recommendationSchema, uploadPhoto, type Recommendation, type RecommendationInput } from '@/lib/recommendations';
 
 const field = 'w-full rounded-xl border border-crema-300 bg-white px-4 py-2.5 text-sm text-tinta-800 outline-none focus:border-terracota-400';
 const label = 'mb-1.5 block text-sm font-medium text-tinta-700';
 
 interface Props {
-  initial?: Partial<Recommendation>;
+  initial?: Partial<Recommendation> | undefined;
   submitLabel: string;
   onSubmit: (values: RecommendationInput & { image_url: string | null }) => Promise<void>;
 }
 
 export function RecommendationForm({ initial, submitLabel, onSubmit }: Props) {
   const [v, setV] = useState({
+    post_type: (initial?.post_type ?? 'lugar') as 'resena' | 'ruta' | 'lugar',
     name: initial?.name ?? '',
     category: initial?.category ?? 'gastronomia',
     zone: initial?.zone ?? 'centro',
@@ -52,7 +53,18 @@ export function RecommendationForm({ initial, submitLabel, onSubmit }: Props) {
   return (
     <form onSubmit={handle} className="grid gap-5">
       <div>
-        <label className={label}>Nombre del lugar *</label>
+        <span className={label}>¿Qué quieres compartir?</span>
+        <div className="flex flex-wrap gap-2">
+          {POST_TYPES.map((t) => (
+            <button type="button" key={t.id} onClick={() => setV({ ...v, post_type: t.id })}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium ${v.post_type === t.id ? 'bg-terracota-500 text-white' : 'bg-crema-200 text-tinta-600'}`}>
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label className={label}>{v.post_type === 'ruta' ? 'Nombre de la ruta *' : 'Nombre del lugar *'}</label>
         <input className={field} value={v.name} onChange={set('name')} maxLength={120} required />
       </div>
       <div className="grid gap-5 sm:grid-cols-2">
@@ -70,7 +82,7 @@ export function RecommendationForm({ initial, submitLabel, onSubmit }: Props) {
         </div>
       </div>
       <div>
-        <label className={label}>¿Por qué lo recomiendas? *</label>
+        <label className={label}>{v.post_type === 'ruta' ? 'Describe la ruta: paradas, duración, consejos *' : v.post_type === 'resena' ? 'Tu reseña *' : '¿Por qué te gusta? *'}</label>
         <textarea className={`${field} min-h-28`} value={v.description} onChange={set('description')} maxLength={2000} required />
       </div>
       <div>

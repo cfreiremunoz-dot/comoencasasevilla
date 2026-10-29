@@ -14,8 +14,6 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as ExploraRouteImport } from './routes/explora'
-import { Route as RecomendacionesRouteImport } from './routes/recomendaciones'
-import { Route as RecomendarRouteImport } from './routes/recomendar'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ExperienciasIndexRouteImport } from './routes/experiencias.index'
@@ -46,16 +44,6 @@ const ComunidadRoute = ComunidadRouteImport.update({
 const ExploraRoute = ExploraRouteImport.update({
   id: '/explora',
   path: '/explora',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecomendacionesRoute = RecomendacionesRouteImport.update({
-  id: '/recomendaciones',
-  path: '/recomendaciones',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecomendarRoute = RecomendarRouteImport.update({
-  id: '/recomendar',
-  path: '/recomendar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -99,8 +87,6 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
-  '/recomendaciones': typeof RecomendacionesRoute
-  '/recomendar': typeof RecomendarRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
@@ -114,8 +100,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
-  '/recomendaciones': typeof RecomendacionesRoute
-  '/recomendar': typeof RecomendarRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
@@ -131,8 +115,6 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
-  '/recomendaciones': typeof RecomendacionesRoute
-  '/recomendar': typeof RecomendarRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
@@ -148,8 +130,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/comunidad'
     | '/explora'
-    | '/recomendaciones'
-    | '/recomendar'
     | '/sobre'
     | '/admin'
     | '/experiencias/$slug'
@@ -163,8 +143,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/comunidad'
     | '/explora'
-    | '/recomendaciones'
-    | '/recomendar'
     | '/sobre'
     | '/admin'
     | '/experiencias/$slug'
@@ -179,8 +157,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/comunidad'
     | '/explora'
-    | '/recomendaciones'
-    | '/recomendar'
     | '/sobre'
     | '/_authenticated/admin'
     | '/experiencias/$slug'
@@ -196,8 +172,6 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ComunidadRoute: typeof ComunidadRoute
   ExploraRoute: typeof ExploraRoute
-  RecomendacionesRoute: typeof RecomendacionesRoute
-  RecomendarRoute: typeof RecomendarRoute
   SobreRoute: typeof SobreRoute
   ExperienciasSlugRoute: typeof ExperienciasSlugRoute
   LugarSlugRoute: typeof LugarSlugRoute
@@ -241,20 +215,6 @@ declare module '@tanstack/react-router' {
       path: '/explora'
       fullPath: '/explora'
       preLoaderRoute: typeof ExploraRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recomendaciones': {
-      id: '/recomendaciones'
-      path: '/recomendaciones'
-      fullPath: '/recomendaciones'
-      preLoaderRoute: typeof RecomendacionesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/recomendar': {
-      id: '/recomendar'
-      path: '/recomendar'
-      fullPath: '/recomendar'
-      preLoaderRoute: typeof RecomendarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -326,8 +286,6 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ComunidadRoute: ComunidadRoute,
   ExploraRoute: ExploraRoute,
-  RecomendacionesRoute: RecomendacionesRoute,
-  RecomendarRoute: RecomendarRoute,
   SobreRoute: SobreRoute,
   ExperienciasSlugRoute: ExperienciasSlugRoute,
   LugarSlugRoute: LugarSlugRoute,

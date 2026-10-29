@@ -11,9 +11,9 @@ export const Route = createFileRoute('/_authenticated/admin')({
   head: () => ({
     meta: [
       { title: 'Panel de edición · ComoEnCasa' },
-      { name: 'description', content: 'Gestiona recomendaciones y textos de ComoEnCasa.' },
+      { name: 'description', content: 'Gestiona publicaciones de la comunidad y textos de ComoEnCasa.' },
       { property: 'og:title', content: 'Panel de edición · ComoEnCasa' },
-      { property: 'og:description', content: 'Gestiona recomendaciones y textos de ComoEnCasa.' },
+      { property: 'og:description', content: 'Gestiona publicaciones de la comunidad y textos de ComoEnCasa.' },
       { name: 'robots', content: 'noindex' },
     ],
   }),
@@ -38,15 +38,15 @@ function AdminPage() {
       </div>
     );
 
-  async function update(id: string, patch: Partial<Recommendation>) {
+  async function update(id: string, patch: { status: string }) {
     const { error } = await supabase.from('recommendations').update(patch).eq('id', id);
-    if (error) return toast.error('No se pudo guardar');
+    if (error) { toast.error('No se pudo guardar'); return; }
     refresh();
   }
   async function remove(r: Recommendation) {
     if (!confirm(`¿Borrar "${r.name}"?`)) return;
     const { error } = await supabase.from('recommendations').delete().eq('id', r.id);
-    if (error) return toast.error('No se pudo borrar');
+    if (error) { toast.error('No se pudo borrar'); return; }
     if (r.image_url) await supabase.storage.from('recommendation-photos').remove([r.image_url]);
     toast.success('Borrado');
     refresh();
@@ -144,7 +144,7 @@ function HomeTextsEditor() {
   async function save() {
     const rows = (Object.keys(SITE_TEXT_DEFAULTS) as SiteTextKey[]).map((key) => ({ key, value: (v[key] ?? '').trim().slice(0, 1000) || SITE_TEXT_DEFAULTS[key], updated_at: new Date().toISOString() }));
     const { error } = await supabase.from('site_texts').upsert(rows);
-    if (error) return toast.error('No se pudo guardar');
+    if (error) { toast.error('No se pudo guardar'); return; }
     toast.success('Textos de portada guardados');
     qc.invalidateQueries({ queryKey: ['site_texts'] });
   }

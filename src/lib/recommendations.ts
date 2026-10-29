@@ -3,21 +3,28 @@ import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 
-export type Recommendation = Database['public']['Tables']['recommendations']['Row'] & { photo?: string };
+export type Recommendation = Database['public']['Tables']['recommendations']['Row'] & { photo?: string | undefined };
 
 export const BUCKET = 'recommendation-photos';
 
+export const POST_TYPES = [
+  { id: 'resena', label: 'Reseña' },
+  { id: 'ruta', label: 'Ruta' },
+  { id: 'lugar', label: 'Lugar favorito' },
+] as const;
+
 export const recommendationSchema = z.object({
-  name: z.string().trim().min(2, 'Escribe el nombre del lugar').max(120),
+  post_type: z.enum(['resena', 'ruta', 'lugar']),
+  name: z.string().trim().min(2, 'Escribe un título').max(120),
   category: z.string().min(1),
   zone: z.string().min(1),
   description: z.string().trim().min(10, 'Cuéntanos un poco más (mínimo 10 letras)').max(2000),
-  address: z.string().trim().max(200).optional().or(z.literal('')),
-  phone: z.string().trim().max(40).optional().or(z.literal('')),
-  website: z.string().trim().max(300).optional().or(z.literal('')),
-  instagram: z.string().trim().max(100).optional().or(z.literal('')),
+  address: z.string().trim().max(200),
+  phone: z.string().trim().max(40),
+  website: z.string().trim().max(300),
+  instagram: z.string().trim().max(100),
   rating: z.number().int().min(1).max(5),
-  author_name: z.string().trim().max(80).optional().or(z.literal('')),
+  author_name: z.string().trim().max(80),
 });
 export type RecommendationInput = z.infer<typeof recommendationSchema>;
 
