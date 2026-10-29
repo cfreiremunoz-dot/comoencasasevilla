@@ -1,0 +1,1 @@
+ALTER TABLE public.recommendations ADD COLUMN post_type text NOT NULL DEFAULT 'lugar' CHECK (post_type IN ('resena','ruta','lugar'));
