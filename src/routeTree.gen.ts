@@ -16,6 +16,9 @@ import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as ExploraRouteImport } from './routes/explora'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AsistenteIndexRouteImport } from './routes/asistente.index'
+import { Route as AsistenteThreadIdRouteImport } from './routes/asistente.$threadId'
 import { Route as ExperienciasIndexRouteImport } from './routes/experiencias.index'
 import { Route as ExperienciasSlugRouteImport } from './routes/experiencias.$slug'
 import { Route as LugarSlugRouteImport } from './routes/lugar.$slug'
@@ -56,6 +59,21 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiChatRoute = ApiChatRouteImport.update({
+  id: '/api/chat',
+  path: '/api/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AsistenteIndexRoute = AsistenteIndexRouteImport.update({
+  id: '/asistente/',
+  path: '/asistente/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AsistenteThreadIdRoute = AsistenteThreadIdRouteImport.update({
+  id: '/asistente/$threadId',
+  path: '/asistente/$threadId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExperienciasIndexRoute = ExperienciasIndexRouteImport.update({
   id: '/experiencias/',
   path: '/experiencias/',
@@ -89,9 +107,12 @@ export interface FileRoutesByFullPath {
   '/explora': typeof ExploraRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/api/chat': typeof ApiChatRoute
+  '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/rutas/$slug': typeof RutasSlugRoute
+  '/asistente/': typeof AsistenteIndexRoute
   '/experiencias/': typeof ExperienciasIndexRoute
   '/rutas/': typeof RutasIndexRoute
 }
@@ -102,9 +123,12 @@ export interface FileRoutesByTo {
   '/explora': typeof ExploraRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/api/chat': typeof ApiChatRoute
+  '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/rutas/$slug': typeof RutasSlugRoute
+  '/asistente': typeof AsistenteIndexRoute
   '/experiencias': typeof ExperienciasIndexRoute
   '/rutas': typeof RutasIndexRoute
 }
@@ -117,9 +141,12 @@ export interface FileRoutesById {
   '/explora': typeof ExploraRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/api/chat': typeof ApiChatRoute
+  '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/rutas/$slug': typeof RutasSlugRoute
+  '/asistente/': typeof AsistenteIndexRoute
   '/experiencias/': typeof ExperienciasIndexRoute
   '/rutas/': typeof RutasIndexRoute
 }
@@ -132,9 +159,12 @@ export interface FileRouteTypes {
     | '/explora'
     | '/sobre'
     | '/admin'
+    | '/api/chat'
+    | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/rutas/$slug'
+    | '/asistente/'
     | '/experiencias/'
     | '/rutas/'
   fileRoutesByTo: FileRoutesByTo
@@ -145,9 +175,12 @@ export interface FileRouteTypes {
     | '/explora'
     | '/sobre'
     | '/admin'
+    | '/api/chat'
+    | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/rutas/$slug'
+    | '/asistente'
     | '/experiencias'
     | '/rutas'
   id:
@@ -159,9 +192,12 @@ export interface FileRouteTypes {
     | '/explora'
     | '/sobre'
     | '/_authenticated/admin'
+    | '/api/chat'
+    | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/rutas/$slug'
+    | '/asistente/'
     | '/experiencias/'
     | '/rutas/'
   fileRoutesById: FileRoutesById
@@ -173,9 +209,12 @@ export interface RootRouteChildren {
   ComunidadRoute: typeof ComunidadRoute
   ExploraRoute: typeof ExploraRoute
   SobreRoute: typeof SobreRoute
+  ApiChatRoute: typeof ApiChatRoute
+  AsistenteThreadIdRoute: typeof AsistenteThreadIdRoute
   ExperienciasSlugRoute: typeof ExperienciasSlugRoute
   LugarSlugRoute: typeof LugarSlugRoute
   RutasSlugRoute: typeof RutasSlugRoute
+  AsistenteIndexRoute: typeof AsistenteIndexRoute
   ExperienciasIndexRoute: typeof ExperienciasIndexRoute
   RutasIndexRoute: typeof RutasIndexRoute
 }
@@ -230,6 +269,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/chat': {
+      id: '/api/chat'
+      path: '/api/chat'
+      fullPath: '/api/chat'
+      preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asistente/': {
+      id: '/asistente/'
+      path: '/asistente'
+      fullPath: '/asistente/'
+      preLoaderRoute: typeof AsistenteIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/asistente/$threadId': {
+      id: '/asistente/$threadId'
+      path: '/asistente/$threadId'
+      fullPath: '/asistente/$threadId'
+      preLoaderRoute: typeof AsistenteThreadIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/experiencias/': {
       id: '/experiencias/'
@@ -287,9 +347,12 @@ const rootRouteChildren: RootRouteChildren = {
   ComunidadRoute: ComunidadRoute,
   ExploraRoute: ExploraRoute,
   SobreRoute: SobreRoute,
+  ApiChatRoute: ApiChatRoute,
+  AsistenteThreadIdRoute: AsistenteThreadIdRoute,
   ExperienciasSlugRoute: ExperienciasSlugRoute,
   LugarSlugRoute: LugarSlugRoute,
   RutasSlugRoute: RutasSlugRoute,
+  AsistenteIndexRoute: AsistenteIndexRoute,
   ExperienciasIndexRoute: ExperienciasIndexRoute,
   RutasIndexRoute: RutasIndexRoute,
 }
