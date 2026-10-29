@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import type { Database } from '@/integrations/supabase/types';
 
-export type Recommendation = Database['public']['Tables']['recommendations']['Row'] & { photo?: string };
+export type Recommendation = Database['public']['Tables']['recommendations']['Row'] & { photo?: string | undefined };
 
 export const BUCKET = 'recommendation-photos';
 

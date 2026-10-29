@@ -29,12 +29,12 @@ function Page() {
     if (mode === 'in') {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       setBusy(false);
-      if (error) return toast.error('Correo o contraseña incorrectos');
+      if (error) { toast.error('Correo o contraseña incorrectos'); return; }
       navigate({ to: '/admin' });
     } else {
       const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${window.location.origin}/auth` } });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success('Revisa tu correo para confirmar la cuenta y luego entra.');
       setMode('in');
     }

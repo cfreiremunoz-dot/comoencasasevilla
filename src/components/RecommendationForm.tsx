@@ -8,7 +8,7 @@ const field = 'w-full rounded-xl border border-crema-300 bg-white px-4 py-2.5 te
 const label = 'mb-1.5 block text-sm font-medium text-tinta-700';
 
 interface Props {
-  initial?: Partial<Recommendation>;
+  initial?: Partial<Recommendation> | undefined;
   submitLabel: string;
   onSubmit: (values: RecommendationInput & { image_url: string | null }) => Promise<void>;
 }
