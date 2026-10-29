@@ -1,6 +1,6 @@
 import { Globe, Instagram, MapPin, Phone, Star } from 'lucide-react';
 import { getCategoryById, getZoneById } from '@/data/content';
-import type { Recommendation } from '@/lib/recommendations';
+import { POST_TYPES, type Recommendation } from '@/lib/recommendations';
 
 export function RecommendationCard({ r, children }: { r: Recommendation; children?: React.ReactNode }) {
   const site = r.website && (r.website.startsWith('http') ? r.website : `https://${r.website}`);
@@ -9,7 +9,7 @@ export function RecommendationCard({ r, children }: { r: Recommendation; childre
       {r.photo && <img src={r.photo} alt={r.name} className="h-48 w-full object-cover" loading="lazy" />}
       <div className="p-5">
         <p className="text-[11px] font-semibold uppercase tracking-widest text-terracota-500">
-          {getCategoryById(r.category)?.shortName ?? r.category} · {getZoneById(r.zone)?.name ?? r.zone}
+          {POST_TYPES.find((t) => t.id === r.post_type)?.label} · {getCategoryById(r.category)?.shortName ?? r.category} · {getZoneById(r.zone)?.name ?? r.zone}
         </p>
         <h3 className="mt-1 font-serif text-xl font-semibold text-tinta-800">{r.name}</h3>
         <div className="mt-1 flex" aria-label={`${r.rating} de 5`}>
@@ -24,7 +24,7 @@ export function RecommendationCard({ r, children }: { r: Recommendation; childre
           {site && <li className="flex gap-2"><Globe className="h-4 w-4 shrink-0" /><a href={site} target="_blank" rel="noopener noreferrer" className="underline">{r.website}</a></li>}
           {r.instagram && <li className="flex gap-2"><Instagram className="h-4 w-4 shrink-0" />{r.instagram}</li>}
         </ul>
-        {r.author_name && <p className="mt-4 text-xs text-tinta-400">Recomendado por {r.author_name}</p>}
+        {r.author_name && <p className="mt-4 text-xs text-tinta-400">Compartido por {r.author_name}</p>}
         {children}
       </div>
     </article>

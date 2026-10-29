@@ -7,8 +7,15 @@ export type Recommendation = Database['public']['Tables']['recommendations']['Ro
 
 export const BUCKET = 'recommendation-photos';
 
+export const POST_TYPES = [
+  { id: 'resena', label: 'Reseña' },
+  { id: 'ruta', label: 'Ruta' },
+  { id: 'lugar', label: 'Lugar favorito' },
+] as const;
+
 export const recommendationSchema = z.object({
-  name: z.string().trim().min(2, 'Escribe el nombre del lugar').max(120),
+  post_type: z.enum(['resena', 'ruta', 'lugar']),
+  name: z.string().trim().min(2, 'Escribe un título').max(120),
   category: z.string().min(1),
   zone: z.string().min(1),
   description: z.string().trim().min(10, 'Cuéntanos un poco más (mínimo 10 letras)').max(2000),

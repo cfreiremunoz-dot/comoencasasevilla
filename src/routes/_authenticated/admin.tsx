@@ -11,9 +11,9 @@ export const Route = createFileRoute('/_authenticated/admin')({
   head: () => ({
     meta: [
       { title: 'Panel de edición · ComoEnCasa' },
-      { name: 'description', content: 'Gestiona recomendaciones y textos de ComoEnCasa.' },
+      { name: 'description', content: 'Gestiona publicaciones de la comunidad y textos de ComoEnCasa.' },
       { property: 'og:title', content: 'Panel de edición · ComoEnCasa' },
-      { property: 'og:description', content: 'Gestiona recomendaciones y textos de ComoEnCasa.' },
+      { property: 'og:description', content: 'Gestiona publicaciones de la comunidad y textos de ComoEnCasa.' },
       { name: 'robots', content: 'noindex' },
     ],
   }),
