@@ -181,7 +181,10 @@ function HandoffsInbox() {
   const [open, setOpen] = useState<string | null>(null);
   async function mark(id: string, status: string) {
     const { error } = await supabase.from('support_handoffs').update({ status }).eq('id', id);
-    if (error) return toast.error('No se ha podido guardar');
+    if (error) {
+      toast.error('No se ha podido guardar');
+      return;
+    }
     qc.invalidateQueries({ queryKey: ['support_handoffs'] });
   }
   const pending = q.data?.filter((h) => h.status === 'pendiente').length ?? 0;
