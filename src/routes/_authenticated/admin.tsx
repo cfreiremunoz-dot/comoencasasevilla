@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
@@ -64,6 +65,8 @@ function AdminPage() {
           <button onClick={() => supabase.auth.signOut().then(() => location.assign('/'))} className={`${btn} bg-crema-200 text-tinta-700`}>Salir</button>
         </div>
       </div>
+
+      <HandoffsInbox />
 
       {editing && (
         <section className="mt-8 rounded-2xl bg-white p-6 ring-1 ring-crema-300">
@@ -161,6 +164,58 @@ function HomeTextsEditor() {
         ))}
       </div>
       <button onClick={save} className={`${btn} mt-4 bg-terracota-500 text-white`}>Guardar textos</button>
+    </section>
+  );
+}
+
+function HandoffsInbox() {
+  const qc = useQueryClient();
+  const q = useQuery({
+    queryKey: ['support_handoffs'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('support_handoffs').select('*').order('created_at', { ascending: false }).limit(100);
+      if (error) throw error;
+      return data;
+    },
+  });
+  const [open, setOpen] = useState<string | null>(null);
+  async function mark(id: string, status: string) {
+    const { error } = await supabase.from('support_handoffs').update({ status }).eq('id', id);
+    if (error) return toast.error('No se ha podido guardar');
+    qc.invalidateQueries({ queryKey: ['support_handoffs'] });
+  }
+  const pending = q.data?.filter((h) => h.status === 'pendiente').length ?? 0;
+  return (
+    <section className="mt-10 rounded-2xl bg-white p-6 ring-1 ring-crema-300">
+      <h2 className="font-serif text-2xl font-semibold text-tinta-800">Consultas para una persona {pending > 0 && <span className="ml-2 rounded-full bg-terracota-500 px-2 py-0.5 text-sm text-white">{pending}</span>}</h2>
+      <p className="mt-1 text-sm text-tinta-500">Conversaciones que el asistente no ha sabido resolver.</p>
+      {q.data?.length === 0 && <p className="mt-4 text-sm text-tinta-500">No hay consultas.</p>}
+      <ul className="mt-4 divide-y divide-crema-200">
+        {q.data?.map((h) => {
+          const transcript = (h.transcript as { role: string; text: string }[]) ?? [];
+          return (
+            <li key={h.id} className="py-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <button onClick={() => setOpen(open === h.id ? null : h.id)} className="text-left">
+                  <p className="text-sm font-semibold text-tinta-800">{h.name || 'Sin nombre'} · <a className="text-terracota-600" href={`mailto:${h.email}`}>{h.email}</a></p>
+                  <p className="text-sm text-tinta-600">{h.question}</p>
+                  <p className="text-xs text-tinta-400">{new Date(h.created_at).toLocaleString('es-ES')} · {h.status}</p>
+                </button>
+                <button onClick={() => mark(h.id, h.status === 'pendiente' ? 'resuelta' : 'pendiente')} className={`${btn} bg-crema-200`}>
+                  {h.status === 'pendiente' ? 'Marcar resuelta' : 'Reabrir'}
+                </button>
+              </div>
+              {open === h.id && (
+                <div className="mt-3 space-y-2 rounded-xl bg-crema-100 p-3 text-sm">
+                  {transcript.map((m, i) => (
+                    <p key={i}><b>{m.role === 'user' ? 'Cliente' : 'Azahar'}:</b> <span className="whitespace-pre-wrap">{m.text}</span></p>
+                  ))}
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
     </section>
   );
 }
