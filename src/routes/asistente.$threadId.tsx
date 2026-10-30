@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
 import logo from '@/assets/asistente-logo.png';
-import { Conversation, ConversationContent, ConversationEmptyState, ConversationScrollButton } from '@/components/ai-elements/conversation';
+import { Conversation, ConversationContent, ConversationScrollButton } from '@/components/ai-elements/conversation';
 import { Message, MessageContent, MessageResponse } from '@/components/ai-elements/message';
 import { PromptInput, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from '@/components/ai-elements/prompt-input';
 import { Shimmer } from '@/components/ai-elements/shimmer';
@@ -21,7 +21,8 @@ export const Route = createFileRoute('/asistente/$threadId')({
   component: ThreadPage,
 });
 
-const suggestions = ['¿Dónde puedo comer como un sevillano?', 'Propón una ruta de una tarde por Triana', '¿Qué hago un domingo en Sevilla?'];
+const MARK = '[[PERSONA]]';
+const suggestions = ['¿Cómo comparto un lugar favorito?', 'Propón una ruta de una tarde por Triana', '¿Qué hago un domingo en Sevilla?'];
 
 function ThreadPage() {
   const { threadId } = Route.useParams();
@@ -34,6 +35,8 @@ function ChatWindow({ threadId }: { threadId: string }) {
   const [input, setInput] = useState('');
   const abortRef = useRef<AbortController | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const last = messages[messages.length - 1];
+  const needsHuman = !!last && last.role === 'assistant' && textOf(last).includes(MARK);
 
   useEffect(() => {
     if (status === 'ready' || status === 'error') textareaRef.current?.focus();
@@ -101,33 +104,28 @@ function ChatWindow({ threadId }: { threadId: string }) {
       <Conversation className="min-h-0 flex-1 rounded-2xl bg-white ring-1 ring-crema-300">
         <ConversationContent>
           {messages.length === 0 ? (
-            <ConversationEmptyState
-              icon={<img src={logo} alt="" width={72} height={72} className="h-18 w-18" />}
-              title="¡Hola! Soy Azahar"
-              description="Pregúntame qué ver, dónde comer o qué ruta hacer en Sevilla."
-            >
-              <div className="mt-4 flex flex-col items-center gap-2">
-                <img src={logo} alt="" width={72} height={72} className="h-18 w-18" />
-                <p className="font-serif text-lg font-semibold text-tinta-800">¡Hola! Soy Azahar</p>
-                <p className="text-sm text-tinta-500">Pregúntame qué ver, dónde comer o qué ruta hacer en Sevilla.</p>
-                <div className="mt-3 flex flex-wrap justify-center gap-2">
-                  {suggestions.map((s) => (
-                    <button key={s} onClick={() => send(s)} className="rounded-full bg-crema-200 px-3 py-1.5 text-xs text-tinta-700 hover:bg-crema-300">
-                      {s}
-                    </button>
-                  ))}
-                </div>
+            <div className="flex flex-col items-center gap-2 py-10 text-center">
+              <img src={logo} alt="" width={72} height={72} className="h-18 w-18" />
+              <p className="font-serif text-lg font-semibold text-tinta-800">¡Hola! Soy Azahar</p>
+              <p className="text-sm text-tinta-500">Pregúntame qué ver en Sevilla o cualquier duda sobre la web. Si no lo sé, te paso con una persona.</p>
+              <div className="mt-3 flex flex-wrap justify-center gap-2">
+                {suggestions.map((s) => (
+                  <button key={s} onClick={() => send(s)} className="rounded-full bg-crema-200 px-3 py-1.5 text-xs text-tinta-700 hover:bg-crema-300">
+                    {s}
+                  </button>
+                ))}
               </div>
-            </ConversationEmptyState>
+            </div>
           ) : (
             messages.map((m) => (
               <Message key={m.id} from={m.role}>
                 <MessageContent className={m.role === 'user' ? 'group-[.is-user]:bg-primary group-[.is-user]:text-primary-foreground' : ''}>
-                  {m.parts.map((p, i) => (m.role === 'assistant' ? <MessageResponse key={i}>{p.text}</MessageResponse> : <span key={i} className="whitespace-pre-wrap">{p.text}</span>))}
+                  {m.parts.map((p, i) => (m.role === 'assistant' ? <MessageResponse key={i}>{p.text.replace(MARK, '').trim()}</MessageResponse> : <span key={i} className="whitespace-pre-wrap">{p.text}</span>))}
                 </MessageContent>
               </Message>
             ))
           )}
+          {needsHuman && status === 'ready' && <HandoffForm messages={messages} />}
           {status === 'submitted' && <Shimmer className="text-sm">Azahar está pensando…</Shimmer>}
         </ConversationContent>
         <ConversationScrollButton />
@@ -139,5 +137,44 @@ function ChatWindow({ threadId }: { threadId: string }) {
         </PromptInputFooter>
       </PromptInput>
     </div>
+  );
+}
+
+function HandoffForm({ messages }: { messages: ChatMessage[] }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [state, setState] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [err, setErr] = useState('');
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setState('sending');
+    const transcript = messages.slice(-40).map((m) => ({ role: m.role, text: textOf(m).replace(MARK, '').trim().slice(0, 4000) }));
+    const question = [...messages].reverse().find((m) => m.role === 'user');
+    const res = await fetch('/api/handoff', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ name, email, question: question ? textOf(question).slice(0, 2000) : '', transcript }),
+    }).catch(() => null);
+    if (res?.ok) return setState('sent');
+    const data = await res?.json().catch(() => null);
+    setErr(data?.error ?? 'No se ha podido enviar.');
+    setState('error');
+  }
+
+  if (state === 'sent')
+    return <p className="rounded-xl bg-oliva-100 p-4 text-sm text-tinta-800">¡Listo! Una persona del equipo leerá la conversación y te escribirá a {email}.</p>;
+
+  return (
+    <form onSubmit={submit} className="space-y-3 rounded-xl bg-crema-100 p-4 ring-1 ring-crema-300">
+      <p className="text-sm font-semibold text-tinta-800">Hablar con una persona</p>
+      <p className="text-xs text-tinta-500">Déjanos tu correo y te respondemos lo antes posible.</p>
+      <div className="flex flex-col gap-2 sm:flex-row">
+        <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100} placeholder="Tu nombre (opcional)" className="flex-1 rounded-lg border border-crema-300 bg-white px-3 py-2 text-sm" />
+        <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} placeholder="tu@correo.com" className="flex-1 rounded-lg border border-crema-300 bg-white px-3 py-2 text-sm" />
+        <button disabled={state === 'sending'} className="btn-primary text-sm">{state === 'sending' ? 'Enviando…' : 'Enviar'}</button>
+      </div>
+      {state === 'error' && <p className="text-xs text-granate-600">{err}</p>}
+    </form>
   );
 }
