@@ -17,6 +17,7 @@ import { Route as ExploraRouteImport } from './routes/explora'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiHandoffRouteImport } from './routes/api/handoff'
 import { Route as AsistenteIndexRouteImport } from './routes/asistente.index'
 import { Route as AsistenteThreadIdRouteImport } from './routes/asistente.$threadId'
 import { Route as ExperienciasIndexRouteImport } from './routes/experiencias.index'
@@ -64,6 +65,11 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHandoffRoute = ApiHandoffRouteImport.update({
+  id: '/api/handoff',
+  path: '/api/handoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AsistenteIndexRoute = AsistenteIndexRouteImport.update({
   id: '/asistente/',
   path: '/asistente/',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/handoff': typeof ApiHandoffRoute
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/handoff': typeof ApiHandoffRoute
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
@@ -142,6 +150,7 @@ export interface FileRoutesById {
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/handoff': typeof ApiHandoffRoute
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
@@ -160,6 +169,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin'
     | '/api/chat'
+    | '/api/handoff'
     | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
@@ -176,6 +186,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/admin'
     | '/api/chat'
+    | '/api/handoff'
     | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
@@ -193,6 +204,7 @@ export interface FileRouteTypes {
     | '/sobre'
     | '/_authenticated/admin'
     | '/api/chat'
+    | '/api/handoff'
     | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
@@ -210,6 +222,7 @@ export interface RootRouteChildren {
   ExploraRoute: typeof ExploraRoute
   SobreRoute: typeof SobreRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiHandoffRoute: typeof ApiHandoffRoute
   AsistenteThreadIdRoute: typeof AsistenteThreadIdRoute
   ExperienciasSlugRoute: typeof ExperienciasSlugRoute
   LugarSlugRoute: typeof LugarSlugRoute
@@ -275,6 +288,13 @@ declare module '@tanstack/react-router' {
       path: '/api/chat'
       fullPath: '/api/chat'
       preLoaderRoute: typeof ApiChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/handoff': {
+      id: '/api/handoff'
+      path: '/api/handoff'
+      fullPath: '/api/handoff'
+      preLoaderRoute: typeof ApiHandoffRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/asistente/': {
@@ -348,6 +368,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExploraRoute: ExploraRoute,
   SobreRoute: SobreRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiHandoffRoute: ApiHandoffRoute,
   AsistenteThreadIdRoute: AsistenteThreadIdRoute,
   ExperienciasSlugRoute: ExperienciasSlugRoute,
   LugarSlugRoute: LugarSlugRoute,
