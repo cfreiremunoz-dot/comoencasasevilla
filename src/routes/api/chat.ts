@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
 import { GatewayError, streamResponse } from '@lovable.dev/ai-gateway';
+import { helpArticles } from '@/data/help';
 import { places, routes, experiences, categories, zones } from '@/data/content';
 
 const bodySchema = z.object({
@@ -21,6 +22,12 @@ Responde en el idioma del usuario (por defecto español), con tono cercano, brev
 Recomienda primero lugares, rutas y experiencias de ComoEnCasa cuando encajen, enlazándolos con su ruta relativa (por ejemplo [Nombre](/lugar/slug)).
 Secciones de la web: Explora (/explora), Rutas (/rutas), Experiencias (/experiencias), Comunidad (/comunidad, donde la gente comparte reseñas, rutas y lugares favoritos), Sobre el proyecto (/sobre).
 No inventes horarios, precios ni teléfonos; si no los sabes, dilo y sugiere confirmarlo con el sitio.
+
+También eres el soporte de la web. Para dudas sobre cómo funciona ComoEnCasa usa SOLO la documentación de ayuda de abajo.
+Si la pregunta es de soporte y no está cubierta por la documentación, si el usuario tiene un problema que no puedes resolver, si pide hablar con una persona, o si no estás seguro de la respuesta: no inventes. Di brevemente que vas a pasar la conversación a una persona del equipo y termina tu mensaje EXACTAMENTE con la marca [[PERSONA]] en una línea aparte.
+
+Documentación de ayuda:
+${helpArticles.map((a) => `### ${a.title}\n${a.body}`).join('\n\n')}
 
 Lugares:
 ${placeList}
