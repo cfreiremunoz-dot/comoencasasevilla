@@ -86,6 +86,36 @@ export type Database = {
         }
         Relationships: []
       }
+      support_handoffs: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          name: string
+          question: string
+          status: string
+          transcript: Json
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          name?: string
+          question?: string
+          status?: string
+          transcript?: Json
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          question?: string
+          status?: string
+          transcript?: Json
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
