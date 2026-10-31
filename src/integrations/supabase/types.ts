@@ -68,6 +68,48 @@ export type Database = {
         }
         Relationships: []
       }
+      site_experiences: {
+        Row: {
+          data: Json
+          hidden: boolean
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          data: Json
+          hidden?: boolean
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          hidden?: boolean
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_routes: {
+        Row: {
+          data: Json
+          hidden: boolean
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          data: Json
+          hidden?: boolean
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          data?: Json
+          hidden?: boolean
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_texts: {
         Row: {
           key: string
