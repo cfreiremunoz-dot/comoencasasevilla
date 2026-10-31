@@ -75,6 +75,7 @@ export function RouteDetailPage() {
     [stopsWithPlaces],
   );
 
+  if (!route && routesLoading) return <div className="container-page pt-32">Cargando…</div>;
   if (!route) return <Navigate to="/rutas" replace />;
 
   const category = getCategoryById(route.category);
