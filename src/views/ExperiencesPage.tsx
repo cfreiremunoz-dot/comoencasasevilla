@@ -1,8 +1,9 @@
 import { PageHeader } from '@/components/PageHeader';
 import { ExperienceCard } from '@/components/ExperienceCard';
-import { experiences } from '@/data/content';
+import { useExperiences } from '@/lib/editable-content';
 
 export function ExperiencesPage() {
+  const { items: experiences } = useExperiences();
   return (
     <div className="animate-fade-in">
       <PageHeader

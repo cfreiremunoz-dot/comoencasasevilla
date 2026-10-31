@@ -1,3 +1,4 @@
+import { useRoutes } from '@/lib/editable-content';
 import { useParams, Link, Navigate } from '@/lib/router-compat';
 import { ArrowLeft, ArrowRight, MapPin, Wallet, Tag, Lightbulb, Navigation, Route as RouteIcon } from 'lucide-react';
 import {
@@ -5,7 +6,6 @@ import {
   getCategoryById,
   getZoneById,
   budgetLabels,
-  getRoutesByPlace,
   interests,
 } from '@/data/content';
 import { DemoBadge } from '@/components/DemoBadge';
@@ -17,12 +17,13 @@ import { places } from '@/data/content';
 export function PlaceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const place = slug ? getPlaceBySlug(slug) : undefined;
+  const { items: allRoutes } = useRoutes();
 
   if (!place) return <Navigate to="/explora" replace />;
 
   const category = getCategoryById(place.category);
   const zone = getZoneById(place.zone);
-  const relatedRoutes = getRoutesByPlace(place.id);
+  const relatedRoutes = allRoutes.filter((r) => r.stops?.some((s) => s.placeId === place.id));
   const placeInterests = interests.filter((i) => place.interests.includes(i.id));
   const relatedPlaces = places
     .filter((p) => p.id !== place.id && p.category === place.category)

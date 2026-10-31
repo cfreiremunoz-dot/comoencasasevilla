@@ -4,7 +4,8 @@ import { ArrowDown, ArrowRight, Compass, Heart, Search, Users } from 'lucide-rea
 import { SearchBar } from '@/components/SearchBar';
 import { RouteCard } from '@/components/RouteCard';
 import { ExperienceCard } from '@/components/ExperienceCard';
-import { places, routes, experiences, heroImageSecondary } from '@/data/content';
+import { useRoutes, useExperiences } from '@/lib/editable-content';
+import { places, heroImageSecondary } from '@/data/content';
 import heroPlazaEspana from '@/assets/hero-plaza-espana.jpg';
 import { useSiteTexts } from '@/lib/recommendations';
 
@@ -66,6 +67,8 @@ interface HomeSearchResult {
 }
 
 export function HomePage() {
+  const { items: routes } = useRoutes();
+  const { items: experiences } = useExperiences();
   const siteTexts = useSiteTexts();
   const [searchQuery, setSearchQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
@@ -97,7 +100,7 @@ export function HomePage() {
       }));
 
     return [...placeResults, ...experienceResults].slice(0, 6);
-  }, [submittedQuery]);
+  }, [submittedQuery, experiences]);
 
   const showSearchResults = submittedQuery.length > 0;
 

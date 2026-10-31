@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from '@/lib/router-compat';
 import { ArrowLeft, Clock, Check } from 'lucide-react';
-import { getExperienceBySlug } from '@/data/content';
+import { useExperiences } from '@/lib/editable-content';
 import { DemoBadge } from '@/components/DemoBadge';
 
 const typeLabels: Record<string, string> = {
@@ -11,8 +11,10 @@ const typeLabels: Record<string, string> = {
 
 export function ExperienceDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const exp = slug ? getExperienceBySlug(slug) : undefined;
+  const { items, isLoading } = useExperiences();
+  const exp = items.find((e) => e.slug === slug);
 
+  if (!exp && isLoading) return <div className="container-page pt-32">Cargando…</div>;
   if (!exp) return <Navigate to="/experiencias" replace />;
 
   return (

@@ -5,7 +5,8 @@ import {
   Route as RouteIcon, Flag, Wallet, Lightbulb, Store, UtensilsCrossed,
   Palette, Trees, Users, Landmark, ShoppingBag, Info,
 } from 'lucide-react';
-import { getRouteBySlug, getPlaceById, getCategoryById } from '@/data/content';
+import { useRoutes } from '@/lib/editable-content';
+import { getPlaceById, getCategoryById } from '@/data/content';
 import { DemoBadge } from '@/components/DemoBadge';
 import { MapView, type MapMarker } from '@/components/MapView';
 import { useGeolocation } from '@/hooks/useGeolocation';
@@ -42,7 +43,8 @@ const stopTypeIcons: Record<StopType, typeof Store> = {
 
 export function RouteDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const route = slug ? getRouteBySlug(slug) : undefined;
+  const { items: allRoutes, isLoading: routesLoading } = useRoutes();
+  const route = allRoutes.find((r) => r.slug === slug);
   const geo = useGeolocation();
   const [activeStop, setActiveStop] = useState(0);
 

@@ -1,8 +1,9 @@
 import { Footprints } from 'lucide-react';
 import { RouteFeatureCard } from '@/components/RouteFeatureCard';
-import { routes } from '@/data/content';
+import { useRoutes } from '@/lib/editable-content';
 
 export function RoutesPage() {
+  const { items: routes } = useRoutes();
   return (
     <div className="animate-fade-in bg-crema-100">
       <section className="border-b border-albero-200/70 bg-albero-100/40 pb-12 pt-32 sm:pb-16 sm:pt-36">
