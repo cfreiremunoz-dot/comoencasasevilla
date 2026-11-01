@@ -86,9 +86,15 @@ export function Footer() {
               >
                 <Instagram className="h-4 w-4" />
               </a>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100">
-                <Send className="h-4 w-4" />
-              </span>
+              <a
+                href="https://www.tiktok.com/@comoencasasevilla"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok de ComoEnCasa"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100"
+              >
+                <TikTokIcon className="h-4 w-4" />
+              </a>
               <a
                 href="mailto:comoencasasev@gmail.com"
                 aria-label="Correo de ComoEnCasa"
