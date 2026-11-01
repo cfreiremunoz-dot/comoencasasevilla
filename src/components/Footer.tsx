@@ -81,9 +81,13 @@ export function Footer() {
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100">
                 <Send className="h-4 w-4" />
               </span>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100">
+              <a
+                href="mailto:comoencasasev@gmail.com"
+                aria-label="Correo de ComoEnCasa"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100"
+              >
                 <Mail className="h-4 w-4" />
-              </span>
+              </a>
             </div>
           </div>
         </div>
