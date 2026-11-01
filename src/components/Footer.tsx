@@ -74,7 +74,7 @@ export function Footer() {
               Mantente cerca
             </h4>
             <p className="mt-4 text-sm text-crema-300">
-              Próximamente: cuentas de usuario, favoritos y publicación de rutas.
+              Síguenos en redes y comparte con la comunidad tus rutas y rincones favoritos.
             </p>
             <div className="mt-4 flex gap-3">
               <a
@@ -108,11 +108,11 @@ export function Footer() {
 
         <div className="mt-12 border-t border-tinta-700 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <p className="text-xs text-crema-400">
-            Proyecto universitario · Grado de Periodismo y Comunicación · Contenido de demostración
+            Proyecto universitario · Grado de Periodismo y Comunicación
           </p>
           <div className="flex items-center gap-4">
             <p className="text-xs text-crema-400">
-              Hecho en Sevilla con cariño y datos de ejemplo
+              Hecho en Sevilla con cariño
             </p>
             <Link to="/auth" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
               Acceso editor/a
