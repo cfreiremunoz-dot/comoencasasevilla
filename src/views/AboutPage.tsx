@@ -104,15 +104,9 @@ export function AboutPage() {
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-tinta-600">
                 Esta plataforma forma parte de un trabajo de segundo curso del Grado de
-                Periodismo y Comunicación. La versión actual es una base visual y funcional
-                con datos de ejemplo claramente identificados. Próximas etapas incluirán
-                base de datos, cuentas de usuario, favoritos, publicación de rutas,
-                comentarios, moderación y un mapa interactivo.
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-tinta-500">
-                Los contenidos marcados como «ejemplo de demostración» no corresponden a
-                lugares, negocios ni datos reales. La información verificada se incorporará
-                progresivamente.
+                Periodismo y Comunicación. Nace con la idea de mostrar la ciudad que viven
+                sus habitantes: lugares, rutas y experiencias cotidianas lejos de las
+                rutas masificadas, con la comunidad como protagonista.
               </p>
             </div>
           </div>
