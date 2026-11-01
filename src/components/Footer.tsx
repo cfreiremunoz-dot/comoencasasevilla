@@ -69,9 +69,15 @@ export function Footer() {
               Próximamente: cuentas de usuario, favoritos y publicación de rutas.
             </p>
             <div className="mt-4 flex gap-3">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100">
+              <a
+                href="https://www.instagram.com/comoencasasevilla_/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram de ComoEnCasa"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100"
+              >
                 <Instagram className="h-4 w-4" />
-              </span>
+              </a>
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100">
                 <Send className="h-4 w-4" />
               </span>
