@@ -1,5 +1,13 @@
 import { Link } from '@/lib/router-compat';
-import { Mail, Instagram, Send } from 'lucide-react';
+import { Mail, Instagram } from 'lucide-react';
+
+function TikTokIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .58.05.85.13v-3.5a6.37 6.37 0 0 0-5.09 1.03A6.3 6.3 0 0 0 2.9 19.5a6.34 6.34 0 0 0 3.46 2.4 6.4 6.4 0 0 0 7.32-3.09c.3-.6.48-1.26.54-1.94V8.9a8.24 8.24 0 0 0 4.79 1.52v-3.4c-.5.03-.98-.06-1.42-.33Z" />
+    </svg>
+  );
+}
 import { categories } from '@/data/content';
 
 export function Footer() {
@@ -78,9 +86,15 @@ export function Footer() {
               >
                 <Instagram className="h-4 w-4" />
               </a>
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100">
-                <Send className="h-4 w-4" />
-              </span>
+              <a
+                href="https://www.tiktok.com/@comoencasasevilla"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok de ComoEnCasa"
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-tinta-700 text-crema-300 transition-colors hover:bg-terracota-500 hover:text-crema-100"
+              >
+                <TikTokIcon className="h-4 w-4" />
+              </a>
               <a
                 href="mailto:comoencasasev@gmail.com"
                 aria-label="Correo de ComoEnCasa"
