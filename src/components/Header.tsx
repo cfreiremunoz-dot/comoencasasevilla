@@ -88,7 +88,7 @@ export function Header() {
 
       {/* Menú móvil */}
       {open && (
-        <div className="absolute left-0 right-0 top-16 z-40 h-[calc(100dvh-4rem)] overflow-y-auto bg-terracota-600 shadow-xl md:hidden">
+        <div className="absolute left-0 right-0 top-16 z-40 rounded-b-2xl bg-terracota-600 shadow-xl md:hidden">
           <nav className="container-page flex flex-col gap-1 py-6 animate-slide-down">
             {navItems.map((item) => (
               <NavLink
