@@ -88,7 +88,7 @@ export function Header() {
 
       {/* Menú móvil */}
       {open && (
-        <div className="fixed inset-0 top-16 z-40 bg-crema-100 md:hidden">
+        <div className="absolute left-0 right-0 top-16 z-40 h-[calc(100dvh-4rem)] overflow-y-auto bg-terracota-600 shadow-xl md:hidden">
           <nav className="container-page flex flex-col gap-1 py-6 animate-slide-down">
             {navItems.map((item) => (
               <NavLink
@@ -97,8 +97,8 @@ export function Header() {
                 className={({ isActive }) =>
                   `rounded-xl px-4 py-3.5 text-lg font-medium transition-colors ${
                     isActive
-                      ? 'bg-terracota-50 text-terracota-700'
-                      : 'text-tinta-700 hover:bg-crema-200'
+                      ? 'bg-crema-50 text-terracota-700'
+                      : 'text-crema-50 hover:bg-terracota-700'
                   }`
                 }
               >
