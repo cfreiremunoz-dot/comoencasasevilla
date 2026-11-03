@@ -200,7 +200,7 @@ export function HomePage() {
             </Link>
           </div>
 
-          <div className="mt-10 grid auto-rows-[220px] gap-4 sm:auto-rows-[250px] md:grid-cols-12 md:grid-rows-2">
+          <div className="mt-10 grid auto-rows-[220px] gap-4 sm:auto-rows-[250px] md:grid-cols-12">
             {discoveryBlocks.map((block) => (
               <Link
                 key={block.category}
