@@ -7,6 +7,7 @@ import {
   TreePine,
   Flame,
   Compass,
+  BedDouble,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -19,6 +20,7 @@ const iconMap: Record<string, LucideIcon> = {
   TreePine,
   Flame,
   Compass,
+  BedDouble,
 };
 
 interface CategoryIconProps {

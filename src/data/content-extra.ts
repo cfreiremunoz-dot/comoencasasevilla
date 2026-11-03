@@ -59,7 +59,7 @@ export const extraPlaces: Place[] = [
 const s = (order: number, placeId: string, stopType: StopType, note: string, walk = 5): RouteStop => ({ order, placeId, stopType, note, whatToDo: note, walkMinutesFromPrevious: order === 1 ? 0 : walk });
 
 function route(id: string, slug: string, title: string, subtitle: string, image: string, category: CategoryId, duration: string, distance: string, difficulty: Route['difficulty'], description: string, stops: RouteStop[], budgetNote?: string): Route {
-  return { id, slug, title, subtitle, image, imageAlt: title, category, duration, distance, difficulty, description, stops, isDemo: false, authorDemo: 'Equipo ComoEnCasa', budgetNote };
+  return { id, slug, title, subtitle, image, imageAlt: title, category, duration, distance, difficulty, description, stops, isDemo: false, authorDemo: 'Equipo ComoEnCasa', ...(budgetNote ? { budgetNote } : {}) };
 }
 
 export const extraRoutes: Route[] = [

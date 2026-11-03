@@ -1,4 +1,5 @@
 import type { CategoryId, Category, Zone, Interest, Place, Route, Experience, CommunityPost } from './types';
+import { extraPlaces, extraRoutes, extraExperiences } from './content-extra';
 
 export const categories: Category[] = [
   {
@@ -64,6 +65,14 @@ export const categories: Category[] = [
     description: 'Lugares que sorprenden incluso a quienes nacieron aquí.',
     icon: 'Compass',
     color: 'tinta',
+  },
+  {
+    id: 'alojamiento' as CategoryId,
+    name: 'Dónde dormir',
+    shortName: 'Hoteles',
+    description: 'Hoteles locales con encanto y muy bien valorados.',
+    icon: 'BedDouble',
+    color: 'oliva',
   },
 ];
 
@@ -931,6 +940,10 @@ export const experiences: Experience[] = [
     isDemo: true,
   },
 ];
+
+places.push(...extraPlaces);
+routes.push(...extraRoutes);
+experiences.push(...extraExperiences);
 
 // ─── Comunidad ───
 export const communityPosts: CommunityPost[] = [
