@@ -236,7 +236,7 @@ export function HomePage() {
 
       <section className="bg-albero-100/60 py-20 sm:py-28">
         <div className="container-page">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+          <div className="grid items-center gap-10 md:grid-cols-[0.8fr_1.2fr] md:gap-12 lg:gap-20">
             <div className="relative mx-auto w-full max-w-sm">
               <div className="aspect-[4/5] overflow-hidden rounded-[2rem]">
                 <img
