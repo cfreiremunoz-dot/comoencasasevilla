@@ -240,6 +240,19 @@ export function RouteDetailPage() {
                                 )}
 
                                 <p className="mt-2 text-sm leading-relaxed text-tinta-500">{stop.note}</p>
+                                {(() => {
+                                  const pi = getPlaceInfo(place.id);
+                                  if (!pi || (!pi.address && !pi.price)) return null;
+                                  return (
+                                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-tinta-500">
+                                      {pi.address && (
+                                        <a href={mapsUrl(pi.address)} target="_blank" rel="noopener noreferrer" className="hover:text-terracota-600 hover:underline">📍 {pi.address}</a>
+                                      )}
+                                      {pi.price && <span>💶 {pi.price}</span>}
+                                      {pi.hours && <span>🕒 {pi.hours}</span>}
+                                    </div>
+                                  );
+                                })()}
 
                                 {stop.whatToDo && (
                                   <p className="mt-3 text-sm leading-relaxed text-tinta-600">
