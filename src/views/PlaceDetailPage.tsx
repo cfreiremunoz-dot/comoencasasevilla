@@ -1,6 +1,7 @@
 import { useRoutes } from '@/lib/editable-content';
 import { useParams, Link, Navigate } from '@/lib/router-compat';
-import { ArrowLeft, ArrowRight, MapPin, Wallet, Tag, Lightbulb, Navigation, Route as RouteIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MapPin, Wallet, Tag, Lightbulb, Navigation, Route as RouteIcon, Euro, Clock, Phone, Globe } from 'lucide-react';
+import { getPlaceInfo, mapsUrl } from '@/data/place-info';
 import {
   getPlaceBySlug,
   getCategoryById,
@@ -21,6 +22,7 @@ export function PlaceDetailPage() {
 
   if (!place) return <Navigate to="/explora" replace />;
 
+  const info = getPlaceInfo(place.id);
   const category = getCategoryById(place.category);
   const zone = getZoneById(place.zone);
   const relatedRoutes = allRoutes.filter((r) => r.stops?.some((s) => s.placeId === place.id));
@@ -112,6 +114,24 @@ export function PlaceDetailPage() {
               </div>
             )}
 
+            {info?.options && info.options.length > 0 && (
+              <div className="mt-12">
+                <h2 className="font-serif text-2xl font-semibold text-tinta-800">Sitios para elegir</h2>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  {info.options.map((o) => (
+                    <div key={o.name} className="card-surface p-5">
+                      <h3 className="font-serif text-lg font-semibold text-tinta-800">{o.name}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-tinta-600">{o.note}</p>
+                      <a href={mapsUrl(o.address)} target="_blank" rel="noopener noreferrer" className="mt-3 flex items-center gap-1.5 text-sm text-terracota-600 hover:underline">
+                        <MapPin className="h-4 w-4" />{o.address}
+                      </a>
+                      {o.price && <p className="mt-1 flex items-center gap-1.5 text-sm text-tinta-500"><Euro className="h-4 w-4" />{o.price}</p>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Rutas relacionadas */}
             {relatedRoutes.length > 0 && (
               <div className="mt-12">
@@ -130,6 +150,34 @@ export function PlaceDetailPage() {
 
           {/* Sidebar */}
           <aside className="lg:sticky lg:top-24 lg:self-start space-y-6">
+            {info && (info.address || info.price || info.hours || info.phone || info.website) && (
+              <div className="card-surface p-5">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-tinta-400">
+                  Información práctica
+                </h3>
+                <dl className="mt-3 space-y-3 text-sm text-tinta-600">
+                  {info.address && (
+                    <div className="flex gap-2"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500" />
+                      <a href={mapsUrl(info.address)} target="_blank" rel="noopener noreferrer" className="hover:text-terracota-600 hover:underline">{info.address}</a></div>
+                  )}
+                  {info.price && (
+                    <div className="flex gap-2"><Euro className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500" /><span>{info.price}</span></div>
+                  )}
+                  {info.hours && (
+                    <div className="flex gap-2"><Clock className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500" /><span>{info.hours}</span></div>
+                  )}
+                  {info.phone && (
+                    <div className="flex gap-2"><Phone className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500" />
+                      <a href={`tel:${info.phone.replace(/\s/g, '')}`} className="hover:underline">{info.phone}</a></div>
+                  )}
+                  {info.website && (
+                    <div className="flex gap-2"><Globe className="mt-0.5 h-4 w-4 shrink-0 text-terracota-500" />
+                      <a href={info.website} target="_blank" rel="noopener noreferrer" className="break-all hover:text-terracota-600 hover:underline">{info.website.replace(/^https?:\/\/(www\.)?/, '')}</a></div>
+                  )}
+                </dl>
+                <p className="mt-4 text-[11px] leading-snug text-tinta-400">Precios y horarios orientativos; pueden cambiar.</p>
+              </div>
+            )}
             {placeInterests.length > 0 && (
               <div className="card-surface p-5">
                 <h3 className="text-xs font-semibold uppercase tracking-wider text-tinta-400">
