@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      news_articles: {
+        Row: {
+          author_name: string
+          body: string
+          created_at: string
+          genre: string
+          id: string
+          image_caption: string
+          image_path: string | null
+          neighborhood: string
+          published: boolean
+          published_at: string | null
+          sources: string
+          summary: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_name: string
+          body: string
+          created_at?: string
+          genre?: string
+          id?: string
+          image_caption?: string
+          image_path?: string | null
+          neighborhood: string
+          published?: boolean
+          published_at?: string | null
+          sources?: string
+          summary?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string
+          body?: string
+          created_at?: string
+          genre?: string
+          id?: string
+          image_caption?: string
+          image_path?: string | null
+          neighborhood?: string
+          published?: boolean
+          published_at?: string | null
+          sources?: string
+          summary?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       recommendations: {
         Row: {
           address: string | null
