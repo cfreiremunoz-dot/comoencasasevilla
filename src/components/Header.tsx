@@ -7,6 +7,7 @@ const navItems = [
   { to: '/rutas', label: 'Rutas' },
   { to: '/experiencias', label: 'Experiencias' },
   { to: '/comunidad', label: 'Comunidad' },
+  { to: '/noticias', label: 'Noticias' },
   { to: '/asistente', label: 'Asistente' },
   { to: '/sobre', label: 'Sobre el proyecto' },
 ];
@@ -59,7 +60,7 @@ export function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 xl:flex">
           {navItems.map((item) => (
             <NavLink
               key={item.to}
@@ -78,7 +79,7 @@ export function Header() {
         </nav>
 
         <button
-          className="flex h-10 w-10 items-center justify-center rounded-full text-tinta-700 transition-colors hover:bg-crema-200 md:hidden"
+          className="flex h-10 w-10 items-center justify-center rounded-full text-tinta-700 transition-colors hover:bg-crema-200 xl:hidden"
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
         >
@@ -88,7 +89,7 @@ export function Header() {
 
       {/* Menú móvil */}
       {open && (
-        <div className="absolute left-0 right-0 top-16 z-40 rounded-b-2xl bg-terracota-600 shadow-xl md:hidden">
+        <div className="absolute left-0 right-0 top-16 z-40 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-b-2xl bg-terracota-600 shadow-xl sm:top-20 xl:hidden">
           <nav className="container-page flex flex-col gap-1 py-6 animate-slide-down">
             {navItems.map((item) => (
               <NavLink
