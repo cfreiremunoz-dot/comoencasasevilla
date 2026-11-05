@@ -23,6 +23,8 @@ import { Route as AsistenteThreadIdRouteImport } from './routes/asistente.$threa
 import { Route as ExperienciasIndexRouteImport } from './routes/experiencias.index'
 import { Route as ExperienciasSlugRouteImport } from './routes/experiencias.$slug'
 import { Route as LugarSlugRouteImport } from './routes/lugar.$slug'
+import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
+import { Route as NoticiasArticleIdRouteImport } from './routes/noticias.$articleId'
 import { Route as RutasIndexRouteImport } from './routes/rutas.index'
 import { Route as RutasSlugRouteImport } from './routes/rutas.$slug'
 
@@ -95,6 +97,16 @@ const LugarSlugRoute = LugarSlugRouteImport.update({
   path: '/lugar/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NoticiasIndexRoute = NoticiasIndexRouteImport.update({
+  id: '/noticias/',
+  path: '/noticias/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NoticiasArticleIdRoute = NoticiasArticleIdRouteImport.update({
+  id: '/noticias/$articleId',
+  path: '/noticias/$articleId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RutasIndexRoute = RutasIndexRouteImport.update({
   id: '/rutas/',
   path: '/rutas/',
@@ -118,9 +130,11 @@ export interface FileRoutesByFullPath {
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
+  '/noticias/$articleId': typeof NoticiasArticleIdRoute
   '/rutas/$slug': typeof RutasSlugRoute
   '/asistente/': typeof AsistenteIndexRoute
   '/experiencias/': typeof ExperienciasIndexRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
 }
 export interface FileRoutesByTo {
@@ -135,9 +149,11 @@ export interface FileRoutesByTo {
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
+  '/noticias/$articleId': typeof NoticiasArticleIdRoute
   '/rutas/$slug': typeof RutasSlugRoute
   '/asistente': typeof AsistenteIndexRoute
   '/experiencias': typeof ExperienciasIndexRoute
+  '/noticias': typeof NoticiasIndexRoute
   '/rutas': typeof RutasIndexRoute
 }
 export interface FileRoutesById {
@@ -154,9 +170,11 @@ export interface FileRoutesById {
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
+  '/noticias/$articleId': typeof NoticiasArticleIdRoute
   '/rutas/$slug': typeof RutasSlugRoute
   '/asistente/': typeof AsistenteIndexRoute
   '/experiencias/': typeof ExperienciasIndexRoute
+  '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
 }
 export interface FileRouteTypes {
@@ -173,9 +191,11 @@ export interface FileRouteTypes {
     | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
+    | '/noticias/$articleId'
     | '/rutas/$slug'
     | '/asistente/'
     | '/experiencias/'
+    | '/noticias/'
     | '/rutas/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -190,9 +210,11 @@ export interface FileRouteTypes {
     | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
+    | '/noticias/$articleId'
     | '/rutas/$slug'
     | '/asistente'
     | '/experiencias'
+    | '/noticias'
     | '/rutas'
   id:
     | '__root__'
@@ -208,9 +230,11 @@ export interface FileRouteTypes {
     | '/asistente/$threadId'
     | '/experiencias/$slug'
     | '/lugar/$slug'
+    | '/noticias/$articleId'
     | '/rutas/$slug'
     | '/asistente/'
     | '/experiencias/'
+    | '/noticias/'
     | '/rutas/'
   fileRoutesById: FileRoutesById
 }
@@ -226,9 +250,11 @@ export interface RootRouteChildren {
   AsistenteThreadIdRoute: typeof AsistenteThreadIdRoute
   ExperienciasSlugRoute: typeof ExperienciasSlugRoute
   LugarSlugRoute: typeof LugarSlugRoute
+  NoticiasArticleIdRoute: typeof NoticiasArticleIdRoute
   RutasSlugRoute: typeof RutasSlugRoute
   AsistenteIndexRoute: typeof AsistenteIndexRoute
   ExperienciasIndexRoute: typeof ExperienciasIndexRoute
+  NoticiasIndexRoute: typeof NoticiasIndexRoute
   RutasIndexRoute: typeof RutasIndexRoute
 }
 
@@ -332,6 +358,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LugarSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/noticias/': {
+      id: '/noticias/'
+      path: '/noticias'
+      fullPath: '/noticias/'
+      preLoaderRoute: typeof NoticiasIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noticias/$articleId': {
+      id: '/noticias/$articleId'
+      path: '/noticias/$articleId'
+      fullPath: '/noticias/$articleId'
+      preLoaderRoute: typeof NoticiasArticleIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rutas/': {
       id: '/rutas/'
       path: '/rutas'
@@ -372,9 +412,11 @@ const rootRouteChildren: RootRouteChildren = {
   AsistenteThreadIdRoute: AsistenteThreadIdRoute,
   ExperienciasSlugRoute: ExperienciasSlugRoute,
   LugarSlugRoute: LugarSlugRoute,
+  NoticiasArticleIdRoute: NoticiasArticleIdRoute,
   RutasSlugRoute: RutasSlugRoute,
   AsistenteIndexRoute: AsistenteIndexRoute,
   ExperienciasIndexRoute: ExperienciasIndexRoute,
+  NoticiasIndexRoute: NoticiasIndexRoute,
   RutasIndexRoute: RutasIndexRoute,
 }
 export const routeTree = rootRouteImport

@@ -11,3 +11,4 @@
 
 - Imported pages live in src/views and use `@/lib/router-compat` (a react-router-style adapter over TanStack Router) for links/navigation — keeps the original page code intact.
 - Map (Leaflet) is loaded only in the browser via src/components/MapView.tsx wrapper — Leaflet touches `window` and breaks server rendering.
+- News uses a dedicated table with database-enforced admin writes and public published-only reads; public loaders use a publishable server client so drafts never enter public caches.
