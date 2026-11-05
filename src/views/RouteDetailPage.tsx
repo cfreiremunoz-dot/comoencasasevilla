@@ -1,3 +1,4 @@
+import { getPlaceInfo, mapsUrl } from '@/data/place-info';
 import { useMemo, useState } from 'react';
 import { useParams, Link, Navigate } from '@/lib/router-compat';
 import {
