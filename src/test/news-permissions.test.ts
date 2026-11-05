@@ -5,8 +5,8 @@ import { afterAll, describe, expect, it } from 'vitest';
 
 const enabled = process.env['NEWS_INTEGRATION_TEST'] === '1';
 describe.skipIf(!enabled)('Noticias: permisos reales', () => {
-  const url = import.meta.env.VITE_SUPABASE_URL;
-  const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  const url = import.meta.env['VITE_SUPABASE_URL'];
+  const key = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'];
   const options = { auth: { persistSession: false, autoRefreshToken: false } };
   const visitor = createClient(url, key, options);
   const session = enabled ? JSON.parse(readFileSync(`${homedir()}/.cache/lovable-auth/session.json`, 'utf8')).session : null;
