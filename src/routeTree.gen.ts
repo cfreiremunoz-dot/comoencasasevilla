@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as ExploraRouteImport } from './routes/explora'
 import { Route as SobreRouteImport } from './routes/sobre'
@@ -40,6 +41,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AvisoLegalRoute = AvisoLegalRouteImport.update({
+  id: '/aviso-legal',
+  path: '/aviso-legal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComunidadRoute = ComunidadRouteImport.update({
@@ -121,6 +127,7 @@ const RutasSlugRoute = RutasSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
   '/sobre': typeof SobreRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
   '/sobre': typeof SobreRoute
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
   '/sobre': typeof SobreRoute
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/aviso-legal'
     | '/comunidad'
     | '/explora'
     | '/sobre'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/aviso-legal'
     | '/comunidad'
     | '/explora'
     | '/sobre'
@@ -221,6 +232,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/aviso-legal'
     | '/comunidad'
     | '/explora'
     | '/sobre'
@@ -242,6 +254,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  AvisoLegalRoute: typeof AvisoLegalRoute
   ComunidadRoute: typeof ComunidadRoute
   ExploraRoute: typeof ExploraRoute
   SobreRoute: typeof SobreRoute
@@ -279,6 +292,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aviso-legal': {
+      id: '/aviso-legal'
+      path: '/aviso-legal'
+      fullPath: '/aviso-legal'
+      preLoaderRoute: typeof AvisoLegalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/comunidad': {
@@ -404,6 +424,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  AvisoLegalRoute: AvisoLegalRoute,
   ComunidadRoute: ComunidadRoute,
   ExploraRoute: ExploraRoute,
   SobreRoute: SobreRoute,
