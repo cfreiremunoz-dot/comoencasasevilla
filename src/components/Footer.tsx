@@ -110,11 +110,14 @@ export function Footer() {
           <p className="text-xs text-crema-400">
             Proyecto universitario · Grado de Periodismo y Comunicación
           </p>
-          <div className="flex items-center gap-4">
+           <div className="flex flex-wrap items-center gap-4">
             <p className="text-xs text-crema-400">
               Hecho en Sevilla con cariño
             </p>
-            <Link to="/auth" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
+             <Link to="/aviso-legal" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
+               Aviso legal
+             </Link>
+             <Link to="/auth" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
               Acceso editor/a
             </Link>
           </div>
