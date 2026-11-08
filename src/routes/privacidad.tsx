@@ -47,6 +47,7 @@ function PrivacyPage() {
           <section>
             <h2 className="mb-4 font-serif text-2xl font-semibold text-tinta-800">Servicios externos y almacenamiento</h2>
             <p>La web utiliza servicios externos para el alojamiento, las cuentas, el almacenamiento de aportaciones y consultas y las respuestas del asistente. El proveedor de inteligencia artificial, los destinatarios concretos, sus condiciones, la ubicación del tratamiento y las posibles transferencias internacionales deben documentarse antes de aprobar esta política.</p>
+            <p className="mt-4">Si se solicita la ubicación y se concede permiso en el navegador, se utiliza para mostrar lugares cercanos y orientar rutas. Al abrir indicaciones en Google Maps, el enlace puede incluir esa ubicación. Los mapas cargan imágenes de OpenStreetMap.</p>
             <p className="mt-4">También deben revisarse las conexiones a servicios de mapas, fuentes e imágenes y los datos técnicos que reciben al cargar la web. Los enlaces a Google Maps y redes sociales conducen a servicios con sus propias políticas de privacidad.</p>
             <p className="mt-4">La información sobre cookies y otros almacenamientos del navegador está pendiente de revisión. Este borrador no afirma que la web esté libre de cookies o seguimiento.</p>
           </section>
