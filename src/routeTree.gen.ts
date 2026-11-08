@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as ExploraRouteImport } from './routes/explora'
+import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
@@ -56,6 +57,11 @@ const ComunidadRoute = ComunidadRouteImport.update({
 const ExploraRoute = ExploraRouteImport.update({
   id: '/explora',
   path: '/explora',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacidadRoute = PrivacidadRouteImport.update({
+  id: '/privacidad',
+  path: '/privacidad',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SobreRoute = SobreRouteImport.update({
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/privacidad': typeof PrivacidadRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/privacidad': typeof PrivacidadRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/privacidad': typeof PrivacidadRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
@@ -194,6 +203,7 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/comunidad'
     | '/explora'
+    | '/privacidad'
     | '/sobre'
     | '/admin'
     | '/api/chat'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/comunidad'
     | '/explora'
+    | '/privacidad'
     | '/sobre'
     | '/admin'
     | '/api/chat'
@@ -235,6 +246,7 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/comunidad'
     | '/explora'
+    | '/privacidad'
     | '/sobre'
     | '/_authenticated/admin'
     | '/api/chat'
@@ -257,6 +269,7 @@ export interface RootRouteChildren {
   AvisoLegalRoute: typeof AvisoLegalRoute
   ComunidadRoute: typeof ComunidadRoute
   ExploraRoute: typeof ExploraRoute
+  PrivacidadRoute: typeof PrivacidadRoute
   SobreRoute: typeof SobreRoute
   ApiChatRoute: typeof ApiChatRoute
   ApiHandoffRoute: typeof ApiHandoffRoute
@@ -313,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/explora'
       fullPath: '/explora'
       preLoaderRoute: typeof ExploraRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacidad': {
+      id: '/privacidad'
+      path: '/privacidad'
+      fullPath: '/privacidad'
+      preLoaderRoute: typeof PrivacidadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sobre': {
@@ -427,6 +447,7 @@ const rootRouteChildren: RootRouteChildren = {
   AvisoLegalRoute: AvisoLegalRoute,
   ComunidadRoute: ComunidadRoute,
   ExploraRoute: ExploraRoute,
+  PrivacidadRoute: PrivacidadRoute,
   SobreRoute: SobreRoute,
   ApiChatRoute: ApiChatRoute,
   ApiHandoffRoute: ApiHandoffRoute,
