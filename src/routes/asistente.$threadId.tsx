@@ -6,6 +6,7 @@ import { Conversation, ConversationContent, ConversationScrollButton } from '@/c
 import { Message, MessageContent, MessageResponse } from '@/components/ai-elements/message';
 import { PromptInput, PromptInputFooter, PromptInputSubmit, PromptInputTextarea } from '@/components/ai-elements/prompt-input';
 import { Shimmer } from '@/components/ai-elements/shimmer';
+import { PrivacyNotice } from '@/components/PrivacyNotice';
 import { getThread, newThreadId, textOf, upsertThread, type ChatMessage } from '@/lib/chat-store';
 
 export const Route = createFileRoute('/asistente/$threadId')({
@@ -136,6 +137,7 @@ function ChatWindow({ threadId }: { threadId: string }) {
           <PromptInputSubmit status={status} disabled={!input.trim() && status === 'ready'} onStop={() => abortRef.current?.abort()} />
         </PromptInputFooter>
       </PromptInput>
+      <div className="mt-2"><PrivacyNotice context="chat" /></div>
     </div>
   );
 }
@@ -169,6 +171,7 @@ function HandoffForm({ messages }: { messages: ChatMessage[] }) {
     <form onSubmit={submit} className="space-y-3 rounded-xl bg-crema-100 p-4 ring-1 ring-crema-300">
       <p className="text-sm font-semibold text-tinta-800">Hablar con una persona</p>
       <p className="text-xs text-tinta-500">Déjanos tu correo y te respondemos lo antes posible.</p>
+      <PrivacyNotice context="handoff" />
       <div className="flex flex-col gap-2 sm:flex-row">
         <input value={name} onChange={(e) => setName(e.target.value)} maxLength={100} placeholder="Tu nombre (opcional)" className="flex-1 rounded-lg border border-crema-300 bg-white px-3 py-2 text-sm" />
         <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} maxLength={255} placeholder="tu@correo.com" className="flex-1 rounded-lg border border-crema-300 bg-white px-3 py-2 text-sm" />

@@ -13,3 +13,4 @@
 - Map (Leaflet) is loaded only in the browser via src/components/MapView.tsx wrapper — Leaflet touches `window` and breaks server rendering.
 - News uses a dedicated table with database-enforced admin writes and public published-only reads; public loaders use a publishable server client so drafts never enter public caches.
 - Owner-authored legal information lives on a dedicated public route linked from the footer; keep unverified legal completeness explicitly marked as a draft.
+- Privacy information uses a dedicated public route and shared contextual notices beside data collection; notices provide information, not implied consent or unverified compliance claims.

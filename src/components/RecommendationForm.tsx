@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Star } from 'lucide-react';
+import { PrivacyNotice } from '@/components/PrivacyNotice';
 import { toast } from 'sonner';
 import { categories, zones } from '@/data/content';
 import { POST_TYPES, recommendationSchema, uploadPhoto, type Recommendation, type RecommendationInput } from '@/lib/recommendations';
@@ -111,6 +112,7 @@ export function RecommendationForm({ initial, submitLabel, onSubmit }: Props) {
         <label className={label}>Tu nombre (opcional)</label>
         <input className={field} value={v.author_name} onChange={set('author_name')} maxLength={80} />
       </div>
+      <PrivacyNotice context="community" />
       <button disabled={busy} className="justify-self-start rounded-full bg-terracota-500 px-6 py-3 text-sm font-semibold text-white transition hover:bg-terracota-600 disabled:opacity-60">
         {busy ? 'Guardando…' : submitLabel}
       </button>
