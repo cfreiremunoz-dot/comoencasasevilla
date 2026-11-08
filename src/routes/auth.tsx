@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { toast } from 'sonner';
+import { PrivacyNotice } from '@/components/PrivacyNotice';
 import { supabase } from '@/integrations/supabase/client';
 
 export const Route = createFileRoute('/auth')({
@@ -50,6 +51,7 @@ function Page() {
         <button disabled={busy} className="rounded-full bg-terracota-500 px-6 py-3 text-sm font-semibold text-white hover:bg-terracota-600 disabled:opacity-60">
           {mode === 'in' ? 'Entrar' : 'Crear cuenta'}
         </button>
+        <PrivacyNotice context="account" />
       </form>
       <button onClick={() => setMode(mode === 'in' ? 'up' : 'in')} className="mt-4 text-sm text-terracota-600">
         {mode === 'in' ? '¿Primera vez? Crea tu cuenta' : 'Ya tengo cuenta'}

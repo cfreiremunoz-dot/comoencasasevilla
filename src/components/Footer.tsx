@@ -117,6 +117,9 @@ export function Footer() {
              <Link to="/aviso-legal" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
                Aviso legal
              </Link>
+             <Link to="/privacidad" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
+               Política de privacidad
+             </Link>
              <Link to="/auth" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
               Acceso editor/a
             </Link>
