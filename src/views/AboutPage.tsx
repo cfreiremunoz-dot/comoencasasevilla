@@ -1,12 +1,15 @@
-import { Link } from '@/lib/router-compat';
-import { PageHeader } from '@/components/PageHeader';
-import { ArrowRight, Heart, Users, MapPin, ShoppingBag, Sparkles } from 'lucide-react';
-import { ABOUT_PAGE_DEFAULTS, useAboutPageContent } from '@/lib/about-page-content';
+import { Link } from "@/lib/router-compat";
+import { PageHeader } from "@/components/PageHeader";
+import { ArrowRight, Heart, Users, MapPin, ShoppingBag, Sparkles } from "lucide-react";
+import { ABOUT_PAGE_DEFAULTS, useAboutPageContent } from "@/lib/about-page-content";
 
 const summaryIcons = { heart: Heart, map: MapPin, users: Users, bag: ShoppingBag };
 
 export function AboutPage() {
   const { data: content = ABOUT_PAGE_DEFAULTS } = useAboutPageContent();
+  const teamMembers = content.teamMembers.filter(
+    (member) => member.name.trim() && member.image.trim(),
+  );
 
   return (
     <div className="animate-fade-in">
@@ -65,6 +68,47 @@ export function AboutPage() {
           </div>
         </div>
 
+        {teamMembers.length > 0 && (
+          <section className="mt-16" aria-labelledby="about-team-title">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-terracota-500">
+              El equipo
+            </p>
+            <h2
+              id="about-team-title"
+              className="mt-2 font-serif text-2xl font-semibold text-tinta-800 sm:text-3xl"
+            >
+              {content.teamTitle}
+            </h2>
+            <div className="mt-6 flex flex-wrap justify-center gap-6">
+              {teamMembers.map((member, index) => (
+                <article
+                  key={`${member.name}-${index}`}
+                  className="card-surface w-full max-w-[320px] overflow-hidden"
+                >
+                  <img
+                    src={member.image}
+                    alt={member.imageAlt.trim() || `Retrato de ${member.name}`}
+                    loading="lazy"
+                    decoding="async"
+                    className="aspect-[4/3] w-full object-cover"
+                  />
+                  <div className="p-5">
+                    <h3 className="font-serif text-lg font-semibold text-tinta-800">
+                      {member.name}
+                    </h3>
+                    {member.role && (
+                      <p className="mt-1 text-sm font-medium text-terracota-600">{member.role}</p>
+                    )}
+                    {member.bio && (
+                      <p className="mt-3 text-sm leading-relaxed text-tinta-500">{member.bio}</p>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Contexto académico */}
         <div className="mt-16 card-surface p-6 sm:p-8 bg-oliva-50/40 ring-oliva-200/50">
           <div className="flex items-start gap-4">
@@ -75,9 +119,7 @@ export function AboutPage() {
               <h2 className="font-serif text-xl font-semibold text-tinta-800">
                 {content.projectTitle}
               </h2>
-              <p className="mt-2 text-sm leading-relaxed text-tinta-600">
-                {content.projectText}
-              </p>
+              <p className="mt-2 text-sm leading-relaxed text-tinta-600">{content.projectText}</p>
             </div>
           </div>
         </div>
