@@ -3,11 +3,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
+import { uploadTeamPhoto } from "@/lib/team-photos";
 import {
   ABOUT_PAGE_DEFAULTS,
   aboutPageContentSchema,
   type AboutPageContent,
   type AboutSummaryIcon,
+  type AboutTeamMember,
   useAboutPageContent,
 } from "@/lib/about-page-content";
 
@@ -235,11 +237,169 @@ function ValuesEditor({
   );
 }
 
+function TeamMembersEditor({
+  title,
+  members,
+  uploadingIndex,
+  onTitleChange,
+  onChange,
+  onUploadingChange,
+}: {
+  title: string;
+  members: AboutTeamMember[];
+  uploadingIndex: number | null;
+  onTitleChange: (value: string) => void;
+  onChange: (members: AboutTeamMember[]) => void;
+  onUploadingChange: (index: number | null) => void;
+}) {
+  function updateMember(index: number, patch: Partial<AboutTeamMember>) {
+    onChange(
+      members.map((member, itemIndex) => (itemIndex === index ? { ...member, ...patch } : member)),
+    );
+  }
+
+  async function uploadMemberPhoto(index: number, input: HTMLInputElement) {
+    const file = input.files?.[0];
+    if (!file) return;
+
+    onUploadingChange(index);
+    try {
+      const image = await uploadTeamPhoto(file);
+      updateMember(index, { image });
+      toast.success("Foto subida. Guarda los cambios para publicarla.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "No se pudo subir la foto.");
+    } finally {
+      input.value = "";
+      onUploadingChange(null);
+    }
+  }
+
+  return (
+    <section className="flex flex-col gap-4 rounded-2xl bg-crema-50 p-4">
+      <div>
+        <h3 className="font-serif text-lg font-semibold text-tinta-800">El equipo</h3>
+        <p className="mt-1 text-sm text-tinta-500">
+          Completa las seis fichas. En la página pública solo aparecerán las que tengan nombre y
+          foto.
+        </p>
+      </div>
+      <TextField label="Título de sección" value={title} onChange={onTitleChange} maxLength={120} />
+      <div className="flex flex-col gap-4">
+        {members.map((member, index) => (
+          <div key={index} className="rounded-xl bg-white p-4 ring-1 ring-crema-200">
+            <h4 className="mb-3 text-sm font-semibold text-tinta-700">
+              Integrante {index + 1} de 6
+            </h4>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <TextField
+                label={`Nombre · integrante ${index + 1}`}
+                value={member.name}
+                maxLength={120}
+                onChange={(name) =>
+                  onChange(
+                    members.map((item, itemIndex) =>
+                      itemIndex === index ? { ...item, name } : item,
+                    ),
+                  )
+                }
+              />
+              <TextField
+                label={`Rol · integrante ${index + 1}`}
+                value={member.role}
+                maxLength={120}
+                onChange={(role) =>
+                  onChange(
+                    members.map((item, itemIndex) =>
+                      itemIndex === index ? { ...item, role } : item,
+                    ),
+                  )
+                }
+              />
+              <div className="flex flex-col gap-3">
+                <Field label={`Enlace HTTPS · integrante ${index + 1} (opcional)`}>
+                  <input
+                    className={fieldClass}
+                    type="url"
+                    value={member.image}
+                    maxLength={1000}
+                    placeholder="https://…"
+                    onChange={(event) => updateMember(index, { image: event.target.value })}
+                  />
+                </Field>
+                <div>
+                  <label
+                    htmlFor={`team-photo-${index}`}
+                    className="block text-sm font-medium text-tinta-700"
+                  >
+                    O sube una foto desde el ordenador
+                  </label>
+                  <input
+                    id={`team-photo-${index}`}
+                    className="mt-1.5 block w-full text-sm text-tinta-600 file:mr-3 file:rounded-full file:border-0 file:bg-crema-200 file:px-4 file:py-2 file:text-xs file:font-semibold file:text-tinta-700 hover:file:bg-crema-300"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    disabled={uploadingIndex !== null}
+                    onChange={(event) => void uploadMemberPhoto(index, event.currentTarget)}
+                  />
+                  <p className="mt-1 text-xs text-tinta-500">
+                    JPG, PNG o WebP · máximo 5 MB.
+                    {uploadingIndex === index && <span role="status"> Subiendo foto…</span>}
+                  </p>
+                </div>
+                {member.image && (
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={member.image}
+                      alt=""
+                      loading="lazy"
+                      className="size-16 rounded-lg object-cover ring-1 ring-crema-300"
+                    />
+                    <button
+                      type="button"
+                      className={`${buttonClass} bg-white text-terracota-700 ring-1 ring-crema-300`}
+                      onClick={() => updateMember(index, { image: "" })}
+                    >
+                      Quitar foto
+                    </button>
+                  </div>
+                )}
+              </div>
+              <TextField
+                label={`Descripción de la foto · integrante ${index + 1} (opcional)`}
+                value={member.imageAlt}
+                maxLength={200}
+                onChange={(imageAlt) => updateMember(index, { imageAlt })}
+              />
+              <div className="sm:col-span-2">
+                <TextareaField
+                  label={`Presentación breve · integrante ${index + 1} (opcional)`}
+                  value={member.bio}
+                  maxLength={500}
+                  rows={2}
+                  onChange={(bio) =>
+                    onChange(
+                      members.map((item, itemIndex) =>
+                        itemIndex === index ? { ...item, bio } : item,
+                      ),
+                    )
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function AboutPageEditor() {
   const queryClient = useQueryClient();
   const page = useAboutPageContent();
   const [draft, setDraft] = useState<AboutPageContent>(ABOUT_PAGE_DEFAULTS);
   const [saving, setSaving] = useState(false);
+  const [uploadingTeamMemberIndex, setUploadingTeamMemberIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (page.data) setDraft(page.data);
@@ -315,9 +475,9 @@ export function AboutPageEditor() {
 
       <form className="mt-6 flex flex-col gap-6" onSubmit={(event) => void save(event)}>
         <fieldset
-          disabled={page.isLoading || page.isError || saving}
+          disabled={page.isLoading || page.isError || saving || uploadingTeamMemberIndex !== null}
           className="flex flex-col gap-6 disabled:opacity-70"
-          aria-busy={saving}
+          aria-busy={saving || uploadingTeamMemberIndex !== null}
         >
           <section className="grid gap-4 rounded-2xl bg-crema-50 p-4 sm:grid-cols-2">
             <h3 className="font-serif text-lg font-semibold text-tinta-800 sm:col-span-2">
@@ -405,6 +565,15 @@ export function AboutPageEditor() {
             />
           </section>
 
+          <TeamMembersEditor
+            title={draft.teamTitle}
+            members={draft.teamMembers}
+            uploadingIndex={uploadingTeamMemberIndex}
+            onTitleChange={(value) => set("teamTitle", value)}
+            onChange={(value) => set("teamMembers", value)}
+            onUploadingChange={setUploadingTeamMemberIndex}
+          />
+
           <section className="grid gap-4 rounded-2xl bg-crema-50 p-4 sm:grid-cols-2">
             <h3 className="font-serif text-lg font-semibold text-tinta-800 sm:col-span-2">
               Llamada a la acción
@@ -433,10 +602,14 @@ export function AboutPageEditor() {
 
         <button
           type="submit"
-          disabled={page.isLoading || page.isError || saving}
+          disabled={page.isLoading || page.isError || saving || uploadingTeamMemberIndex !== null}
           className={`${buttonClass} bg-terracota-500 text-white hover:bg-terracota-600`}
         >
-          {saving ? "Guardando…" : "Guardar página"}
+          {saving
+            ? "Guardando…"
+            : uploadingTeamMemberIndex !== null
+              ? "Subiendo foto…"
+              : "Guardar página"}
         </button>
       </form>
     </section>

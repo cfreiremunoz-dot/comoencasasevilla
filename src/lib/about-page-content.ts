@@ -3,6 +3,34 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 
 const summaryIconSchema = z.enum(["heart", "map", "users", "bag"]);
+const teamMemberSchema = z.object({
+  name: z.string().trim().max(120),
+  role: z.string().trim().max(120),
+  bio: z.string().trim().max(500),
+  image: z
+    .string()
+    .trim()
+    .max(1000)
+    .refine((value) => {
+      if (!value) return true;
+      try {
+        return new URL(value).protocol === "https:";
+      } catch {
+        return false;
+      }
+    }, "La foto debe tener un enlace HTTPS válido"),
+  imageAlt: z.string().trim().max(200),
+});
+
+function createEmptyTeamMembers() {
+  return Array.from({ length: 6 }, () => ({
+    name: "",
+    role: "",
+    bio: "",
+    image: "",
+    imageAlt: "",
+  }));
+}
 
 export const aboutPageContentSchema = z.object({
   eyebrow: z.string().trim().min(1).max(100),
@@ -30,10 +58,13 @@ export const aboutPageContentSchema = z.object({
   ctaTitle: z.string().trim().min(1).max(160),
   exploreLabel: z.string().trim().min(1).max(80),
   routesLabel: z.string().trim().min(1).max(80),
+  teamTitle: z.string().trim().min(1).max(120).default("Las personas detrás de ComoEnCasa"),
+  teamMembers: z.array(teamMemberSchema).length(6).default(createEmptyTeamMembers),
 });
 
 export type AboutPageContent = z.infer<typeof aboutPageContentSchema>;
 export type AboutSummaryIcon = z.infer<typeof summaryIconSchema>;
+export type AboutTeamMember = z.infer<typeof teamMemberSchema>;
 
 export const ABOUT_PAGE_DEFAULTS: AboutPageContent = {
   eyebrow: "Sobre el proyecto",
@@ -74,6 +105,8 @@ export const ABOUT_PAGE_DEFAULTS: AboutPageContent = {
   ctaTitle: "Empieza a descubrir la otra Sevilla",
   exploreLabel: "Explorar lugares",
   routesLabel: "Ver rutas locales",
+  teamTitle: "Las personas detrás de ComoEnCasa",
+  teamMembers: createEmptyTeamMembers(),
 };
 
 export function useAboutPageContent() {
