@@ -11,6 +11,7 @@ export default defineConfig({
     // Vercel preview hostnames are ephemeral, including sb-6cn96uxd9f8q.vercel.run and *.vercel.run.
     server: { allowedHosts: true },
     preview: { allowedHosts: true },
+    envPrefix: ["VITE_", "NEXT_PUBLIC_"],
   },
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
