@@ -1,5 +1,5 @@
-import { Link } from '@/lib/router-compat';
-import { Mail, Instagram } from 'lucide-react';
+import { Link } from "@/lib/router-compat";
+import { Mail, Instagram } from "lucide-react";
 
 function TikTokIcon({ className }: { className?: string }) {
   return (
@@ -8,7 +8,7 @@ function TikTokIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-import { categories } from '@/data/content';
+import { categories } from "@/data/content";
 
 export function Footer() {
   return (
@@ -25,9 +25,7 @@ export function Footer() {
                 />
               </span>
               <span className="flex flex-col leading-tight">
-                <span className="font-serif text-lg font-semibold text-crema-100">
-                  ComoEnCasa
-                </span>
+                <span className="font-serif text-lg font-semibold text-crema-100">ComoEnCasa</span>
                 <span className="mt-1 text-[11px] font-medium tracking-wide text-terracota-300">
                   Vive Sevilla, vive ComoEnCasa
                 </span>
@@ -62,10 +60,39 @@ export function Footer() {
               Navega
             </h4>
             <ul className="mt-4 space-y-2.5">
-              <li><Link to="/rutas" className="text-sm text-crema-300 hover:text-terracota-300">Rutas locales</Link></li>
-              <li><Link to="/experiencias" className="text-sm text-crema-300 hover:text-terracota-300">Experiencias</Link></li>
-              <li><Link to="/comunidad" className="text-sm text-crema-300 hover:text-terracota-300">Comunidad</Link></li>
-              <li><Link to="/sobre" className="text-sm text-crema-300 hover:text-terracota-300">Sobre el proyecto</Link></li>
+              <li>
+                <Link to="/rutas" className="text-sm text-crema-300 hover:text-terracota-300">
+                  Rutas locales
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/experiencias"
+                  className="text-sm text-crema-300 hover:text-terracota-300"
+                >
+                  Experiencias
+                </Link>
+              </li>
+              <li>
+                <Link to="/comunidad" className="text-sm text-crema-300 hover:text-terracota-300">
+                  Comunidad
+                </Link>
+              </li>
+              <li>
+                <Link to="/sobre" className="text-sm text-crema-300 hover:text-terracota-300">
+                  Sobre el proyecto
+                </Link>
+              </li>
+              <li>
+                <Link to="/asistente" className="text-sm text-crema-300 hover:text-terracota-300">
+                  Asistente
+                </Link>
+              </li>
+              <li>
+                <Link to="/noticias" className="text-sm text-crema-300 hover:text-terracota-300">
+                  Noticias
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -110,17 +137,24 @@ export function Footer() {
           <p className="text-xs text-crema-400">
             Proyecto universitario · Grado de Periodismo y Comunicación
           </p>
-           <div className="flex flex-wrap items-center gap-4">
-            <p className="text-xs text-crema-400">
-              Hecho en Sevilla con cariño
-            </p>
-             <Link to="/aviso-legal" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
-               Aviso legal
-             </Link>
-             <Link to="/privacidad" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
-               Política de privacidad
-             </Link>
-             <Link to="/auth" className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline">
+          <div className="flex flex-wrap items-center gap-4">
+            <p className="text-xs text-crema-400">Hecho en Sevilla con cariño</p>
+            <Link
+              to="/aviso-legal"
+              className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline"
+            >
+              Aviso legal
+            </Link>
+            <Link
+              to="/privacidad"
+              className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline"
+            >
+              Política de privacidad
+            </Link>
+            <Link
+              to="/auth"
+              className="text-xs text-crema-400 underline-offset-2 transition-colors hover:text-terracota-300 hover:underline"
+            >
               Acceso editor/a
             </Link>
           </div>
