@@ -4,6 +4,8 @@ import path from "node:path";
 
 export default defineConfig({
   plugins: [react()],
+  server: { allowedHosts: true },
+  preview: { allowedHosts: true },
   test: {
     environment: "jsdom",
     globals: true,

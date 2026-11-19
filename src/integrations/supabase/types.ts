@@ -14,6 +14,21 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_email_allowlist: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+        }
+        Relationships: []
+      }
       news_articles: {
         Row: {
           author_name: string
@@ -135,6 +150,24 @@ export type Database = {
         Update: {
           data?: Json
           hidden?: boolean
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_pages: {
+        Row: {
+          content: Json
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          content: Json
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          content?: Json
           slug?: string
           updated_at?: string
         }

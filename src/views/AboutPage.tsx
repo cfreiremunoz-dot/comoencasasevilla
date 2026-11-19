@@ -1,14 +1,19 @@
 import { Link } from '@/lib/router-compat';
 import { PageHeader } from '@/components/PageHeader';
 import { ArrowRight, Heart, Users, MapPin, ShoppingBag, Sparkles } from 'lucide-react';
+import { ABOUT_PAGE_DEFAULTS, useAboutPageContent } from '@/lib/about-page-content';
+
+const summaryIcons = { heart: Heart, map: MapPin, users: Users, bag: ShoppingBag };
 
 export function AboutPage() {
+  const { data: content = ABOUT_PAGE_DEFAULTS } = useAboutPageContent();
+
   return (
     <div className="animate-fade-in">
       <PageHeader
-        eyebrow="Sobre el proyecto"
-        title="ComoEnCasa"
-        description="Una plataforma de turismo local para descubrir Sevilla como la viven sus habitantes, dar visibilidad a los pequeños comercios y acercar visitantes y vecinos."
+        eyebrow={content.eyebrow}
+        title={content.title}
+        description={content.description}
       />
 
       <div className="container-page pb-20">
@@ -16,50 +21,31 @@ export function AboutPage() {
         <div className="grid gap-10 lg:grid-cols-3">
           <div className="lg:col-span-2">
             <h2 className="font-serif text-2xl font-semibold text-tinta-800 sm:text-3xl">
-              Por qué existe este proyecto
+              {content.missionTitle}
             </h2>
             <div className="mt-5 space-y-4 text-base leading-relaxed text-tinta-600">
-              <p>
-                Sevilla es una de las ciudades más visitadas de España, pero la mayoría
-                de turistas recorre las mismas rutas: la Catedral, la Giralda, el Alcázar,
-                la Plaza de España. Son lugares extraordinarios, pero dejan fuera la mayor
-                parte de la ciudad —la que sus habitantes viven a diario.
-              </p>
-              <p>
-                <strong className="text-tinta-800">ComoEnCasa</strong> nace para
-                cambiar ese enfoque. No queremos competir con las guías tradicionales:
-                queremos complementarlas mostrando otra Sevilla. La de los barrios con
-                identidad propia, la de los mercados de abastos donde se hace la compra,
-                la de los pequeños comercios que mantienen viva la memoria de la ciudad,
-                la de las plazas donde se toma el fresco en verano.
-              </p>
-              <p>
-                Creemos que el turismo local no es solo una forma de viajar: es una forma
-                de cuidar la ciudad. Cuando los visitantes se acercan a los barrios,
-                consumen en los pequeños negocios y conocen las tradiciones, se genera
-                una relación más justa entre quienes visitan y quienes habitan.
-              </p>
+              {content.missionParagraphs.map((paragraph, index) => (
+                <p key={`${index}-${paragraph}`}>{paragraph}</p>
+              ))}
             </div>
           </div>
 
           <div className="card-surface p-6 self-start">
             <h3 className="font-serif text-base font-semibold text-tinta-800">
-              En pocas palabras
+              {content.summaryTitle}
             </h3>
             <ul className="mt-4 space-y-3">
-              {[
-                { icon: Heart, text: 'No es una agencia ni una web de reservas' },
-                { icon: MapPin, text: 'Es una guía editorial + una comunidad' },
-                { icon: Users, text: 'Conecta visitantes y habitantes' },
-                { icon: ShoppingBag, text: 'Da visibilidad al pequeño comercio' },
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-terracota-50 text-terracota-500">
-                    <item.icon className="h-4 w-4" />
-                  </span>
-                  <span className="text-sm leading-relaxed text-tinta-600">{item.text}</span>
-                </li>
-              ))}
+              {content.summaryItems.map((item, index) => {
+                const Icon = summaryIcons[item.icon];
+                return (
+                  <li key={`${item.icon}-${index}`} className="flex items-start gap-3">
+                    <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-terracota-50 text-terracota-500">
+                      <Icon className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    <span className="text-sm leading-relaxed text-tinta-600">{item.text}</span>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>
@@ -67,23 +53,10 @@ export function AboutPage() {
         {/* Valores */}
         <div className="mt-16">
           <h2 className="font-serif text-2xl font-semibold text-tinta-800 sm:text-3xl">
-            Lo que nos diferencia
+            {content.valuesTitle}
           </h2>
           <div className="mt-6 grid gap-6 sm:grid-cols-3">
-            {[
-              {
-                title: 'Lejos del folclore facilón',
-                text: 'Mostramos tradiciones y costumbres con respeto, sin reducir la ciudad a tópicos. Sevilla es mucho más que flamenco y Semana Santa: es vida cotidiana.',
-              },
-              {
-                title: 'Pequeños negocios primero',
-                text: 'Priorizamos comercios de barrio, talleres artesanos y bares tradicionales sobre grandes cadenas. Ellos son los que dan carácter a la ciudad.',
-              },
-              {
-                title: 'Comunidad y editorial',
-                text: 'Combinamos la curaduría del equipo editorial con las recomendaciones de la comunidad. Las dos voces son necesarias y se complementan.',
-              },
-            ].map((item) => (
+            {content.values.map((item) => (
               <div key={item.title} className="card-surface p-6">
                 <h3 className="font-serif text-lg font-semibold text-tinta-800">{item.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-tinta-500">{item.text}</p>
@@ -100,13 +73,10 @@ export function AboutPage() {
             </span>
             <div>
               <h2 className="font-serif text-xl font-semibold text-tinta-800">
-                Un proyecto universitario
+                {content.projectTitle}
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-tinta-600">
-                Esta plataforma forma parte de un trabajo de segundo curso del Grado de
-                Periodismo y Comunicación. Nace con la idea de mostrar la ciudad que viven
-                sus habitantes: lugares, rutas y experiencias cotidianas lejos de las
-                rutas masificadas, con la comunidad como protagonista.
+                {content.projectText}
               </p>
             </div>
           </div>
@@ -115,15 +85,15 @@ export function AboutPage() {
         {/* CTA */}
         <div className="mt-16 text-center">
           <h2 className="font-serif text-2xl font-semibold text-tinta-800 sm:text-3xl text-balance">
-            Empieza a descubrir la otra Sevilla
+            {content.ctaTitle}
           </h2>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Link to="/explora" className="btn-primary">
-              Explorar lugares
+              {content.exploreLabel}
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link to="/rutas" className="btn-secondary">
-              Ver rutas locales
+              {content.routesLabel}
             </Link>
           </div>
         </div>
