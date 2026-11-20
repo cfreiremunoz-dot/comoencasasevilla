@@ -9,7 +9,9 @@ import type { CategoryId, Place, ZoneId } from '@/data/types';
 
 const categoryFilters: Array<{ id: CategoryId | 'todas'; label: string }> = [
   { id: 'todas', label: 'Todo' },
-  ...categories.map((category) => ({ id: category.id, label: category.shortName })),
+  ...categories
+    .filter((category) => places.some((place) => place.category === category.id))
+    .map((category) => ({ id: category.id, label: category.shortName })),
 ];
 
 export function ExplorePage() {
@@ -74,10 +76,10 @@ export function ExplorePage() {
               Guía local · Sevilla
             </p>
             <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-tinta-800 sm:text-6xl">
-              Descubre la Sevilla que se vive
+              Descubre la Sevilla de barrio
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-tinta-600 sm:text-lg">
-              Lugares, sabores y rincones para mirar la ciudad con los ojos de quien la habita.
+              Bares, alojamientos independientes y rincones recomendados por su carácter local, lejos de los sitios de siempre.
             </p>
           </div>
 

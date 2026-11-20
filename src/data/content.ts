@@ -164,7 +164,7 @@ export const heroImage = IMG.sevilleLanterns;
 export const heroImageSecondary = IMG.trianaBetis;
 
 // ─── Lugares ───
-export const places: Place[] = [
+export const allPlaces: Place[] = [
   {
     id: 'p-triana',
     slug: 'barrio-triana',
@@ -195,8 +195,8 @@ export const places: Place[] = [
     zone: 'macarena',
     budget: 'economico',
     tags: ['noche', 'historia', 'familias'],
-    image: IMG.metropolParasol,
-    imageAlt: 'Vista de los Metropol Parasol y la arquitectura histórica de Sevilla',
+    image: IMG.sevilleStreetLife,
+    imageAlt: 'Vida cotidiana en una calle de Sevilla',
     excerpt: 'Una plaza ajardinada y un eje de encuentro entre la Macarena y el centro histórico.',
     description: 'La Alameda de Hércules es un paseo arbolado y una plaza pública del norte del casco histórico. Sus terrazas, comercios y actividades cambian a lo largo del día; el espacio también sirve de lugar de descanso y encuentro para residentes. Las columnas monumentales del extremo sur son uno de sus elementos más reconocibles.',
     tips: [
@@ -453,7 +453,7 @@ export const places: Place[] = [
     excerpt: 'Puente histórico que conecta el centro con el Altozano y el barrio de Triana.',
     description: 'El puente de Isabel II, conocido como puente de Triana, enlaza el centro histórico con el Altozano y el barrio de Triana. Cruzarlo a pie ofrece vistas del río y de las dos orillas; es también una vía de paso cotidiana, así que conviene detenerse solo en zonas amplias y no obstaculizar la circulación.',
     tips: [
-      'Crúzalo a pie desde el centro para ver la Giralda a tu espalda y Triana al frente.',
+      'Crúzalo a pie desde el centro y detente a observar las dos orillas del Guadalquivir.',
       'Al atardecer, la luz desde el puente es de las más fotografiadas de Sevilla.',
     ],
     interests: ['fotografia', 'historia', 'parejas', 'solo'],
@@ -653,7 +653,7 @@ export const places: Place[] = [
 ];
 
 // ─── Rutas ───
-export const routes: Route[] = [
+export const allRoutes: Route[] = [
   {
     id: 'r-triana-secreta',
     slug: 'triana-desde-dentro',
@@ -669,7 +669,7 @@ export const routes: Route[] = [
     startPoint: 'Puente de Isabel II (centro de Sevilla)',
     endPoint: 'Sendero del Agua, margen del Guadalquivir',
     stops: [
-      { order: 1, placeId: 'p-puente-isabel', stopType: 'barrio', note: 'Cruza el puente de Isabel II a pie desde el centro y detente a mirar la ciudad desde el medio del puente.', whatToDo: 'Cruzar el puente a pie y detenerse en el centro para mirar la Giralda y Calle Betis.', whatSpecial: 'El puente de Isabel II conecta el centro con el Altozano y ofrece una vista abierta del Guadalquivir y del frente de Triana.', tip: 'Detente en un punto amplio de la acera y deja libre el paso a peatones y ciclistas.', walkMinutesFromPrevious: 0 },
+      { order: 1, placeId: 'p-puente-isabel', stopType: 'barrio', note: 'Cruza el puente de Isabel II a pie desde el centro y detente a mirar la ciudad desde el medio del puente.', whatToDo: 'Cruzar el puente a pie y detenerse a observar el río y las fachadas de Triana.', whatSpecial: 'El puente de Isabel II conecta el centro con el Altozano y ofrece una vista abierta del Guadalquivir y del frente de Triana.', tip: 'Detente en un punto amplio de la acera y deja libre el paso a peatones y ciclistas.', walkMinutesFromPrevious: 0 },
       { order: 2, placeId: 'p-triana', stopType: 'barrio', note: 'Llega a Calle Betis y camina en dirección al mercado, mirando las fachadas de colores.', whatToDo: 'Pasear por Calle Betis y admirar las fachadas coloridas que miran al río.', whatSpecial: 'Calle Betis discurre junto al Guadalquivir y ofrece una vista directa del centro histórico desde Triana.', tip: 'Si haces una parada en una terraza, comprueba horarios y precios del establecimiento.', walkMinutesFromPrevious: 5 },
       { order: 3, placeId: 'p-calle-pureza', stopType: 'barrio', note: 'Sube por la calle Pureza, donde estuvieron los grandes hornos alfareros.', whatToDo: 'Recorrer la calle Pureza y buscar talleres de cerámica, la capilla de los marineros y la iglesia de Santa Ana.', whatSpecial: 'La calle reúne espacios vinculados a la vida religiosa y cotidiana del barrio; sus fachadas también muestran detalles cerámicos.', tip: 'Comprueba con antelación las condiciones de acceso a iglesias, capillas y talleres.', walkMinutesFromPrevious: 5 },
       { order: 4, placeId: 'p-ceramica-triana', stopType: 'cultural', note: 'Dedica tiempo al Centro Cerámica Triana o a un taller que confirme visitas.', whatToDo: 'Explorar la exposición sobre la tradición cerámica del barrio; participa en talleres solo si están anunciados y reservados.', whatSpecial: 'Triana conserva un legado alfarero que puede conocerse a través de espacios culturales y comercios activos.', tip: 'Comprueba horarios, tarifas y disponibilidad directamente con el centro o el taller.', walkMinutesFromPrevious: 3 },
@@ -697,9 +697,8 @@ export const routes: Route[] = [
     stops: [
       { order: 1, placeId: 'p-mercado-feria', stopType: 'mercado', note: 'Empieza por el Mercado de la Feria, junto a la iglesia de Omnium Sanctorum.', whatToDo: 'Recorrer el mercado de la Feria, ver el producto de temporada y comprar algo para picar.', whatSpecial: 'Es un mercado municipal de abastos en la Macarena, junto a la iglesia de Omnium Sanctorum.', tip: 'Comprueba qué puestos están abiertos y el horario del mercado antes de desplazarte.', walkMinutesFromPrevious: 0 },
       { order: 2, placeId: 'p-calle-feria', stopType: 'gastronomia', note: 'Sal del mercado y pasea por la calle Feria, donde hay bares de tapeo auténtico.', whatToDo: 'Pasear por la calle Feria y parar en un bar de la plaza de la Feria para una tapa.', whatSpecial: 'El mercadillo callejero del jueves y el mercado municipal de abastos son actividades distintas.', tip: 'Confirma la celebración y el horario del mercadillo en la información municipal.', walkMinutesFromPrevious: 2 },
-      { order: 3, placeId: 'p-tapeo-alameda-demo', stopType: 'gastronomia', note: 'Baja hacia la Alameda y descubre la oferta de tapeo de la zona.', whatToDo: 'Probar el tapeo de la zona de la Alameda: cambiar de barra, pedir poco en cada sitio.', whatSpecial: 'La zona reúne locales con propuestas distintas; el tapeo permite probar pequeñas porciones y adaptar el recorrido.', tip: 'Consulta carta, precios y alérgenos en cada bar; no todos sirven los mismos platos ni en el mismo horario.', walkMinutesFromPrevious: 8 },
-      { order: 4, placeId: 'p-casa-vizcaino', stopType: 'gastronomia', note: 'Haz una parada en un bar de la calle Feria si está abierto.', whatToDo: 'Consulta la carta del día y elige una tapa o bebida según tus preferencias.', whatSpecial: 'Casa Vizcaíno es un establecimiento concreto en la zona; la oferta y el servicio dependen de su horario.', tip: 'Confirma la apertura, los precios y los alérgenos directamente con el local.', walkMinutesFromPrevious: 5 },
-      { order: 5, placeId: 'p-alameda', stopType: 'encuentro', note: 'Termina en la Alameda de Hércules, cuando la luz de la tarde llena las terrazas.', whatToDo: 'Sentarse en una terraza de la Alameda y observar cómo cambia el barrio al atardecer.', whatSpecial: 'La Alameda de Hércules es una plaza ajardinada y un eje de encuentro del norte del casco histórico. Por la mañana es café tranquilo; por la tarde, vida.', tip: 'Las columnas con Hércules y Julio César recuerdan el origen mitológico de Sevilla.', walkMinutesFromPrevious: 4 },
+      { order: 3, placeId: 'p-casa-vizcaino', stopType: 'gastronomia', note: 'Haz una parada en un bar de la calle Feria si está abierto.', whatToDo: 'Consulta la carta del día y elige una tapa o bebida según tus preferencias.', whatSpecial: 'Casa Vizcaíno es un establecimiento concreto en la zona; la oferta y el servicio dependen de su horario.', tip: 'Confirma la apertura, los precios y los alérgenos directamente con el local.', walkMinutesFromPrevious: 5 },
+      { order: 4, placeId: 'p-alameda', stopType: 'encuentro', note: 'Termina en la Alameda de Hércules, cuando la luz de la tarde llena las terrazas.', whatToDo: 'Sentarse en una terraza de la Alameda y observar cómo cambia el barrio al atardecer.', whatSpecial: 'La Alameda de Hércules es una plaza ajardinada y un eje de encuentro del norte del casco histórico. Por la mañana es café tranquilo; por la tarde, vida.', tip: 'Las columnas con Hércules y Julio César recuerdan el origen mitológico de Sevilla.', walkMinutesFromPrevious: 4 },
     ],
     isDemo: true,
     authorDemo: 'Equipo editorial',
@@ -833,7 +832,7 @@ export const routes: Route[] = [
 ];
 
 // ─── Experiencias ───
-export const experiences: Experience[] = [
+export const allExperiences: Experience[] = [
   {
     id: 'e-desayuno-sevillano',
     slug: 'desayuno-sevillano',
@@ -938,10 +937,70 @@ export const experiences: Experience[] = [
   },
 ];
 
-places.push(...extraPlaces);
-routes.push(...extraRoutes);
-experiences.push(...extraExperiences);
+allPlaces.push(...extraPlaces);
+allRoutes.push(...extraRoutes);
+allExperiences.push(...extraExperiences);
 
+const excludedLocalPlaceIds = new Set([
+  'p-bellas-artes',
+  'p-maria-luisa',
+  'p-plaza-espana',
+  'p-torre-oro',
+  'p-catedral-giralda',
+  'p-setas-parasol',
+  'p-mercado-encarnacion',
+  'p-bodeguita-casablanca',
+  'p-tapeo-alameda',
+  'p-guadalquivir',
+  'p-naranjos',
+  'p-azulejos-rincones',
+  'p-rinconcillo',
+  'p-las-columnas',
+  'p-casa-morales',
+  'p-las-teresas',
+  'p-el-comercio',
+  'p-eslava',
+  'p-la-brunilda',
+  'p-la-campana',
+  'p-casa-1800',
+  'p-corral-del-rey',
+  'p-casas-juderia',
+  'p-palacio-alcazar',
+  'p-dona-maria',
+  'p-mercer',
+]);
+const headlineLandmarkIds = new Set([
+  'p-bellas-artes',
+  'p-maria-luisa',
+  'p-plaza-espana',
+  'p-torre-oro',
+  'p-catedral-giralda',
+  'p-setas-parasol',
+  'p-mercado-encarnacion',
+]);
+
+export const places = allPlaces.filter((place) => !excludedLocalPlaceIds.has(place.id));
+const localRouteSlugs = new Set([
+  'triana-desde-dentro',
+  'sabores-de-barrio',
+  'artesanos-y-pequenos-comercios',
+  'la-vida-de-barrio',
+  'triana-de-barra-en-barra',
+  'jueves-en-la-feria',
+]);
+export const routes = allRoutes.filter((route) =>
+  localRouteSlugs.has(route.slug) && route.stops.every((stop) => !headlineLandmarkIds.has(stop.placeId)),
+);
+const excludedLocalExperienceSlugs = new Set([
+  'cuenta-con-tiza',
+  'yemas-y-cafe-en-la-campana',
+  'atardecer-en-una-azotea',
+  'barca-en-la-plaza-de-espana',
+  'tapa-de-autor',
+]);
+export const experiences = allExperiences.filter((experience) => !excludedLocalExperienceSlugs.has(experience.slug));
+export const excludedDiscoveryRouteSlugs = new Set(allRoutes.filter((route) => !routes.includes(route)).map((route) => route.slug));
+export const excludedDiscoveryExperienceSlugs = excludedLocalExperienceSlugs;
 const officialSources = {
   tourism: { label: 'Turismo de Sevilla · portal oficial', url: 'https://visitasevilla.es/' },
   culture: { label: 'Cultura · Ayuntamiento de Sevilla', url: 'https://www.sevilla.org/servicios/cultura' },
@@ -963,7 +1022,7 @@ function uniqueSources(sources: (typeof officialSources)[keyof typeof officialSo
   return sources.filter((source, index) => sources.findIndex((candidate) => candidate.url === source.url) === index);
 }
 
-for (const route of routes) {
+for (const route of allRoutes) {
   const placeSources = route.stops.flatMap((stop) => {
     const source = sourcesByPlaceId[stop.placeId as keyof typeof sourcesByPlaceId];
     return source ? [source] : [];
@@ -971,7 +1030,7 @@ for (const route of routes) {
   route.sources = uniqueSources([officialSources.tourism, ...placeSources]);
 }
 
-for (const experience of experiences) {
+for (const experience of allExperiences) {
   const specificSources = ['ceramica-taller', 'flamenco-en-triana', 'cruces-de-mayo'].includes(experience.slug)
     ? [officialSources.culture]
     : [];
@@ -1038,7 +1097,7 @@ export function getExperienceBySlug(slug: string): Experience | undefined {
 }
 
 export function getPlaceById(id: string): Place | undefined {
-  return places.find((p) => p.id === id);
+  return allPlaces.find((p) => p.id === id);
 }
 
 export function getRoutesByPlace(placeId: string): Route[] {

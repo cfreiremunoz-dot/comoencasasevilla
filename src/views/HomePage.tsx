@@ -6,7 +6,6 @@ import { RouteCard } from '@/components/RouteCard';
 import { ExperienceCard } from '@/components/ExperienceCard';
 import { useRoutes, useExperiences } from '@/lib/editable-content';
 import { places, heroImageSecondary } from '@/data/content';
-import heroPlazaEspana from '@/assets/hero-plaza-espana.jpg';
 import { useSiteTexts } from '@/lib/recommendations';
 
 const discoveryBlocks = [
@@ -29,12 +28,12 @@ const discoveryBlocks = [
     className: 'md:col-span-5',
   },
   {
-    category: 'cultura',
-    label: 'Cultura',
-    title: 'La memoria sigue aquí',
-    description: 'Museos, azulejos y espacios para mirar más despacio.',
-    image: 'https://images.pexels.com/photos/12838145/pexels-photo-12838145.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-    alt: 'Columnas y azulejos en un jardín sevillano',
+    category: 'mercados',
+    label: 'Mercados de barrio',
+    title: 'La compra de cada día',
+    description: 'Puestos, producto de temporada y conversaciones con quienes están detrás del mostrador.',
+    image: 'https://images.pexels.com/photos/34776483/pexels-photo-34776483.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Puestos de un mercado de barrio',
     className: 'md:col-span-5',
   },
   {
@@ -47,12 +46,12 @@ const discoveryBlocks = [
     className: 'md:col-span-5',
   },
   {
-    category: 'rincones',
-    label: 'Rincones locales',
-    title: 'Lo que no sale en el mapa',
-    description: 'Pequeños hallazgos para perderse con intención.',
-    image: 'https://images.pexels.com/photos/40244095/pexels-photo-40244095.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-    alt: 'Calle empedrada y tranquila de Sevilla',
+    category: 'alojamiento',
+    label: 'Alojamientos independientes',
+    title: 'Dormir en una casa con historia',
+    description: 'Pequeños hoteles y casas sevillanas recomendados por su carácter y trato cercano.',
+    image: 'https://images.pexels.com/photos/12838145/pexels-photo-12838145.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    alt: 'Patio tradicional de una casa sevillana',
     className: 'md:col-span-7',
   },
 ];
@@ -108,8 +107,8 @@ export function HomePage() {
     <div className="animate-fade-in overflow-hidden">
       <section className="relative flex min-h-[min(760px,100svh)] items-end overflow-hidden bg-tinta-800">
         <img
-          src={heroPlazaEspana}
-          alt="Plaza de España de Sevilla al atardecer"
+          src={heroImageSecondary}
+          alt="Fachadas de Triana junto al Guadalquivir"
           width={1920}
           height={1280}
           className="absolute inset-0 h-full w-full object-cover"
@@ -120,7 +119,7 @@ export function HomePage() {
         <div className="container-page relative z-10 w-full pb-12 pt-32 sm:pb-16 lg:pb-20">
           <div className="max-w-4xl">
             <p className="mb-5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-crema-200">
-              <span className="h-px w-8 bg-terracota-300" /> Turismo local · Sevilla
+              <span className="h-px w-8 bg-terracota-300" />               Sevilla de barrio · Guía local
             </p>
             <h1 className="max-w-3xl font-serif text-4xl font-semibold leading-[1] tracking-tight text-white text-shadow-soft sm:text-6xl lg:text-7xl">
               {siteTexts.hero_title_1}
@@ -262,7 +261,7 @@ export function HomePage() {
                 Más que una lista de lugares.
               </h2>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-tinta-600">
-                Conectamos a quienes llegan con quienes hacen ciudad: barrios, comercios pequeños, sabores y costumbres que merecen ser compartidos.
+                Conectamos a quienes llegan con quienes hacen ciudad: bares de barrio, alojamientos independientes, pequeños comercios y rincones recomendados por quienes los conocen.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link to="/sobre" className="btn-primary">

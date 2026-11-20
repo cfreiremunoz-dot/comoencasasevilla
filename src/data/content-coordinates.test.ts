@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { places } from "./content";
+import { allPlaces, places, routes, experiences } from "./content";
 
 const reviewedCoordinates = {
   "p-triana": { lat: 37.3857, lng: -6.0036 },
@@ -43,13 +43,38 @@ const reviewedCoordinates = {
 describe("place map coordinates", () => {
   it("keeps reviewed landmarks and businesses on their mapped locations", () => {
     for (const [id, coords] of Object.entries(reviewedCoordinates)) {
-      expect(places.find((place) => place.id === id)?.coords, id).toEqual(coords);
+      expect(allPlaces.find((place) => place.id === id)?.coords, id).toEqual(coords);
     }
   });
 
   it("does not put map pins on broad areas without a single precise point", () => {
     for (const id of ["p-guadalquivir", "p-naranjos", "p-azulejos-rincones"]) {
-      expect(places.find((place) => place.id === id)?.coords, id).toBeUndefined();
+      expect(allPlaces.find((place) => place.id === id)?.coords, id).toBeUndefined();
+    }
+  });
+
+  it("prioritizes neighborhood recommendations over headline sightseeing", () => {
+    for (const id of [
+      "p-catedral-giralda",
+      "p-torre-oro",
+      "p-plaza-espana",
+      "p-setas-parasol",
+      "p-mercado-encarnacion",
+      "p-bellas-artes",
+      "p-rinconcillo",
+      "p-las-columnas",
+      "p-casa-morales",
+      "p-casa-1800",
+    ]) {
+      expect(places.some((place) => place.id === id), id).toBe(false);
+    }
+
+    expect(places.some((place) => place.id === "p-casa-ruperto")).toBe(true);
+    expect(places.some((place) => place.id === "p-patio-alameda")).toBe(true);
+    expect(routes.some((route) => route.slug === "sevilla-monumental-en-un-dia")).toBe(false);
+    expect(experiences.some((experience) => experience.slug === "atardecer-en-una-azotea")).toBe(false);
+    for (const route of routes) {
+      expect(route.stops.some((stop) => ["p-catedral-giralda", "p-torre-oro", "p-plaza-espana", "p-setas-parasol", "p-maria-luisa"].includes(stop.placeId))).toBe(false);
     }
   });
 });
