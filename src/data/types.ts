@@ -77,6 +77,11 @@ export interface RouteStop {
   walkMinutesFromPrevious?: number;
 }
 
+export interface EditorialSource {
+  label: string;
+  url: string;
+}
+
 export interface Route {
   id: string;
   slug: string;
@@ -96,6 +101,7 @@ export interface Route {
   endPoint?: string;
   budgetNote?: string;
   warnings?: string[];
+  sources?: EditorialSource[];
 }
 
 export interface Experience {
@@ -110,6 +116,7 @@ export interface Experience {
   description: string;
   highlights: string[];
   isDemo: boolean;
+  sources?: EditorialSource[];
 }
 
 export interface CommunityPost {

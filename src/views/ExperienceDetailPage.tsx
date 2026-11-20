@@ -2,6 +2,7 @@ import { useParams, Link, Navigate } from '@/lib/router-compat';
 import { ArrowLeft, Clock, Check } from 'lucide-react';
 import { useExperiences } from '@/lib/editable-content';
 import { DemoBadge } from '@/components/DemoBadge';
+import { EditorialSources } from '@/components/EditorialSources';
 
 const typeLabels: Record<string, string> = {
   gastronomica: 'Gastronómica',
@@ -75,6 +76,7 @@ export function ExperienceDetailPage() {
                 ))}
               </ul>
             </div>
+            <EditorialSources sources={exp.sources ?? []} />
           </div>
 
           <aside className="lg:sticky lg:top-24 lg:self-start space-y-6">
