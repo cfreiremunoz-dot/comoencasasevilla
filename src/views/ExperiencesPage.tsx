@@ -1,6 +1,7 @@
-import { PageHeader } from '@/components/PageHeader';
-import { ExperienceCard } from '@/components/ExperienceCard';
-import { useExperiences } from '@/lib/editable-content';
+import { PageHeader } from "@/components/PageHeader";
+import { ExperienceCard } from "@/components/ExperienceCard";
+import { useExperiences } from "@/lib/editable-content";
+import { GuidedVisitCatalog } from "@/components/GuidedVisitCatalog";
 
 export function ExperiencesPage() {
   const { items: experiences } = useExperiences();
@@ -11,6 +12,8 @@ export function ExperiencesPage() {
         title="Experiencias"
         description="Propuestas gastronómicas, culturales y cotidianas para conocer las costumbres y la identidad de Sevilla. No es solo qué ver: es cómo se vive."
       />
+
+      <GuidedVisitCatalog />
 
       <div className="container-page pb-20">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

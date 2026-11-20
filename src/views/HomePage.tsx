@@ -1,63 +1,68 @@
-import { useMemo, useState } from 'react';
-import { Link } from '@/lib/router-compat';
-import { ArrowDown, ArrowRight, Compass, Heart, Search, Users } from 'lucide-react';
-import { SearchBar } from '@/components/SearchBar';
-import { RouteCard } from '@/components/RouteCard';
-import { ExperienceCard } from '@/components/ExperienceCard';
-import { useRoutes, useExperiences } from '@/lib/editable-content';
-import { places, heroImageSecondary } from '@/data/content';
-import { useSiteTexts } from '@/lib/recommendations';
+import { useMemo, useState } from "react";
+import { Link } from "@/lib/router-compat";
+import { ArrowDown, ArrowRight, Compass, Heart, Search, Users } from "lucide-react";
+import { SearchBar } from "@/components/SearchBar";
+import { RouteCard } from "@/components/RouteCard";
+import { ExperienceCard } from "@/components/ExperienceCard";
+import { useRoutes, useExperiences } from "@/lib/editable-content";
+import { places, heroImageSecondary } from "@/data/content";
+import heroPlazaEspana from "@/assets/hero-plaza-espana.jpg";
+import { useSiteTexts } from "@/lib/recommendations";
 
 const discoveryBlocks = [
   {
-    category: 'barrios',
-    label: 'Barrios',
-    title: 'Donde Sevilla baja el ritmo',
-    description: 'Calles con acento propio, plazas vividas y vecinos que hacen barrio.',
+    category: "barrios",
+    label: "Barrios",
+    title: "Donde Sevilla baja el ritmo",
+    description: "Calles con acento propio, plazas vividas y vecinos que hacen barrio.",
     image: heroImageSecondary,
-    alt: 'Fachadas coloridas de Triana junto al Guadalquivir',
-    className: 'md:col-span-7 md:row-span-2',
+    alt: "Fachadas coloridas de Triana junto al Guadalquivir",
+    className: "md:col-span-7 md:row-span-2",
   },
   {
-    category: 'gastronomia',
-    label: 'Gastronomía',
-    title: 'A la mesa, sin prisa',
-    description: 'Barras, mercados y sabores que cuentan una ciudad.',
-    image: 'https://images.pexels.com/photos/14009280/pexels-photo-14009280.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-    alt: 'Tapas variadas sobre una mesa de madera',
-    className: 'md:col-span-5',
+    category: "gastronomia",
+    label: "Gastronomía",
+    title: "A la mesa, sin prisa",
+    description: "Barras, mercados y sabores que cuentan una ciudad.",
+    image:
+      "https://images.pexels.com/photos/14009280/pexels-photo-14009280.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    alt: "Tapas variadas sobre una mesa de madera",
+    className: "md:col-span-5",
   },
   {
-    category: 'mercados',
-    label: 'Mercados de barrio',
-    title: 'La compra de cada día',
-    description: 'Puestos, producto de temporada y conversaciones con quienes están detrás del mostrador.',
-    image: 'https://images.pexels.com/photos/34776483/pexels-photo-34776483.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-    alt: 'Puestos de un mercado de barrio',
-    className: 'md:col-span-5',
+    category: "cultura",
+    label: "Cultura",
+    title: "La memoria sigue aquí",
+    description: "Museos, azulejos y espacios para mirar más despacio.",
+    image:
+      "https://images.pexels.com/photos/12838145/pexels-photo-12838145.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    alt: "Columnas y azulejos en un jardín sevillano",
+    className: "md:col-span-5",
   },
   {
-    category: 'comercios',
-    label: 'Pequeños comercios',
-    title: 'Hecho cerca de casa',
-    description: 'Oficios, talleres y tiendas con algo que contar.',
-    image: 'https://images.pexels.com/photos/27905345/pexels-photo-27905345.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-    alt: 'Puerta tradicional española con cerámica artesanal',
-    className: 'md:col-span-5',
+    category: "comercios",
+    label: "Pequeños comercios",
+    title: "Hecho cerca de casa",
+    description: "Oficios, talleres y tiendas con algo que contar.",
+    image:
+      "https://images.pexels.com/photos/27905345/pexels-photo-27905345.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    alt: "Puerta tradicional española con cerámica artesanal",
+    className: "md:col-span-5",
   },
   {
-    category: 'alojamiento',
-    label: 'Alojamientos independientes',
-    title: 'Dormir en una casa con historia',
-    description: 'Pequeños hoteles y casas sevillanas recomendados por su carácter y trato cercano.',
-    image: 'https://images.pexels.com/photos/12838145/pexels-photo-12838145.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-    alt: 'Patio tradicional de una casa sevillana',
-    className: 'md:col-span-7',
+    category: "rincones",
+    label: "Rincones locales",
+    title: "Lo que no sale en el mapa",
+    description: "Pequeños hallazgos para perderse con intención.",
+    image:
+      "https://images.pexels.com/photos/40244095/pexels-photo-40244095.jpeg?auto=compress&cs=tinysrgb&h=650&w=940",
+    alt: "Calle empedrada y tranquila de Sevilla",
+    className: "md:col-span-7",
   },
 ];
 
 interface HomeSearchResult {
-  type: 'lugar' | 'experiencia';
+  type: "lugar" | "experiencia";
   title: string;
   subtitle: string;
   slug: string;
@@ -69,17 +74,21 @@ export function HomePage() {
   const { items: routes } = useRoutes();
   const { items: experiences } = useExperiences();
   const siteTexts = useSiteTexts();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [submittedQuery, setSubmittedQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
 
   const searchResults = useMemo<HomeSearchResult[]>(() => {
     const query = submittedQuery.toLowerCase().trim();
     if (!query) return [];
 
     const placeResults: HomeSearchResult[] = places
-      .filter((place) => [place.name, place.excerpt, place.description, ...place.tags].some((value) => value.toLowerCase().includes(query)))
+      .filter((place) =>
+        [place.name, place.excerpt, place.description, ...place.tags].some((value) =>
+          value.toLowerCase().includes(query),
+        ),
+      )
       .map((place) => ({
-        type: 'lugar',
+        type: "lugar",
         title: place.name,
         subtitle: place.excerpt,
         slug: `/lugar/${place.slug}`,
@@ -88,9 +97,16 @@ export function HomePage() {
       }));
 
     const experienceResults: HomeSearchResult[] = experiences
-      .filter((experience) => [experience.title, experience.subtitle, experience.description, ...experience.highlights].some((value) => value.toLowerCase().includes(query)))
+      .filter((experience) =>
+        [
+          experience.title,
+          experience.subtitle,
+          experience.description,
+          ...experience.highlights,
+        ].some((value) => value.toLowerCase().includes(query)),
+      )
       .map((experience) => ({
-        type: 'experiencia',
+        type: "experiencia",
         title: experience.title,
         subtitle: experience.subtitle,
         slug: `/experiencias/${experience.slug}`,
@@ -107,8 +123,8 @@ export function HomePage() {
     <div className="animate-fade-in overflow-hidden">
       <section className="relative flex min-h-[min(760px,100svh)] items-end overflow-hidden bg-tinta-800">
         <img
-          src={heroImageSecondary}
-          alt="Fachadas de Triana junto al Guadalquivir"
+          src={heroPlazaEspana}
+          alt="Plaza de España de Sevilla al atardecer"
           width={1920}
           height={1280}
           className="absolute inset-0 h-full w-full object-cover"
@@ -119,7 +135,7 @@ export function HomePage() {
         <div className="container-page relative z-10 w-full pb-12 pt-32 sm:pb-16 lg:pb-20">
           <div className="max-w-4xl">
             <p className="mb-5 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-crema-200">
-              <span className="h-px w-8 bg-terracota-300" />               Sevilla de barrio · Guía local
+              <span className="h-px w-8 bg-terracota-300" /> Turismo local · Sevilla
             </p>
             <h1 className="max-w-3xl font-serif text-4xl font-semibold leading-[1] tracking-tight text-white text-shadow-soft sm:text-6xl lg:text-7xl">
               {siteTexts.hero_title_1}
@@ -151,18 +167,29 @@ export function HomePage() {
                           to={result.slug}
                           className="group flex items-center gap-3 rounded-xl p-2 transition-colors hover:bg-crema-200"
                         >
-                          <img src={result.image} alt={result.imageAlt} className="h-12 w-12 shrink-0 rounded-lg object-cover" />
+                          <img
+                            src={result.image}
+                            alt={result.imageAlt}
+                            className="h-12 w-12 shrink-0 rounded-lg object-cover"
+                          />
                           <span className="min-w-0">
-                            <span className="block text-[10px] font-semibold uppercase tracking-wider text-terracota-600">{result.type}</span>
-                            <span className="block truncate font-serif text-sm font-semibold text-tinta-800 group-hover:text-terracota-600">{result.title}</span>
-                            <span className="block truncate text-xs text-tinta-500">{result.subtitle}</span>
+                            <span className="block text-[10px] font-semibold uppercase tracking-wider text-terracota-600">
+                              {result.type}
+                            </span>
+                            <span className="block truncate font-serif text-sm font-semibold text-tinta-800 group-hover:text-terracota-600">
+                              {result.title}
+                            </span>
+                            <span className="block truncate text-xs text-tinta-500">
+                              {result.subtitle}
+                            </span>
                           </span>
                         </Link>
                       ))}
                     </div>
                   ) : (
                     <p className="px-4 py-3 text-sm text-tinta-600">
-                      No encontramos lugares ni experiencias para «{searchQuery.trim()}». Prueba con otro término.
+                      No encontramos lugares ni experiencias para «{searchQuery.trim()}». Prueba con
+                      otro término.
                     </p>
                   )}
                 </div>
@@ -193,7 +220,10 @@ export function HomePage() {
                 Encuentra tu Sevilla.
               </h2>
             </div>
-            <Link to="/explora" className="group inline-flex items-center gap-2 text-sm font-semibold text-terracota-600">
+            <Link
+              to="/explora"
+              className="group inline-flex items-center gap-2 text-sm font-semibold text-terracota-600"
+            >
               Explorar todo
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
@@ -249,7 +279,9 @@ export function HomePage() {
                   <Heart className="h-4 w-4" />
                 </span>
                 <span className="text-xs font-semibold leading-tight text-tinta-700">
-                  Hecho para<br />descubrir despacio
+                  Hecho para
+                  <br />
+                  descubrir despacio
                 </span>
               </div>
             </div>
@@ -261,7 +293,8 @@ export function HomePage() {
                 Más que una lista de lugares.
               </h2>
               <p className="mt-5 max-w-lg text-base leading-relaxed text-tinta-600">
-                Conectamos a quienes llegan con quienes hacen ciudad: bares de barrio, alojamientos independientes, pequeños comercios y rincones recomendados por quienes los conocen.
+                Conectamos a quienes llegan con quienes hacen ciudad: barrios, comercios pequeños,
+                sabores y costumbres que merecen ser compartidos.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link to="/sobre" className="btn-primary">
@@ -280,15 +313,25 @@ export function HomePage() {
         <div className="container-page">
           <div className="flex items-end justify-between gap-5">
             <div>
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-terracota-500">A pie, sin prisa</p>
-              <h2 className="font-serif text-3xl font-semibold tracking-tight text-tinta-800 sm:text-5xl">Rutas con otra mirada</h2>
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-terracota-500">
+                A pie, sin prisa
+              </p>
+              <h2 className="font-serif text-3xl font-semibold tracking-tight text-tinta-800 sm:text-5xl">
+                Rutas con otra mirada
+              </h2>
             </div>
-            <Link to="/rutas" className="group hidden items-center gap-2 text-sm font-semibold text-terracota-600 sm:flex">
-              Ver rutas <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <Link
+              to="/rutas"
+              className="group hidden items-center gap-2 text-sm font-semibold text-terracota-600 sm:flex"
+            >
+              Ver rutas{" "}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
           <div className="mt-10 grid gap-6 md:grid-cols-2">
-            {routes.slice(0, 2).map((route) => <RouteCard key={route.id} route={route} />)}
+            {routes.slice(0, 2).map((route) => (
+              <RouteCard key={route.id} route={route} />
+            ))}
           </div>
         </div>
       </section>
@@ -297,22 +340,34 @@ export function HomePage() {
         <div className="container-page">
           <div className="flex items-end justify-between gap-5">
             <div>
-              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-terracota-300">Costumbres e identidad</p>
-              <h2 className="font-serif text-3xl font-semibold tracking-tight sm:text-5xl">Vivir Sevilla también es esto.</h2>
+              <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-terracota-300">
+                Costumbres e identidad
+              </p>
+              <h2 className="font-serif text-3xl font-semibold tracking-tight sm:text-5xl">
+                Vivir Sevilla también es esto.
+              </h2>
             </div>
-            <Link to="/experiencias" className="group hidden items-center gap-2 text-sm font-semibold text-terracota-300 sm:flex">
-              Ver experiencias <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            <Link
+              to="/experiencias"
+              className="group hidden items-center gap-2 text-sm font-semibold text-terracota-300 sm:flex"
+            >
+              Ver experiencias{" "}
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {experiences.slice(0, 3).map((experience) => <ExperienceCard key={experience.id} experience={experience} />)}
+            {experiences.slice(0, 3).map((experience) => (
+              <ExperienceCard key={experience.id} experience={experience} />
+            ))}
           </div>
         </div>
       </section>
 
       <section className="bg-tinta-800 py-16 text-center sm:py-20">
         <div className="container-page">
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-terracota-300">ComoEnCasa</p>
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-terracota-300">
+            ComoEnCasa
+          </p>
           <h2 className="mx-auto max-w-2xl font-serif text-3xl font-semibold leading-tight text-crema-100 sm:text-5xl">
             La ciudad empieza donde termina la ruta.
           </h2>

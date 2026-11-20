@@ -47,6 +47,18 @@ describe("place map coordinates", () => {
     }
   });
 
+  it("gives every public experience specific, valid place references", () => {
+    for (const experience of experiences) {
+      expect(experience.locations?.length, experience.slug).toBeGreaterThan(0);
+      for (const location of experience.locations ?? []) {
+        expect(
+          allPlaces.some((place) => place.id === location.placeId),
+          `${experience.slug}: ${location.placeId}`,
+        ).toBe(true);
+      }
+    }
+  });
+
   it("does not put map pins on broad areas without a single precise point", () => {
     for (const id of ["p-guadalquivir", "p-naranjos", "p-azulejos-rincones"]) {
       expect(allPlaces.find((place) => place.id === id)?.coords, id).toBeUndefined();
@@ -66,15 +78,30 @@ describe("place map coordinates", () => {
       "p-casa-morales",
       "p-casa-1800",
     ]) {
-      expect(places.some((place) => place.id === id), id).toBe(false);
+      expect(
+        places.some((place) => place.id === id),
+        id,
+      ).toBe(false);
     }
 
     expect(places.some((place) => place.id === "p-casa-ruperto")).toBe(true);
     expect(places.some((place) => place.id === "p-patio-alameda")).toBe(true);
     expect(routes.some((route) => route.slug === "sevilla-monumental-en-un-dia")).toBe(false);
-    expect(experiences.some((experience) => experience.slug === "atardecer-en-una-azotea")).toBe(false);
+    expect(experiences.some((experience) => experience.slug === "atardecer-en-una-azotea")).toBe(
+      false,
+    );
     for (const route of routes) {
-      expect(route.stops.some((stop) => ["p-catedral-giralda", "p-torre-oro", "p-plaza-espana", "p-setas-parasol", "p-maria-luisa"].includes(stop.placeId))).toBe(false);
+      expect(
+        route.stops.some((stop) =>
+          [
+            "p-catedral-giralda",
+            "p-torre-oro",
+            "p-plaza-espana",
+            "p-setas-parasol",
+            "p-maria-luisa",
+          ].includes(stop.placeId),
+        ),
+      ).toBe(false);
     }
   });
 });

@@ -1,5 +1,6 @@
 import { Link } from '@/lib/router-compat';
-import { Clock, ArrowUpRight } from 'lucide-react';
+import { Clock, ArrowUpRight, MapPin } from 'lucide-react';
+import { getPlaceById } from '@/data/content';
 import type { Experience } from '@/data/types';
 import { DemoBadge } from './DemoBadge';
 
