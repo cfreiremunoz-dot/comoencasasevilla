@@ -38,9 +38,11 @@ import { Route as VisitasSlugRouteImport } from './routes/visitas.$slug'
 import { Route as ApiAdminGuidesRouteImport } from './routes/api/admin.guides'
 import { Route as ApiBookingsCheckoutRouteImport } from './routes/api/bookings.checkout'
 import { Route as ApiBookingsConfirmRouteImport } from './routes/api/bookings.confirm'
+import { Route as ApiGuideMessagesRouteImport } from './routes/api/guide.messages'
 import { Route as ApiGuideSlotsRouteImport } from './routes/api/guide.slots'
 import { Route as ApiGuideVisitRouteImport } from './routes/api/guide.visit'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
+import { Route as ApiAdminGuidesMessagesRouteImport } from './routes/api/admin.guides.messages'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -186,6 +188,11 @@ const ApiBookingsConfirmRoute = ApiBookingsConfirmRouteImport.update({
   path: '/api/bookings/confirm',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGuideMessagesRoute = ApiGuideMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => ApiGuideRoute,
+} as any)
 const ApiGuideSlotsRoute = ApiGuideSlotsRouteImport.update({
   id: '/slots',
   path: '/slots',
@@ -200,6 +207,11 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   id: '/api/stripe/webhook',
   path: '/api/stripe/webhook',
   getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminGuidesMessagesRoute = ApiAdminGuidesMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => ApiAdminGuidesRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -228,12 +240,14 @@ export interface FileRoutesByFullPath {
   '/experiencias/': typeof ExperienciasIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
-  '/api/admin/guides': typeof ApiAdminGuidesRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRouteWithChildren
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
+  '/api/guide/messages': typeof ApiGuideMessagesRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
   '/api/guide/visit': typeof ApiGuideVisitRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/guides/messages': typeof ApiAdminGuidesMessagesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -261,12 +275,14 @@ export interface FileRoutesByTo {
   '/experiencias': typeof ExperienciasIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/rutas': typeof RutasIndexRoute
-  '/api/admin/guides': typeof ApiAdminGuidesRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRouteWithChildren
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
+  '/api/guide/messages': typeof ApiGuideMessagesRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
   '/api/guide/visit': typeof ApiGuideVisitRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/guides/messages': typeof ApiAdminGuidesMessagesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -296,12 +312,14 @@ export interface FileRoutesById {
   '/experiencias/': typeof ExperienciasIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
-  '/api/admin/guides': typeof ApiAdminGuidesRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRouteWithChildren
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
+  '/api/guide/messages': typeof ApiGuideMessagesRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
   '/api/guide/visit': typeof ApiGuideVisitRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/guides/messages': typeof ApiAdminGuidesMessagesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -334,9 +352,11 @@ export interface FileRouteTypes {
     | '/api/admin/guides'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
+    | '/api/guide/messages'
     | '/api/guide/slots'
     | '/api/guide/visit'
     | '/api/stripe/webhook'
+    | '/api/admin/guides/messages'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -367,9 +387,11 @@ export interface FileRouteTypes {
     | '/api/admin/guides'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
+    | '/api/guide/messages'
     | '/api/guide/slots'
     | '/api/guide/visit'
     | '/api/stripe/webhook'
+    | '/api/admin/guides/messages'
   id:
     | '__root__'
     | '/'
@@ -401,9 +423,11 @@ export interface FileRouteTypes {
     | '/api/admin/guides'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
+    | '/api/guide/messages'
     | '/api/guide/slots'
     | '/api/guide/visit'
     | '/api/stripe/webhook'
+    | '/api/admin/guides/messages'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -431,7 +455,7 @@ export interface RootRouteChildren {
   ExperienciasIndexRoute: typeof ExperienciasIndexRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
   RutasIndexRoute: typeof RutasIndexRoute
-  ApiAdminGuidesRoute: typeof ApiAdminGuidesRoute
+  ApiAdminGuidesRoute: typeof ApiAdminGuidesRouteWithChildren
   ApiBookingsCheckoutRoute: typeof ApiBookingsCheckoutRoute
   ApiBookingsConfirmRoute: typeof ApiBookingsConfirmRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
@@ -642,6 +666,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiBookingsConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/guide/messages': {
+      id: '/api/guide/messages'
+      path: '/messages'
+      fullPath: '/api/guide/messages'
+      preLoaderRoute: typeof ApiGuideMessagesRouteImport
+      parentRoute: typeof ApiGuideRoute
+    }
     '/api/guide/slots': {
       id: '/api/guide/slots'
       path: '/slots'
@@ -662,6 +693,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/api/stripe/webhook'
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/guides/messages': {
+      id: '/api/admin/guides/messages'
+      path: '/messages'
+      fullPath: '/api/admin/guides/messages'
+      preLoaderRoute: typeof ApiAdminGuidesMessagesRouteImport
+      parentRoute: typeof ApiAdminGuidesRoute
     }
   }
 }
@@ -688,17 +726,31 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ApiGuideRouteChildren {
+  ApiGuideMessagesRoute: typeof ApiGuideMessagesRoute
   ApiGuideSlotsRoute: typeof ApiGuideSlotsRoute
   ApiGuideVisitRoute: typeof ApiGuideVisitRoute
 }
 
 const ApiGuideRouteChildren: ApiGuideRouteChildren = {
+  ApiGuideMessagesRoute: ApiGuideMessagesRoute,
   ApiGuideSlotsRoute: ApiGuideSlotsRoute,
   ApiGuideVisitRoute: ApiGuideVisitRoute,
 }
 
 const ApiGuideRouteWithChildren = ApiGuideRoute._addFileChildren(
   ApiGuideRouteChildren,
+)
+
+interface ApiAdminGuidesRouteChildren {
+  ApiAdminGuidesMessagesRoute: typeof ApiAdminGuidesMessagesRoute
+}
+
+const ApiAdminGuidesRouteChildren: ApiAdminGuidesRouteChildren = {
+  ApiAdminGuidesMessagesRoute: ApiAdminGuidesMessagesRoute,
+}
+
+const ApiAdminGuidesRouteWithChildren = ApiAdminGuidesRoute._addFileChildren(
+  ApiAdminGuidesRouteChildren,
 )
 
 const rootRouteChildren: RootRouteChildren = {
@@ -726,7 +778,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperienciasIndexRoute: ExperienciasIndexRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,
   RutasIndexRoute: RutasIndexRoute,
-  ApiAdminGuidesRoute: ApiAdminGuidesRoute,
+  ApiAdminGuidesRoute: ApiAdminGuidesRouteWithChildren,
   ApiBookingsCheckoutRoute: ApiBookingsCheckoutRoute,
   ApiBookingsConfirmRoute: ApiBookingsConfirmRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,

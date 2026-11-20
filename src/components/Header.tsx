@@ -6,7 +6,7 @@ const navItems = [
   { to: "/explora", label: "Explora" },
   { to: "/rutas", label: "Rutas" },
   { to: "/experiencias", label: "Experiencias" },
-  { to: "/guia", label: "Soy guía" },
+  { to: "/guia", label: "Guías" },
   { to: "/comunidad", label: "Comunidad" },
   { to: "/noticias", label: "Noticias" },
   { to: "/asistente", label: "Asistente" },

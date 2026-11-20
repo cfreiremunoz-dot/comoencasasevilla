@@ -206,6 +206,38 @@ export type Database = {
         };
         Relationships: [];
       };
+      guide_verification_messages: {
+        Row: {
+          body: string;
+          created_at: string;
+          guide_id: string;
+          id: string;
+          sender_user_id: string;
+        };
+        Insert: {
+          body: string;
+          created_at?: string;
+          guide_id: string;
+          id?: string;
+          sender_user_id: string;
+        };
+        Update: {
+          body?: string;
+          created_at?: string;
+          guide_id?: string;
+          id?: string;
+          sender_user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "guide_verification_messages_guide_id_fkey";
+            columns: ["guide_id"];
+            isOneToOne: false;
+            referencedRelation: "guide_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       guided_visits: {
         Row: {
           category: string;

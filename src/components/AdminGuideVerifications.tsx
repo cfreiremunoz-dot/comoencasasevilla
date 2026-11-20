@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Check, Clock3, ShieldCheck, X } from "lucide-react";
+import { Check, Clock3, MessageCircle, ShieldCheck, X } from "lucide-react";
 import { toast } from "sonner";
+import { GuideVerificationChat } from "@/components/GuideVerificationChat";
 import { apiRequest } from "@/lib/guide-api";
 
 type AdminGuideProfile = {
@@ -33,6 +34,7 @@ const reviewedAt = (value: string) =>
 export function AdminGuideVerifications() {
   const queryClient = useQueryClient();
   const [notes, setNotes] = useState<Record<string, string>>({});
+  const [openChatGuideId, setOpenChatGuideId] = useState<string | null>(null);
   const profilesQuery = useQuery({
     queryKey: ["admin-guide-verifications"],
     queryFn: () => apiRequest<{ profiles: AdminGuideProfile[] }>("/api/admin/guides"),
@@ -71,7 +73,8 @@ export function AdminGuideVerifications() {
             Verificación de guías
           </h2>
           <p className="mt-1 text-sm text-tinta-500">
-            Revisa los perfiles antes de que sus visitas aparezcan en el catálogo.
+            Revisa los perfiles y solicita por chat los datos que falten, como enlaces a redes
+            sociales.
           </p>
         </div>
         <span
@@ -129,6 +132,35 @@ export function AdminGuideVerifications() {
                 <p className="mt-4 whitespace-pre-wrap text-sm leading-6 text-tinta-600">
                   {profile.bio}
                 </p>
+
+                <div className="mt-4 border-t border-crema-200 pt-4">
+                  <button
+                    type="button"
+                    aria-expanded={openChatGuideId === profile.id}
+                    aria-controls={`guide-verification-chat-${profile.id}`}
+                    onClick={() =>
+                      setOpenChatGuideId((current) => (current === profile.id ? null : profile.id))
+                    }
+                    className="inline-flex items-center gap-2 rounded-full border border-crema-300 px-4 py-2 text-sm font-semibold text-tinta-700 transition-colors hover:bg-crema-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-terracota-500 focus-visible:ring-offset-2"
+                  >
+                    <MessageCircle aria-hidden="true" className="size-4" />
+                    {openChatGuideId === profile.id ? "Cerrar conversación" : "Abrir conversación"}
+                  </button>
+                  <div
+                    id={`guide-verification-chat-${profile.id}`}
+                    hidden={openChatGuideId !== profile.id}
+                  >
+                    {openChatGuideId === profile.id && (
+                      <GuideVerificationChat
+                        endpoint={`/api/admin/guides/messages?guideId=${encodeURIComponent(profile.id)}`}
+                        heading="Mensajes de verificación"
+                        counterpartLabel={profile.displayName}
+                        emptyDescription="Usa esta conversación para pedir información que ayude a revisar la solicitud, por ejemplo los enlaces a sus redes sociales."
+                        placeholder="Solicita un dato o comparte una aclaración…"
+                      />
+                    )}
+                  </div>
+                </div>
 
                 {isPending ? (
                   <div className="mt-4 grid gap-3">

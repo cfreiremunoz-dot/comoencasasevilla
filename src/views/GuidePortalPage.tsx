@@ -15,6 +15,7 @@ import { apiRequest } from "@/lib/guide-api";
 import type { GuideDashboard } from "@/lib/guide-types";
 import { getAuthRedirectUrl } from "@/lib/auth-redirect";
 import { GuidedVisitCatalog } from "@/components/GuidedVisitCatalog";
+import { GuideVerificationChat } from "@/components/GuideVerificationChat";
 
 type Session = Awaited<ReturnType<typeof supabase.auth.getSession>>["data"]["session"];
 const inputClass =
@@ -637,13 +638,20 @@ function GuideDashboardPanel({
                 ? "Ya puedes publicar tus visitas en el catálogo."
                 : data.profile?.verificationStatus === "rejected"
                   ? data.profile.verificationNotes ||
-                    "Actualiza tu perfil siguiendo las indicaciones y contacta con el equipo para solicitar una nueva revisión."
+                    "Actualiza tu perfil siguiendo las indicaciones y escríbenos por el chat si necesitas aclarar algo."
                   : "Revisaremos tu perfil antes de que tus visitas aparezcan en el catálogo."}
             </p>
           </div>
           {data.profile?.verificationStatus === "rejected" && (
             <ProfileCorrectionForm profile={data.profile} onSaved={onRefresh} />
           )}
+          <GuideVerificationChat
+            endpoint="/api/guide/messages"
+            heading="Chat con el equipo de verificación"
+            counterpartLabel="el equipo de ComoEnCasa"
+            emptyDescription="Comparte aquí la información necesaria para completar tu solicitud, como los enlaces a tus redes sociales. Solo tú y el equipo de verificación podéis ver esta conversación."
+            placeholder="Escribe un mensaje o comparte enlaces a tus redes sociales…"
+          />
         </section>
       </div>
 
