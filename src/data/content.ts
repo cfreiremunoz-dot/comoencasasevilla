@@ -185,7 +185,7 @@ export const places: Place[] = [
     interests: ['solo', 'parejas', 'fotografia', 'historia', 'noche'],
     isDemo: true,
     routeIds: ['r-triana-secreta'],
-    coords: { lat: 37.3826, lng: -6.0021 },
+    coords: { lat: 37.3857, lng: -6.0036 },
   },
   {
     id: 'p-alameda',
@@ -229,7 +229,7 @@ export const places: Place[] = [
     interests: ['gastronomia', 'historia', 'lowcost', 'familias'],
     isDemo: true,
     routeIds: ['r-triana-secreta'],
-    coords: { lat: 37.3829, lng: -6.0016 },
+    coords: { lat: 37.3857499, lng: -6.0035503 },
   },
   {
     id: 'p-mercado-feria',
@@ -251,7 +251,7 @@ export const places: Place[] = [
     interests: ['gastronomia', 'lowcost', 'historia'],
     isDemo: true,
     routeIds: ['r-alameda-cascarium'],
-    coords: { lat: 37.3926, lng: -5.9909 },
+    coords: { lat: 37.3956895, lng: -5.9913234 },
   },
   {
     id: 'p-bellas-artes',
@@ -273,7 +273,7 @@ export const places: Place[] = [
     interests: ['historia', 'solo', 'lluvia', 'accesible'],
     isDemo: true,
     routeIds: ['r-verde-sevilla'],
-    coords: { lat: 37.3991, lng: -6.0017 },
+    coords: { lat: 37.392416, lng: -6.0000135 },
   },
   {
     id: 'p-maria-luisa',
@@ -337,7 +337,6 @@ export const places: Place[] = [
     interests: ['solo', 'parejas', 'noche', 'fotografia', 'picnic'],
     isDemo: true,
     routeIds: ['r-triana-secreta', 'r-verde-sevilla'],
-    coords: { lat: 37.3831, lng: -6.0011 },
   },
   {
     id: 'p-bodeguita-casablanca',
@@ -419,7 +418,6 @@ export const places: Place[] = [
     interests: ['fotografia', 'historia', 'familias', 'solo'],
     isDemo: true,
     routeIds: ['r-verde-sevilla'],
-    coords: { lat: 37.3891, lng: -5.9917 },
   },
   {
     id: 'p-azulejos-rincones',
@@ -441,7 +439,6 @@ export const places: Place[] = [
     interests: ['historia', 'fotografia', 'artesania', 'solo'],
     isDemo: true,
     routeIds: ['r-verde-sevilla'],
-    coords: { lat: 37.3936, lng: -5.9914 },
   },
   {
     id: 'p-puente-isabel',
@@ -462,7 +459,7 @@ export const places: Place[] = [
     interests: ['fotografia', 'historia', 'parejas', 'solo'],
     isDemo: true,
     routeIds: ['r-triana-secreta'],
-    coords: { lat: 37.3825, lng: -6.0010 },
+    coords: { lat: 37.3862778, lng: -6.0024309 },
   },
   {
     id: 'p-calle-pureza',
@@ -504,7 +501,7 @@ export const places: Place[] = [
     interests: ['gastronomia', 'vida-barrio', 'solo', 'parejas'],
     isDemo: true,
     routeIds: ['r-vida-barrio', 'r-mercados-sevilla'],
-    coords: { lat: 37.3867, lng: -5.9903 },
+    coords: { lat: 37.3903695, lng: -5.9907591 },
   },
   {
     id: 'p-plaza-pelique',
@@ -525,7 +522,7 @@ export const places: Place[] = [
     interests: ['vida-barrio', 'historia', 'solo'],
     isDemo: true,
     routeIds: ['r-vida-barrio'],
-    coords: { lat: 37.3902, lng: -5.9912 },
+    coords: { lat: 37.3911034, lng: -5.988428 },
   },
   {
     id: 'p-calle-feria',
@@ -546,7 +543,7 @@ export const places: Place[] = [
     interests: ['historia', 'comercios', 'vida-barrio', 'solo'],
     isDemo: true,
     routeIds: ['r-vida-barrio', 'r-mercados-sevilla', 'r-artesanos-comercios'],
-    coords: { lat: 37.3926, lng: -5.9906 },
+    coords: { lat: 37.3956895, lng: -5.9913234 },
   },
   {
     id: 'p-mercado-encarnacion',
@@ -567,7 +564,7 @@ export const places: Place[] = [
     interests: ['gastronomia', 'historia', 'familias', 'solo'],
     isDemo: true,
     routeIds: ['r-mercados-sevilla', 'r-como-sevillano'],
-    coords: { lat: 37.3934, lng: -5.9927 },
+    coords: { lat: 37.3930534, lng: -5.9914274 },
   },
   {
     id: 'p-torre-oro',
@@ -588,7 +585,7 @@ export const places: Place[] = [
     interests: ['historia', 'fotografia', 'familias', 'solo'],
     isDemo: true,
     routeIds: ['r-mercados-sevilla'],
-    coords: { lat: 37.3824, lng: -5.9943 },
+    coords: { lat: 37.3824026, lng: -5.9963156 },
   },
   {
     id: 'p-catedral-giralda',
@@ -630,7 +627,7 @@ export const places: Place[] = [
     interests: ['vida-barrio', 'historia', 'solo', 'familias'],
     isDemo: true,
     routeIds: ['r-como-sevillano', 'r-vida-barrio'],
-    coords: { lat: 37.3859, lng: -5.9937 },
+    coords: { lat: 37.3886108, lng: -5.9951145 },
   },
   {
     id: 'p-setas-parasol',
@@ -651,7 +648,7 @@ export const places: Place[] = [
     interests: ['arquitectura', 'fotografia', 'familias', 'solo'],
     isDemo: true,
     routeIds: ['r-mercados-sevilla', 'r-como-sevillano'],
-    coords: { lat: 37.3935, lng: -5.9927 },
+    coords: { lat: 37.3931193, lng: -5.9918532 },
   },
 ];
 
