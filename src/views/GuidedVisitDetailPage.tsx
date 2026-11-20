@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useParams } from "@tanstack/react-router";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ArrowLeft, CalendarDays, CheckCircle2, Clock3, MapPin, Users } from "lucide-react";
@@ -21,6 +21,8 @@ export function GuidedVisitDetailPage() {
   const [slotId, setSlotId] = useState("");
   const [guestCount, setGuestCount] = useState(1);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [checkoutError, setCheckoutError] = useState("");
+  const checkoutWindowRef = useRef<Window | null>(null);
   const visitQuery = useQuery({
     queryKey: ["guided-visit", slug],
     queryFn: () =>
@@ -34,7 +36,24 @@ export function GuidedVisitDetailPage() {
         method: "POST",
         body: JSON.stringify(input),
       }),
-    onSuccess: ({ checkoutUrl }) => window.location.assign(checkoutUrl),
+    onSuccess: ({ checkoutUrl }) => {
+      const checkoutWindow = checkoutWindowRef.current;
+      checkoutWindowRef.current = null;
+      if (checkoutWindow) {
+        if (checkoutWindow.closed) {
+          setCheckoutError("La pestaña de pago se cerró. Vuelve a intentarlo.");
+          return;
+        }
+        checkoutWindow.opener = null;
+        checkoutWindow.location.replace(checkoutUrl);
+        return;
+      }
+      window.location.assign(checkoutUrl);
+    },
+    onError: () => {
+      checkoutWindowRef.current?.close();
+      checkoutWindowRef.current = null;
+    },
   });
 
   const visit = visitQuery.data?.visit;
@@ -46,6 +65,19 @@ export function GuidedVisitDetailPage() {
 
   function startCheckout() {
     if (!slotId || !acceptedTerms) return;
+    setCheckoutError("");
+
+    if (window.self !== window.top) {
+      const checkoutWindow = window.open("about:blank", "_blank");
+      if (!checkoutWindow) {
+        setCheckoutError(
+          "El navegador ha bloqueado la pestaña de pago. Permite las ventanas emergentes e inténtalo de nuevo.",
+        );
+        return;
+      }
+      checkoutWindowRef.current = checkoutWindow;
+    }
+
     bookingMutation.mutate({ slotId, guestCount, idempotencyKey: crypto.randomUUID() });
   }
 
@@ -224,9 +256,11 @@ export function GuidedVisitDetailPage() {
                     .
                   </span>
                 </label>
-                {bookingMutation.isError && (
+                {(bookingMutation.isError || checkoutError) && (
                   <p role="alert" className="text-sm text-red-700">
-                    {bookingMutation.error.message}
+                    {checkoutError ||
+                      bookingMutation.error?.message ||
+                      "No se pudo iniciar el pago."}
                   </p>
                 )}
                 <button
