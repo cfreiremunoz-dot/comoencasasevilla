@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowUpRight,
   CalendarDays,
-  Check,
   CircleAlert,
   Clock3,
   LogOut,
@@ -16,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { apiRequest } from "@/lib/guide-api";
 import type { GuideDashboard } from "@/lib/guide-types";
 import { getAuthRedirectUrl } from "@/lib/auth-redirect";
+import { GuidedVisitCatalog } from "@/components/GuidedVisitCatalog";
 
 type Session = Awaited<ReturnType<typeof supabase.auth.getSession>>["data"]["session"];
 const inputClass =
@@ -140,49 +140,11 @@ export function GuidePortalPage() {
             Comprobando sesión…
           </p>
         ) : !session ? (
-          <section className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.8fr)]">
-            <div className="card-surface p-6 sm:p-8">
-              <div className="flex items-center gap-3">
-                <span className="flex size-11 items-center justify-center rounded-2xl bg-oliva-100 text-oliva-800">
-                  <CalendarDays aria-hidden="true" className="size-5" />
-                </span>
-                <div>
-                  <h2 className="font-serif text-2xl font-semibold text-tinta-800">
-                    Una visita auténtica empieza contigo
-                  </h2>
-                  <p className="mt-1 text-sm text-tinta-500">
-                    El alta es gratuita. Stripe procesa los pagos de tus reservas.
-                  </p>
-                </div>
-              </div>
-              <ul className="mt-7 grid gap-4 text-sm leading-6 text-tinta-600">
-                <li className="flex gap-3">
-                  <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-oliva-700" />
-                  Cuenta gratuita para crear tu perfil y tu propuesta.
-                </li>
-                <li className="flex gap-3">
-                  <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-oliva-700" />
-                  Tú eliges las fechas, la duración y el tamaño del grupo.
-                </li>
-                <li className="flex gap-3">
-                  <Check aria-hidden="true" className="mt-1 size-4 shrink-0 text-oliva-700" />
-                  Los cobros se gestionan desde tu cuenta conectada de Stripe.
-                </li>
-              </ul>
-              <p className="mt-7 border-t border-tinta-100 pt-5 text-xs leading-5 text-tinta-400">
-                Al crear una cuenta aceptas nuestro{" "}
-                <Link to="/aviso-legal" className="underline underline-offset-2">
-                  aviso legal
-                </Link>{" "}
-                y nuestra{" "}
-                <Link to="/privacidad" className="underline underline-offset-2">
-                  política de privacidad
-                </Link>
-                .
-              </p>
-            </div>
+          <section className="mt-8 grid items-start gap-8 md:grid-cols-[minmax(0,1.35fr)_minmax(320px,0.75fr)]">
+            <GuidedVisitCatalog showExamplesWhenEmpty compact />
 
             <form
+              id="registro-guia"
               onSubmit={submitAuth}
               className="card-surface grid content-start gap-4 p-6 sm:p-8"
             >
@@ -191,8 +153,11 @@ export function GuidePortalPage() {
                   Área de guías
                 </p>
                 <h2 className="mt-2 font-serif text-2xl font-semibold text-tinta-800">
-                  {mode === "up" ? "Crea tu cuenta" : "Qué alegría verte"}
+                  {mode === "up" ? "Crea tu cuenta de guía" : "Qué alegría verte"}
                 </h2>
+                <p className="mt-2 text-sm leading-6 text-tinta-500">
+                  El alta es gratuita. Comparte tu propuesta, elige tus fechas y recibe reservas.
+                </p>
               </div>
               {mode === "up" && (
                 <>
@@ -265,6 +230,19 @@ export function GuidePortalPage() {
                   className="rounded-xl bg-oliva-50 p-3 text-sm leading-6 text-oliva-800"
                 >
                   {authMessage}
+                </p>
+              )}
+              {mode === "up" && (
+                <p className="text-xs leading-5 text-tinta-400">
+                  Al crear una cuenta aceptas nuestro{" "}
+                  <Link to="/aviso-legal" className="underline underline-offset-2">
+                    aviso legal
+                  </Link>{" "}
+                  y nuestra{" "}
+                  <Link to="/privacidad" className="underline underline-offset-2">
+                    política de privacidad
+                  </Link>
+                  .
                 </p>
               )}
               <button
