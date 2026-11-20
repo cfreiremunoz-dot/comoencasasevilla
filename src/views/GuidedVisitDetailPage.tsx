@@ -228,7 +228,7 @@ export function GuidedVisitDetailPage() {
                       <span>{money(managementFee)}</span>
                     </div>
                     <div className="flex items-center justify-between text-tinta-600">
-                      <span>En efectivo al guía · (85 %)</span>
+                      <span>Al guía · restante (85 %)</span>
                       <span>{money(cashDue)}</span>
                     </div>
                     <div className="flex items-center justify-between border-t border-tinta-100 pt-2 font-medium text-tinta-700">
@@ -278,7 +278,7 @@ export function GuidedVisitDetailPage() {
                   )}
                 </button>
                 <p className="text-center text-xs leading-5 text-tinta-500">
-                  El 85 % restante se paga en efectivo directamente al guía el día de la visita.
+                  El resto se paga directamente al guía el día de la visita.
                 </p>
               </div>
             ) : (

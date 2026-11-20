@@ -53,7 +53,7 @@ export function BookingResultPage({ sessionId }: { sessionId: string | undefined
         <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-tinta-500">
           {paid
             ? query.data?.paymentModel === "management_fee_15_cash_85"
-              ? "La señal de gestión del 15 % se ha cobrado online. Recuerda pagar el 85 % restante directamente al guía en efectivo el día de la visita. Stripe te enviará el recibo de la señal."
+              ? "La señal de gestión del 15 % se ha cobrado online. El resto se paga directamente al guía el día de la visita. Stripe te enviará el recibo de la señal."
               : "Gracias por reservar una visita local en Sevilla. Stripe te enviará el recibo del pago."
             : expired
               ? "No se ha registrado ningún cargo. Vuelve a la visita para elegir otra fecha."
@@ -79,7 +79,7 @@ export function BookingResultPage({ sessionId }: { sessionId: string | undefined
               </div>
               {query.data.cashDueCents ? (
                 <div className="flex items-center justify-between gap-4 border-t border-tinta-100 pt-2 font-semibold text-tinta-800">
-                  <span>Efectivo al guía · restante (85 %)</span>
+                  <span>Al guía · restante (85 %)</span>
                   <span>{money(query.data.cashDueCents)}</span>
                 </div>
               ) : null}

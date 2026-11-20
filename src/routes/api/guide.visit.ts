@@ -55,6 +55,12 @@ export const Route = createFileRoute("/api/guide/visit")({
         if (existingError)
           return Response.json({ error: "No se pudo guardar la visita." }, { status: 500 });
         const status = parsed.data.status ?? existing?.status ?? "draft";
+        if (status === "published" && context.profile.verification_status !== "approved") {
+          return Response.json(
+            { error: "Tu perfil debe ser aprobado antes de publicar una visita." },
+            { status: 403 },
+          );
+        }
 
         const values = {
           title: parsed.data.title,

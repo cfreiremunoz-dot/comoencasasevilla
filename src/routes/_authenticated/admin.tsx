@@ -7,6 +7,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { ContentEditor } from '@/components/ContentEditor';
 import { NewsEditor } from '@/components/NewsEditor';
 import { AboutPageEditor } from '@/components/AboutPageEditor';
+import { AdminGuideVerifications } from '@/components/AdminGuideVerifications';
 import { RecommendationCard } from '@/components/RecommendationCard';
 import { RecommendationForm } from '@/components/RecommendationForm';
 import { SITE_TEXT_DEFAULTS, useIsAdmin, useRecommendations, useSiteTexts, type Recommendation, type SiteTextKey } from '@/lib/recommendations';
@@ -70,6 +71,7 @@ function AdminPage() {
       </div>
 
       <HandoffsInbox />
+      <AdminGuideVerifications />
       <NewsEditor />
       <ContentEditor />
 

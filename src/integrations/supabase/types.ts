@@ -140,6 +140,10 @@ export type Database = {
           stripe_payouts_enabled: boolean;
           updated_at: string;
           user_id: string;
+          verification_notes: string | null;
+          verification_status: string;
+          verified_at: string | null;
+          verified_by: string | null;
         };
         Insert: {
           bio: string;
@@ -152,6 +156,10 @@ export type Database = {
           stripe_payouts_enabled?: boolean;
           updated_at?: string;
           user_id: string;
+          verification_notes?: string | null;
+          verification_status?: string;
+          verified_at?: string | null;
+          verified_by?: string | null;
         };
         Update: {
           bio?: string;
@@ -164,6 +172,37 @@ export type Database = {
           stripe_payouts_enabled?: boolean;
           updated_at?: string;
           user_id?: string;
+          verification_notes?: string | null;
+          verification_status?: string;
+          verified_at?: string | null;
+          verified_by?: string | null;
+        };
+        Relationships: [];
+      };
+      guide_verification_events: {
+        Row: {
+          actor_user_id: string;
+          created_at: string;
+          guide_id: string;
+          id: string;
+          notes: string | null;
+          status: string;
+        };
+        Insert: {
+          actor_user_id: string;
+          created_at?: string;
+          guide_id: string;
+          id?: string;
+          notes?: string | null;
+          status: string;
+        };
+        Update: {
+          actor_user_id?: string;
+          created_at?: string;
+          guide_id?: string;
+          id?: string;
+          notes?: string | null;
+          status?: string;
         };
         Relationships: [];
       };

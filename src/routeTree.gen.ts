@@ -35,6 +35,7 @@ import { Route as ReservaResultadoRouteImport } from './routes/reserva.resultado
 import { Route as RutasIndexRouteImport } from './routes/rutas.index'
 import { Route as RutasSlugRouteImport } from './routes/rutas.$slug'
 import { Route as VisitasSlugRouteImport } from './routes/visitas.$slug'
+import { Route as ApiAdminGuidesRouteImport } from './routes/api/admin.guides'
 import { Route as ApiBookingsCheckoutRouteImport } from './routes/api/bookings.checkout'
 import { Route as ApiBookingsConfirmRouteImport } from './routes/api/bookings.confirm'
 import { Route as ApiGuideSlotsRouteImport } from './routes/api/guide.slots'
@@ -170,6 +171,11 @@ const VisitasSlugRoute = VisitasSlugRouteImport.update({
   path: '/visitas/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminGuidesRoute = ApiAdminGuidesRouteImport.update({
+  id: '/api/admin/guides',
+  path: '/api/admin/guides',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiBookingsCheckoutRoute = ApiBookingsCheckoutRouteImport.update({
   id: '/api/bookings/checkout',
   path: '/api/bookings/checkout',
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/experiencias/': typeof ExperienciasIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRoute
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
@@ -254,6 +261,7 @@ export interface FileRoutesByTo {
   '/experiencias': typeof ExperienciasIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/rutas': typeof RutasIndexRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRoute
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
@@ -288,6 +296,7 @@ export interface FileRoutesById {
   '/experiencias/': typeof ExperienciasIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRoute
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
@@ -322,6 +331,7 @@ export interface FileRouteTypes {
     | '/experiencias/'
     | '/noticias/'
     | '/rutas/'
+    | '/api/admin/guides'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
     | '/api/guide/slots'
@@ -354,6 +364,7 @@ export interface FileRouteTypes {
     | '/experiencias'
     | '/noticias'
     | '/rutas'
+    | '/api/admin/guides'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
     | '/api/guide/slots'
@@ -387,6 +398,7 @@ export interface FileRouteTypes {
     | '/experiencias/'
     | '/noticias/'
     | '/rutas/'
+    | '/api/admin/guides'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
     | '/api/guide/slots'
@@ -419,6 +431,7 @@ export interface RootRouteChildren {
   ExperienciasIndexRoute: typeof ExperienciasIndexRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
   RutasIndexRoute: typeof RutasIndexRoute
+  ApiAdminGuidesRoute: typeof ApiAdminGuidesRoute
   ApiBookingsCheckoutRoute: typeof ApiBookingsCheckoutRoute
   ApiBookingsConfirmRoute: typeof ApiBookingsConfirmRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
@@ -608,6 +621,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof VisitasSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/guides': {
+      id: '/api/admin/guides'
+      path: '/api/admin/guides'
+      fullPath: '/api/admin/guides'
+      preLoaderRoute: typeof ApiAdminGuidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/bookings/checkout': {
       id: '/api/bookings/checkout'
       path: '/api/bookings/checkout'
@@ -706,6 +726,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperienciasIndexRoute: ExperienciasIndexRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,
   RutasIndexRoute: RutasIndexRoute,
+  ApiAdminGuidesRoute: ApiAdminGuidesRoute,
   ApiBookingsCheckoutRoute: ApiBookingsCheckoutRoute,
   ApiBookingsConfirmRoute: ApiBookingsConfirmRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,

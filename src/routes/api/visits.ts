@@ -27,7 +27,10 @@ export const Route = createFileRoute("/api/visits")({
         const visitIds = visits.map((visit) => visit.id);
         const [{ data: guides, error: guidesError }, { data: slots, error: slotsError }] =
           await Promise.all([
-            supabaseAdmin.from("guide_profiles").select("id,display_name,bio").in("id", guideIds),
+            supabaseAdmin
+              .from("guide_profiles")
+              .select("id,display_name,bio,verification_status")
+              .in("id", guideIds),
             supabaseAdmin
               .from("visit_slots")
               .select("id,visit_id,starts_at,capacity")
@@ -42,6 +45,19 @@ export const Route = createFileRoute("/api/visits")({
             { error: "No se pudieron cargar las fechas disponibles." },
             { status: 500 },
           );
+        }
+
+        const approvedGuideIds = new Set(
+          (guides ?? [])
+            .filter((guide) => guide.verification_status === "approved")
+            .map((guide) => guide.id),
+        );
+        const approvedVisits = visits.filter((visit) => approvedGuideIds.has(visit.guide_id));
+        if (!approvedVisits.length) {
+          return Response.json(slug ? { visit: null } : { visits: [] }, {
+            status: slug ? 404 : 200,
+            headers: { "Cache-Control": "private, no-store" },
+          });
         }
 
         const slotIds = (slots ?? []).map((slot) => slot.id);
@@ -84,7 +100,7 @@ export const Route = createFileRoute("/api/visits")({
           slotsByVisit.set(slot.visit_id, list);
         }
 
-        const publicVisits = visits.map((visit) => {
+        const publicVisits = approvedVisits.map((visit) => {
           const guide = guideById.get(visit.guide_id);
           return {
             id: visit.id,

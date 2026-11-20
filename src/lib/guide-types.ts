@@ -22,7 +22,13 @@ export type PublicGuidedVisit = {
 };
 
 export type GuideDashboard = {
-  profile: { id: string; displayName: string; bio: string } | null;
+  profile: {
+    id: string;
+    displayName: string;
+    bio: string;
+    verificationStatus: "pending" | "approved" | "rejected";
+    verificationNotes: string | null;
+  } | null;
   visit: {
     id: string;
     slug: string;

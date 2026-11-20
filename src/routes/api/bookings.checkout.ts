@@ -54,7 +54,7 @@ export const Route = createFileRoute("/api/bookings/checkout")({
         const hold = holds[0];
         const { data: existingBooking, error: bookingError } = await supabaseAdmin
           .from("visit_bookings")
-          .select("stripe_session_id,status,total_amount_cents,platform_fee_cents")
+          .select("stripe_session_id,status,total_amount_cents,platform_fee_cents,slot_id")
           .eq("id", hold.booking_id)
           .maybeSingle();
         if (bookingError || !existingBooking)
@@ -64,6 +64,37 @@ export const Route = createFileRoute("/api/bookings/checkout")({
         if (existingBooking.status !== "pending_payment")
           return Response.json(
             { error: "La reserva ha caducado. Elige la fecha de nuevo." },
+            { status: 409 },
+          );
+
+        const { data: slot, error: slotError } = await supabaseAdmin
+          .from("visit_slots")
+          .select("id,visit_id,starts_at,active")
+          .eq("id", existingBooking.slot_id)
+          .maybeSingle();
+        if (slotError || !slot || !slot.active || new Date(slot.starts_at).getTime() <= Date.now())
+          return Response.json({ error: "Esa fecha ya no está disponible." }, { status: 409 });
+        const { data: visit, error: visitError } = await supabaseAdmin
+          .from("guided_visits")
+          .select("id,slug,title,summary,price_per_person_cents,status,guide_id")
+          .eq("id", slot.visit_id)
+          .eq("status", "published")
+          .maybeSingle();
+        if (visitError || !visit)
+          return Response.json({ error: "No se pudo cargar la visita." }, { status: 500 });
+        const { data: guide, error: guideError } = await supabaseAdmin
+          .from("guide_profiles")
+          .select("verification_status")
+          .eq("id", visit.guide_id)
+          .maybeSingle();
+        if (guideError)
+          return Response.json(
+            { error: "No se pudo comprobar el perfil de la guía." },
+            { status: 500 },
+          );
+        if (guide?.verification_status !== "approved")
+          return Response.json(
+            { error: "Esta visita no está disponible para reservar." },
             { status: 409 },
           );
 
@@ -121,22 +152,6 @@ export const Route = createFileRoute("/api/bookings/checkout")({
           }
         }
 
-        const { data: slot, error: slotError } = await supabaseAdmin
-          .from("visit_slots")
-          .select("id,visit_id,starts_at,active")
-          .eq("id", parsed.data.slotId)
-          .maybeSingle();
-        if (slotError || !slot || !slot.active || new Date(slot.starts_at).getTime() <= Date.now())
-          return Response.json({ error: "Esa fecha ya no está disponible." }, { status: 409 });
-        const { data: visit, error: visitError } = await supabaseAdmin
-          .from("guided_visits")
-          .select("id,slug,title,summary,price_per_person_cents,status")
-          .eq("id", slot.visit_id)
-          .eq("status", "published")
-          .maybeSingle();
-        if (visitError || !visit)
-          return Response.json({ error: "No se pudo cargar la visita." }, { status: 500 });
-
         const expiresAt = Math.floor(Date.now() / 1000) + 31 * 60;
         if (new Date(hold.hold_expires_at).getTime() <= (expiresAt + 30) * 1000) {
           return Response.json(
@@ -159,7 +174,7 @@ export const Route = createFileRoute("/api/bookings/checkout")({
                     unit_amount: managementFeeCents,
                     product_data: {
                       name: `Señal de gestión (15 %) · ${visit.title}`,
-                      description: `${parsed.data.guestCount} ${parsed.data.guestCount === 1 ? "persona" : "personas"}. Señal online: ${new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(managementFeeCents / 100)}. El 85 % restante (${new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cashDueCents / 100)}) se paga en efectivo directamente al guía el día de la visita.`,
+                      description: `${parsed.data.guestCount} ${parsed.data.guestCount === 1 ? "persona" : "personas"}. Señal online: ${new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(managementFeeCents / 100)}. El resto (${new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cashDueCents / 100)}) se paga directamente al guía el día de la visita.`,
                     },
                   },
                 },

@@ -432,6 +432,83 @@ function ProfileSetup({
   );
 }
 
+function ProfileCorrectionForm({
+  profile,
+  onSaved,
+}: {
+  profile: { id: string; displayName: string; bio: string };
+  onSaved: () => void;
+}) {
+  const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    setBusy(true);
+    setError("");
+    try {
+      await apiRequest("/api/guide", {
+        method: "PATCH",
+        body: JSON.stringify({
+          displayName: String(form.get("displayName") ?? ""),
+          bio: String(form.get("bio") ?? ""),
+        }),
+      });
+      onSaved();
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "No se pudieron enviar los cambios.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-5 grid gap-3 rounded-xl border border-crema-200 p-4">
+      <h4 className="font-semibold text-tinta-800">Actualiza tu perfil para una nueva revisión</h4>
+      <div>
+        <label className={labelClass} htmlFor="correction-display-name">
+          Nombre público
+        </label>
+        <input
+          id="correction-display-name"
+          name="displayName"
+          className={inputClass}
+          defaultValue={profile.displayName}
+          required
+          minLength={2}
+          maxLength={80}
+        />
+      </div>
+      <div>
+        <label className={labelClass} htmlFor="correction-bio">
+          Presentación
+        </label>
+        <textarea
+          id="correction-bio"
+          name="bio"
+          className={`${inputClass} min-h-24 resize-y`}
+          defaultValue={profile.bio}
+          required
+          minLength={20}
+          maxLength={600}
+        />
+      </div>
+      {error && (
+        <p role="alert" className="text-sm text-red-700">
+          {error}
+        </p>
+      )}
+      <button
+        disabled={busy}
+        className="w-fit rounded-full bg-terracota-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-terracota-700 disabled:opacity-60"
+      >
+        {busy ? "Enviando…" : "Enviar para revisión"}
+      </button>
+    </form>
+  );
+}
+
 function GuideDashboardPanel({
   data,
   email,
@@ -517,8 +594,8 @@ function GuideDashboardPanel({
           <p className="mt-2 flex items-start gap-2 text-sm leading-6 text-tinta-600">
             <WalletCards aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-oliva-700" />
             <span>
-              El viajero paga online el 15 % de gestión. El guía recibe el 85 % restante en efectivo
-              el día de la visita. No necesitas conectar Stripe para publicar.
+              El viajero paga online el 15 % de gestión. El resto se paga directamente al guía el
+              día de la visita. No necesitas conectar Stripe para publicar.
             </span>
           </p>
         </section>
@@ -538,6 +615,35 @@ function GuideDashboardPanel({
           </div>
           <p className="mt-4 font-semibold text-tinta-800">{data.profile?.displayName}</p>
           <p className="mt-2 text-sm leading-6 text-tinta-500">{data.profile?.bio}</p>
+          <div
+            className={`mt-4 rounded-xl p-4 text-sm leading-6 ${
+              data.profile?.verificationStatus === "approved"
+                ? "bg-oliva-50 text-oliva-800"
+                : data.profile?.verificationStatus === "rejected"
+                  ? "bg-red-50 text-red-800"
+                  : "bg-crema-50 text-tinta-700"
+            }`}
+            role="status"
+          >
+            <p className="font-semibold">
+              {data.profile?.verificationStatus === "approved"
+                ? "Perfil aprobado"
+                : data.profile?.verificationStatus === "rejected"
+                  ? "Necesitamos algunos cambios"
+                  : "Perfil pendiente de revisión"}
+            </p>
+            <p className="mt-1">
+              {data.profile?.verificationStatus === "approved"
+                ? "Ya puedes publicar tus visitas en el catálogo."
+                : data.profile?.verificationStatus === "rejected"
+                  ? data.profile.verificationNotes ||
+                    "Actualiza tu perfil siguiendo las indicaciones y contacta con el equipo para solicitar una nueva revisión."
+                  : "Revisaremos tu perfil antes de que tus visitas aparezcan en el catálogo."}
+            </p>
+          </div>
+          {data.profile?.verificationStatus === "rejected" && (
+            <ProfileCorrectionForm profile={data.profile} onSaved={onRefresh} />
+          )}
         </section>
       </div>
 
@@ -719,10 +825,19 @@ function GuideDashboardPanel({
             <button
               name="status"
               value="published"
-              disabled={visitMutation.isPending}
+              disabled={visitMutation.isPending || data.profile?.verificationStatus !== "approved"}
               className="rounded-full bg-terracota-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-terracota-700 disabled:cursor-not-allowed disabled:opacity-50"
+              title={
+                data.profile?.verificationStatus !== "approved"
+                  ? "La publicación estará disponible cuando se apruebe tu perfil."
+                  : undefined
+              }
             >
-              {visitMutation.isPending ? "Guardando…" : "Publicar visita"}
+              {visitMutation.isPending
+                ? "Guardando…"
+                : data.profile?.verificationStatus === "approved"
+                  ? "Publicar visita"
+                  : "Pendiente de aprobación"}
             </button>
             {data.visit?.status === "published" && (
               <button

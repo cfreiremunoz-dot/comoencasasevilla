@@ -18,7 +18,7 @@ export async function getGuideContext(request: Request): Promise<GuideContext | 
   const { data: profile, error: profileError } = await supabaseAdmin
     .from("guide_profiles")
     .select(
-      "id,user_id,display_name,bio,created_at,updated_at,stripe_account_id,stripe_charges_enabled,stripe_details_submitted,stripe_payouts_enabled",
+      "id,user_id,display_name,bio,created_at,updated_at,stripe_account_id,stripe_charges_enabled,stripe_details_submitted,stripe_payouts_enabled,verification_status,verification_notes,verified_at,verified_by",
     )
     .eq("user_id", data.user.id)
     .maybeSingle();
@@ -43,6 +43,34 @@ export function getRequestOrigin(request: Request): string {
 }
 
 export function isGuideContext(value: GuideContext | Response): value is GuideContext {
+  return !(value instanceof Response);
+}
+
+export async function getAdminUser(request: Request): Promise<User | Response> {
+  const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+  if (!token) return Response.json({ error: "Inicia sesión para continuar." }, { status: 401 });
+
+  const { data, error } = await supabaseAdmin.auth.getUser(token);
+  if (error || !data.user) {
+    return Response.json({ error: "La sesión ha caducado. Vuelve a entrar." }, { status: 401 });
+  }
+
+  const { data: isAdmin, error: roleError } = await supabaseAdmin.rpc("has_role", {
+    _user_id: data.user.id,
+    _role: "admin",
+  });
+  if (roleError) {
+    return Response.json(
+      { error: "No se pudo comprobar el permiso de administrador." },
+      { status: 500 },
+    );
+  }
+  if (!isAdmin)
+    return Response.json({ error: "No tienes permiso para esta acción." }, { status: 403 });
+  return data.user;
+}
+
+export function isAdminUser(value: User | Response): value is User {
   return !(value instanceof Response);
 }
 
