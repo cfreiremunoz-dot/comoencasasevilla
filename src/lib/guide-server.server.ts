@@ -55,17 +55,19 @@ export async function getAdminUser(request: Request): Promise<User | Response> {
     return Response.json({ error: "La sesión ha caducado. Vuelve a entrar." }, { status: 401 });
   }
 
-  const { data: isAdmin, error: roleError } = await supabaseAdmin.rpc("has_role", {
-    _user_id: data.user.id,
-    _role: "admin",
-  });
+  const { data: adminRole, error: roleError } = await supabaseAdmin
+    .from("user_roles")
+    .select("user_id")
+    .eq("user_id", data.user.id)
+    .eq("role", "admin")
+    .maybeSingle();
   if (roleError) {
     return Response.json(
       { error: "No se pudo comprobar el permiso de administrador." },
       { status: 500 },
     );
   }
-  if (!isAdmin)
+  if (!adminRole)
     return Response.json({ error: "No tienes permiso para esta acción." }, { status: 403 });
   return data.user;
 }
