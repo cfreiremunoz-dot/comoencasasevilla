@@ -37,7 +37,6 @@ import { Route as RutasSlugRouteImport } from './routes/rutas.$slug'
 import { Route as VisitasSlugRouteImport } from './routes/visitas.$slug'
 import { Route as ApiBookingsCheckoutRouteImport } from './routes/api/bookings.checkout'
 import { Route as ApiBookingsConfirmRouteImport } from './routes/api/bookings.confirm'
-import { Route as ApiGuideConnectRouteImport } from './routes/api/guide.connect'
 import { Route as ApiGuideSlotsRouteImport } from './routes/api/guide.slots'
 import { Route as ApiGuideVisitRouteImport } from './routes/api/guide.visit'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
@@ -181,11 +180,6 @@ const ApiBookingsConfirmRoute = ApiBookingsConfirmRouteImport.update({
   path: '/api/bookings/confirm',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiGuideConnectRoute = ApiGuideConnectRouteImport.update({
-  id: '/connect',
-  path: '/connect',
-  getParentRoute: () => ApiGuideRoute,
-} as any)
 const ApiGuideSlotsRoute = ApiGuideSlotsRouteImport.update({
   id: '/slots',
   path: '/slots',
@@ -230,7 +224,6 @@ export interface FileRoutesByFullPath {
   '/rutas/': typeof RutasIndexRoute
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
-  '/api/guide/connect': typeof ApiGuideConnectRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
   '/api/guide/visit': typeof ApiGuideVisitRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -263,7 +256,6 @@ export interface FileRoutesByTo {
   '/rutas': typeof RutasIndexRoute
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
-  '/api/guide/connect': typeof ApiGuideConnectRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
   '/api/guide/visit': typeof ApiGuideVisitRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -298,7 +290,6 @@ export interface FileRoutesById {
   '/rutas/': typeof RutasIndexRoute
   '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
   '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
-  '/api/guide/connect': typeof ApiGuideConnectRoute
   '/api/guide/slots': typeof ApiGuideSlotsRoute
   '/api/guide/visit': typeof ApiGuideVisitRoute
   '/api/stripe/webhook': typeof ApiStripeWebhookRoute
@@ -333,7 +324,6 @@ export interface FileRouteTypes {
     | '/rutas/'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
-    | '/api/guide/connect'
     | '/api/guide/slots'
     | '/api/guide/visit'
     | '/api/stripe/webhook'
@@ -366,7 +356,6 @@ export interface FileRouteTypes {
     | '/rutas'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
-    | '/api/guide/connect'
     | '/api/guide/slots'
     | '/api/guide/visit'
     | '/api/stripe/webhook'
@@ -400,7 +389,6 @@ export interface FileRouteTypes {
     | '/rutas/'
     | '/api/bookings/checkout'
     | '/api/bookings/confirm'
-    | '/api/guide/connect'
     | '/api/guide/slots'
     | '/api/guide/visit'
     | '/api/stripe/webhook'
@@ -634,13 +622,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiBookingsConfirmRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/guide/connect': {
-      id: '/api/guide/connect'
-      path: '/connect'
-      fullPath: '/api/guide/connect'
-      preLoaderRoute: typeof ApiGuideConnectRouteImport
-      parentRoute: typeof ApiGuideRoute
-    }
     '/api/guide/slots': {
       id: '/api/guide/slots'
       path: '/slots'
@@ -687,13 +668,11 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ApiGuideRouteChildren {
-  ApiGuideConnectRoute: typeof ApiGuideConnectRoute
   ApiGuideSlotsRoute: typeof ApiGuideSlotsRoute
   ApiGuideVisitRoute: typeof ApiGuideVisitRoute
 }
 
 const ApiGuideRouteChildren: ApiGuideRouteChildren = {
-  ApiGuideConnectRoute: ApiGuideConnectRoute,
   ApiGuideSlotsRoute: ApiGuideSlotsRoute,
   ApiGuideVisitRoute: ApiGuideVisitRoute,
 }

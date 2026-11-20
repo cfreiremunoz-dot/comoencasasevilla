@@ -38,10 +38,4 @@ export type GuideDashboard = {
     status: "draft" | "published" | "paused";
   } | null;
   slots: Array<{ id: string; startsAt: string; capacity: number; active: boolean }>;
-  stripe: {
-    connected: boolean;
-    detailsSubmitted: boolean;
-    chargesEnabled: boolean;
-    transfersEnabled: boolean;
-  };
 };

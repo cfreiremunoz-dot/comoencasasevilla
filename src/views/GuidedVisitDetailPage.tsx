@@ -41,6 +41,8 @@ export function GuidedVisitDetailPage() {
   const selectedSlot = visit?.slots.find((slot) => slot.id === slotId);
   const availableSlots = visit?.slots ?? [];
   const total = visit ? visit.pricePerPersonCents * guestCount : 0;
+  const managementFee = Math.round((total * 15) / 100);
+  const cashDue = total - managementFee;
 
   function startCheckout() {
     if (!slotId || !acceptedTerms) return;
@@ -188,9 +190,19 @@ export function GuidedVisitDetailPage() {
                     </span>
                     <span>{money(total)}</span>
                   </div>
-                  <div className="mt-3 flex items-center justify-between border-t border-tinta-100 pt-3 font-semibold text-tinta-800">
-                    <span>Total</span>
-                    <span>{money(total)}</span>
+                  <div className="mt-3 grid gap-2 border-t border-tinta-100 pt-3 text-sm">
+                    <div className="flex items-center justify-between font-semibold text-tinta-800">
+                      <span>Pagas ahora · gestión (15 %)</span>
+                      <span>{money(managementFee)}</span>
+                    </div>
+                    <div className="flex items-center justify-between text-tinta-600">
+                      <span>En efectivo al guía · (85 %)</span>
+                      <span>{money(cashDue)}</span>
+                    </div>
+                    <div className="flex items-center justify-between border-t border-tinta-100 pt-2 font-medium text-tinta-700">
+                      <span>Precio total de la visita</span>
+                      <span>{money(total)}</span>
+                    </div>
                   </div>
                 </div>
                 <label className="flex items-start gap-3 text-xs leading-5 text-tinta-500">
@@ -227,12 +239,12 @@ export function GuidedVisitDetailPage() {
                     "Preparando pago…"
                   ) : (
                     <>
-                      <CalendarDays aria-hidden="true" className="size-4" /> Reservar y pagar
+                      <CalendarDays aria-hidden="true" className="size-4" /> Pagar señal del 15 %
                     </>
                   )}
                 </button>
-                <p className="text-center text-xs text-tinta-400">
-                  Sin cargos hasta confirmar el pago.
+                <p className="text-center text-xs leading-5 text-tinta-500">
+                  El 85 % restante se paga en efectivo directamente al guía el día de la visita.
                 </p>
               </div>
             ) : (

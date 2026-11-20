@@ -26,7 +26,7 @@ export const Route = createFileRoute("/api/guide/visit")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { getGuideContext, getStripeClient, isGuideContext, slugifyGuideTitle } =
+        const { getGuideContext, isGuideContext, slugifyGuideTitle } =
           await import("@/lib/guide-server.server");
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const context = await getGuideContext(request);
@@ -55,42 +55,6 @@ export const Route = createFileRoute("/api/guide/visit")({
         if (existingError)
           return Response.json({ error: "No se pudo guardar la visita." }, { status: 500 });
         const status = parsed.data.status ?? existing?.status ?? "draft";
-        if (status === "published") {
-          const { data: connection, error: connectionError } = await supabaseAdmin
-            .from("stripe_connected_accounts")
-            .select("stripe_account_id")
-            .eq("guide_id", context.profile.id)
-            .maybeSingle();
-          if (connectionError)
-            return Response.json(
-              { error: "No se pudo comprobar la cuenta de cobro." },
-              { status: 500 },
-            );
-          const stripe = getStripeClient();
-          if (!stripe || !connection?.stripe_account_id)
-            return Response.json(
-              { error: "Conecta Stripe y completa la verificación antes de publicar." },
-              { status: 409 },
-            );
-          try {
-            const account = await stripe.accounts.retrieve(connection.stripe_account_id);
-            if (
-              !account.charges_enabled ||
-              !account.payouts_enabled ||
-              !account.details_submitted
-            ) {
-              return Response.json(
-                { error: "Completa la verificación de Stripe antes de publicar." },
-                { status: 409 },
-              );
-            }
-          } catch {
-            return Response.json(
-              { error: "No se pudo verificar la cuenta de cobro." },
-              { status: 503 },
-            );
-          }
-        }
 
         const values = {
           title: parsed.data.title,

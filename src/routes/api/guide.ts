@@ -10,75 +10,26 @@ export const Route = createFileRoute("/api/guide")({
   server: {
     handlers: {
       GET: async ({ request }) => {
-        const { getGuideContext, getStripeClient, isGuideContext } =
-          await import("@/lib/guide-server.server");
+        const { getGuideContext, isGuideContext } = await import("@/lib/guide-server.server");
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const context = await getGuideContext(request);
         if (!isGuideContext(context)) return context;
 
         if (!context.profile) {
-          return Response.json({
-            profile: null,
-            visit: null,
-            slots: [],
-            stripe: {
-              connected: false,
-              detailsSubmitted: false,
-              chargesEnabled: false,
-              transfersEnabled: false,
-            },
-          });
+          return Response.json({ profile: null, visit: null, slots: [] });
         }
 
-        const [{ data: visit, error: visitError }, { data: connection, error: connectionError }] =
-          await Promise.all([
-            supabaseAdmin
-              .from("guided_visits")
-              .select(
-                "id,slug,title,summary,description,category,neighborhood,meeting_point,duration_minutes,price_per_person_cents,image_url,status",
-              )
-              .eq("guide_id", context.profile.id)
-              .maybeSingle(),
-            supabaseAdmin
-              .from("stripe_connected_accounts")
-              .select("stripe_account_id,details_submitted,transfers_enabled")
-              .eq("guide_id", context.profile.id)
-              .maybeSingle(),
-          ]);
-        if (visitError || connectionError)
+        const { data: visit, error: visitError } = await supabaseAdmin
+          .from("guided_visits")
+          .select(
+            "id,slug,title,summary,description,category,neighborhood,meeting_point,duration_minutes,price_per_person_cents,image_url,status",
+          )
+          .eq("guide_id", context.profile.id)
+          .maybeSingle();
+        if (visitError)
           return Response.json({ error: "No se pudo cargar el panel de guía." }, { status: 500 });
 
         const { safeImageUrl } = await import("@/lib/guide-server.server");
-        let stripeStatus = {
-          connected: Boolean(connection),
-          detailsSubmitted: connection?.details_submitted ?? false,
-          chargesEnabled: false,
-          transfersEnabled: connection?.transfers_enabled ?? false,
-        };
-        const stripe = getStripeClient();
-        if (stripe && connection?.stripe_account_id) {
-          try {
-            const account = await stripe.accounts.retrieve(connection.stripe_account_id);
-            const detailsSubmitted = account.details_submitted;
-            const transfersEnabled = account.capabilities?.transfers === "active";
-            stripeStatus = {
-              connected: true,
-              detailsSubmitted,
-              chargesEnabled: account.charges_enabled,
-              transfersEnabled,
-            };
-            await supabaseAdmin
-              .from("stripe_connected_accounts")
-              .update({
-                details_submitted: detailsSubmitted,
-                transfers_enabled: transfersEnabled,
-                updated_at: new Date().toISOString(),
-              })
-              .eq("guide_id", context.profile.id);
-          } catch {
-            stripeStatus = { ...stripeStatus, connected: true };
-          }
-        }
 
         const { data: slots, error: slotsError } = visit
           ? await supabaseAdmin
@@ -119,7 +70,6 @@ export const Route = createFileRoute("/api/guide")({
               capacity: slot.capacity,
               active: slot.active,
             })),
-            stripe: stripeStatus,
           },
           { headers: { "Cache-Control": "private, no-store" } },
         );

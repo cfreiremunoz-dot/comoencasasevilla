@@ -16,19 +16,48 @@ export const Route = createFileRoute("/api/bookings/confirm")({
           const bookingId = session.metadata?.["booking_id"];
           if (!bookingId) return Response.json({ status: "invalid" }, { status: 404 });
           const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+          const { data: booking, error: bookingError } = await supabaseAdmin
+            .from("visit_bookings")
+            .select("id,status,total_amount_cents,guest_count,slot_id,stripe_session_id")
+            .eq("id", bookingId)
+            .eq("stripe_session_id", session.id)
+            .maybeSingle();
+          if (bookingError || !booking)
+            return Response.json({ status: "invalid" }, { status: 404 });
+
           if (session.payment_status === "paid") {
+            const isCurrentPaymentModel =
+              session.metadata?.["payment_model"] === "management_fee_15_cash_85";
+            const managementFeeCents = Math.round((booking.total_amount_cents * 15) / 100);
+            const cashDueCents = booking.total_amount_cents - managementFeeCents;
+            if (
+              isCurrentPaymentModel &&
+              (session.amount_total !== managementFeeCents ||
+                session.metadata?.["total_amount_cents"] !== String(booking.total_amount_cents) ||
+                session.metadata?.["cash_due_cents"] !== String(cashDueCents))
+            )
+              return Response.json({ status: "invalid" }, { status: 409 });
+
             const paymentIntentId =
               typeof session.payment_intent === "string"
                 ? session.payment_intent
                 : (session.payment_intent?.id ?? null);
-            await supabaseAdmin
+            const { error: updateError } = await supabaseAdmin
               .from("visit_bookings")
               .update({ status: "paid", stripe_payment_intent_id: paymentIntentId })
               .eq("id", bookingId)
               .eq("stripe_session_id", session.id)
               .eq("status", "pending_payment");
+            if (updateError) return Response.json({ status: "unavailable" }, { status: 503 });
             return Response.json(
-              { status: "paid" },
+              {
+                status: "paid",
+                paymentModel: isCurrentPaymentModel ? "management_fee_15_cash_85" : "legacy",
+                totalAmountCents: booking.total_amount_cents,
+                paidOnlineCents: session.amount_total ?? booking.total_amount_cents,
+                cashDueCents: isCurrentPaymentModel ? cashDueCents : 0,
+                guestCount: booking.guest_count,
+              },
               { headers: { "Cache-Control": "private, no-store" } },
             );
           }

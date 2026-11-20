@@ -54,22 +54,65 @@ export const Route = createFileRoute("/api/bookings/checkout")({
         const hold = holds[0];
         const { data: existingBooking, error: bookingError } = await supabaseAdmin
           .from("visit_bookings")
-          .select("stripe_session_id")
+          .select("stripe_session_id,status,total_amount_cents,platform_fee_cents")
           .eq("id", hold.booking_id)
           .maybeSingle();
-        if (bookingError)
+        if (bookingError || !existingBooking)
           return Response.json({ error: "No se pudo preparar el pago." }, { status: 500 });
-        if (existingBooking?.stripe_session_id) {
+        if (existingBooking.status === "paid")
+          return Response.json({ error: "Esta reserva ya está pagada." }, { status: 409 });
+        if (existingBooking.status !== "pending_payment")
+          return Response.json(
+            { error: "La reserva ha caducado. Elige la fecha de nuevo." },
+            { status: 409 },
+          );
+
+        const managementFeeCents = Math.round((existingBooking.total_amount_cents * 15) / 100);
+        const cashDueCents = existingBooking.total_amount_cents - managementFeeCents;
+        if (existingBooking.platform_fee_cents !== managementFeeCents) {
+          const { error: feeUpdateError } = await supabaseAdmin
+            .from("visit_bookings")
+            .update({ platform_fee_cents: managementFeeCents })
+            .eq("id", hold.booking_id)
+            .eq("status", "pending_payment");
+          if (feeUpdateError)
+            return Response.json(
+              { error: "No se pudo preparar el importe de la reserva." },
+              { status: 500 },
+            );
+        }
+
+        if (existingBooking.stripe_session_id) {
           try {
             const existingSession = await stripe.checkout.sessions.retrieve(
               existingBooking.stripe_session_id,
             );
-            if (existingSession.status === "open" && existingSession.url)
+            const isCurrentPaymentModel =
+              existingSession.metadata?.["payment_model"] === "management_fee_15_cash_85" &&
+              existingSession.amount_total === managementFeeCents;
+            if (existingSession.status === "open" && existingSession.url && isCurrentPaymentModel)
               return Response.json({ checkoutUrl: existingSession.url });
-            return Response.json(
-              { error: "Este enlace de pago ya caducó. Elige la fecha de nuevo." },
-              { status: 409 },
-            );
+            if (existingSession.payment_status === "paid") {
+              const paymentIntentId =
+                typeof existingSession.payment_intent === "string"
+                  ? existingSession.payment_intent
+                  : (existingSession.payment_intent?.id ?? null);
+              await supabaseAdmin
+                .from("visit_bookings")
+                .update({ status: "paid", stripe_payment_intent_id: paymentIntentId })
+                .eq("id", hold.booking_id)
+                .eq("stripe_session_id", existingSession.id)
+                .eq("status", "pending_payment");
+              return Response.json({
+                checkoutUrl: `${getRequestOrigin(request)}/reserva/resultado?session_id=${encodeURIComponent(existingSession.id)}`,
+              });
+            }
+            if (existingSession.status === "complete")
+              return Response.json({
+                checkoutUrl: `${getRequestOrigin(request)}/reserva/resultado?session_id=${encodeURIComponent(existingSession.id)}`,
+              });
+            if (existingSession.status === "open")
+              await stripe.checkout.sessions.expire(existingSession.id);
           } catch {
             return Response.json(
               { error: "No se pudo recuperar el enlace de pago." },
@@ -85,48 +128,14 @@ export const Route = createFileRoute("/api/bookings/checkout")({
           .maybeSingle();
         if (slotError || !slot || !slot.active || new Date(slot.starts_at).getTime() <= Date.now())
           return Response.json({ error: "Esa fecha ya no está disponible." }, { status: 409 });
-        const [{ data: visit, error: visitError }, { data: reservedGuide, error: guideError }] =
-          await Promise.all([
-            supabaseAdmin
-              .from("guided_visits")
-              .select("id,slug,title,summary,price_per_person_cents,status,guide_id")
-              .eq("id", slot.visit_id)
-              .eq("status", "published")
-              .maybeSingle(),
-            supabaseAdmin
-              .from("guided_visits")
-              .select("guide_id")
-              .eq("id", slot.visit_id)
-              .maybeSingle(),
-          ]);
-        if (visitError || guideError || !visit || !reservedGuide)
-          return Response.json({ error: "No se pudo cargar la visita." }, { status: 500 });
-        const { data: connection, error: connectionError } = await supabaseAdmin
-          .from("stripe_connected_accounts")
-          .select("stripe_account_id")
-          .eq("guide_id", reservedGuide.guide_id)
+        const { data: visit, error: visitError } = await supabaseAdmin
+          .from("guided_visits")
+          .select("id,slug,title,summary,price_per_person_cents,status")
+          .eq("id", slot.visit_id)
+          .eq("status", "published")
           .maybeSingle();
-        if (connectionError || !connection?.stripe_account_id)
-          return Response.json(
-            { error: "La cuenta de cobro de esta visita no está disponible." },
-            { status: 503 },
-          );
-
-        let account;
-        try {
-          account = await stripe.accounts.retrieve(connection.stripe_account_id);
-        } catch {
-          return Response.json(
-            { error: "La cuenta de cobro de esta visita no está disponible." },
-            { status: 503 },
-          );
-        }
-        if (!account.charges_enabled || !account.payouts_enabled || !account.details_submitted) {
-          return Response.json(
-            { error: "La cuenta de cobro de esta visita aún no está verificada." },
-            { status: 503 },
-          );
-        }
+        if (visitError || !visit)
+          return Response.json({ error: "No se pudo cargar la visita." }, { status: 500 });
 
         const expiresAt = Math.floor(Date.now() / 1000) + 31 * 60;
         if (new Date(hold.hold_expires_at).getTime() <= (expiresAt + 30) * 1000) {
@@ -147,28 +156,27 @@ export const Route = createFileRoute("/api/bookings/checkout")({
                   quantity: 1,
                   price_data: {
                     currency: "eur",
-                    unit_amount: hold.total_amount_cents,
+                    unit_amount: managementFeeCents,
                     product_data: {
-                      name: visit.title,
-                      description: `${parsed.data.guestCount} ${parsed.data.guestCount === 1 ? "persona" : "personas"} · ${visit.summary}`,
+                      name: `Señal de gestión (15 %) · ${visit.title}`,
+                      description: `${parsed.data.guestCount} ${parsed.data.guestCount === 1 ? "persona" : "personas"}. Señal online: ${new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(managementFeeCents / 100)}. El 85 % restante (${new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" }).format(cashDueCents / 100)}) se paga en efectivo directamente al guía el día de la visita.`,
                     },
                   },
                 },
               ],
-              payment_intent_data: {
-                application_fee_amount: hold.platform_fee_cents,
-                transfer_data: { destination: connection.stripe_account_id },
-                metadata: { booking_id: hold.booking_id, slot_id: slot.id },
-              },
               metadata: {
                 booking_id: hold.booking_id,
                 slot_id: slot.id,
                 guest_count: String(parsed.data.guestCount),
+                payment_model: "management_fee_15_cash_85",
+                total_amount_cents: String(existingBooking.total_amount_cents),
+                management_fee_cents: String(managementFeeCents),
+                cash_due_cents: String(cashDueCents),
               },
               success_url: `${origin}/reserva/resultado?session_id={CHECKOUT_SESSION_ID}`,
               cancel_url: `${origin}/visitas/${encodeURIComponent(visit.slug)}?cancelled=1`,
             },
-            { idempotencyKey: `visit-checkout-${hold.booking_id}` },
+            { idempotencyKey: `visit-checkout-15pct-${hold.booking_id}` },
           );
           if (!session.url)
             return Response.json(

@@ -57,17 +57,6 @@ export const Route = createFileRoute("/api/stripe/webhook")({
                 .eq("status", "pending_payment");
               if (error) throw error;
             }
-          } else if (event.type === "account.updated") {
-            const account = event.data.object as Stripe.Account;
-            const { error } = await supabaseAdmin
-              .from("stripe_connected_accounts")
-              .update({
-                details_submitted: account.details_submitted,
-                transfers_enabled: account.capabilities?.transfers === "active",
-                updated_at: new Date().toISOString(),
-              })
-              .eq("stripe_account_id", account.id);
-            if (error) throw error;
           }
 
           const { error: eventError } = await supabaseAdmin

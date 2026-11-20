@@ -7,7 +7,6 @@ import {
   Clock3,
   LogOut,
   Plus,
-  ShieldCheck,
   WalletCards,
 } from "lucide-react";
 import { Link } from "@/lib/router-compat";
@@ -444,12 +443,6 @@ function GuideDashboardPanel({
 }) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const connectMutation = useMutation({
-    mutationFn: () =>
-      apiRequest<{ url: string }>("/api/guide/connect", { method: "POST", body: "{}" }),
-    onSuccess: ({ url }) => window.location.assign(url),
-    onError: (cause) => setError(cause.message),
-  });
   const visitMutation = useMutation({
     mutationFn: (body: Record<string, unknown>) =>
       apiRequest("/api/guide/visit", { method: "POST", body: JSON.stringify(body) }),
@@ -518,53 +511,15 @@ function GuideDashboardPanel({
     <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
       <div className="grid gap-6">
         <section className="card-surface p-5 sm:p-6" aria-labelledby="guide-payout-title">
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <h3
-                id="guide-payout-title"
-                className="font-serif text-xl font-semibold text-tinta-800"
-              >
-                Cobros seguros
-              </h3>
-              <p className="mt-1 text-sm text-tinta-500">
-                Conecta tu cuenta para recibir pagos por tus visitas.
-              </p>
-            </div>
-            <span
-              className={`rounded-full px-3 py-1 text-xs font-semibold ${data.stripe.chargesEnabled && data.stripe.transfersEnabled ? "bg-oliva-100 text-oliva-800" : "bg-albero-100 text-albero-800"}`}
-            >
-              {data.stripe.chargesEnabled && data.stripe.transfersEnabled
-                ? "Activa"
-                : data.stripe.connected
-                  ? "Pendiente"
-                  : "Sin conectar"}
+          <h3 id="guide-payout-title" className="font-serif text-xl font-semibold text-tinta-800">
+            Cobro de las visitas
+          </h3>
+          <p className="mt-2 flex items-start gap-2 text-sm leading-6 text-tinta-600">
+            <WalletCards aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-oliva-700" />
+            <span>
+              El viajero paga online el 15 % de gestión. El guía recibe el 85 % restante en efectivo
+              el día de la visita. No necesitas conectar Stripe para publicar.
             </span>
-          </div>
-          <div className="mt-4 grid gap-2 text-sm text-tinta-600">
-            <p className="flex items-center gap-2">
-              <ShieldCheck aria-hidden="true" className="size-4 text-oliva-700" /> Perfil de cobro:{" "}
-              {data.stripe.detailsSubmitted ? "verificado" : "por completar"}
-            </p>
-            <p className="flex items-center gap-2">
-              <WalletCards aria-hidden="true" className="size-4 text-oliva-700" /> Transferencias:{" "}
-              {data.stripe.transfersEnabled ? "activas" : "pendientes"}
-            </p>
-          </div>
-          <button
-            onClick={() => connectMutation.mutate()}
-            disabled={connectMutation.isPending}
-            className="mt-5 inline-flex items-center gap-2 rounded-full bg-tinta-800 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-tinta-900 disabled:opacity-60"
-          >
-            {connectMutation.isPending
-              ? "Abriendo Stripe…"
-              : data.stripe.connected
-                ? "Continuar configuración"
-                : "Conectar con Stripe"}{" "}
-            <ArrowUpRight aria-hidden="true" className="size-4" />
-          </button>
-          <p className="mt-3 text-xs leading-5 text-tinta-400">
-            Stripe verifica tu identidad y administra tus datos bancarios. No guardamos información
-            de tarjeta.
           </p>
         </section>
 
@@ -764,11 +719,7 @@ function GuideDashboardPanel({
             <button
               name="status"
               value="published"
-              disabled={
-                visitMutation.isPending ||
-                !data.stripe.chargesEnabled ||
-                !data.stripe.transfersEnabled
-              }
+              disabled={visitMutation.isPending}
               className="rounded-full bg-terracota-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-terracota-700 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {visitMutation.isPending ? "Guardando…" : "Publicar visita"}
@@ -784,11 +735,6 @@ function GuideDashboardPanel({
               </button>
             )}
           </div>
-          {(!data.stripe.chargesEnabled || !data.stripe.transfersEnabled) && (
-            <p className="text-xs leading-5 text-tinta-400">
-              Para publicar, conecta Stripe y completa la verificación de cobros.
-            </p>
-          )}
           {data.visit?.status === "published" && (
             <Link
               to={`/visitas/${data.visit.slug}`}
