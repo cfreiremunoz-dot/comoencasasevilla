@@ -38,6 +38,7 @@ export function GuidePortalPage() {
   const [mode, setMode] = useState<"in" | "up">("up");
   const [authError, setAuthError] = useState("");
   const [authMessage, setAuthMessage] = useState("");
+  const [confirmationEmail, setConfirmationEmail] = useState("");
   const [pending, setPending] = useState("");
   const sessionQuery = useQuery({
     queryKey: ["auth-session"],
@@ -74,11 +75,13 @@ export function GuidePortalPage() {
       const { data, error } = await supabase.auth.signInWithPassword({ email, password });
       setPending("");
       if (error) {
-        setAuthError(
-          error.message.toLowerCase().includes("email not confirmed")
-            ? "Confirma tu correo desde el enlace que te enviamos."
-            : "Correo o contraseña incorrectos.",
-        );
+        const emailNotConfirmed = error.message.toLowerCase().includes("email not confirmed");
+        if (emailNotConfirmed) {
+          setConfirmationEmail(email);
+          setAuthError("Tu correo todavía no está confirmado. Puedes solicitar otro enlace.");
+        } else {
+          setAuthError("Correo o contraseña incorrectos.");
+        }
         return;
       }
       queryClient.setQueryData(["auth-session"], data.session);
@@ -87,6 +90,7 @@ export function GuidePortalPage() {
 
     const displayName = String(formData.get("displayName") ?? "").trim();
     const bio = String(formData.get("bio") ?? "").trim();
+    setConfirmationEmail(email);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -108,10 +112,34 @@ export function GuidePortalPage() {
       queryClient.setQueryData(["auth-session"], data.session);
     } else {
       setAuthMessage(
-        "Te enviamos un enlace para confirmar tu correo. Al volver, podrás terminar el perfil y publicar tu visita.",
+        "Tu cuenta está pendiente de confirmación. Revisa tu bandeja de entrada y spam; si no aparece, puedes pedir que te enviemos otro enlace.",
       );
       setMode("in");
     }
+  }
+
+  async function resendConfirmation() {
+    if (!confirmationEmail) return;
+    setPending("resend");
+    setAuthError("");
+    setAuthMessage("");
+    const { error } = await supabase.auth.resend({
+      type: "signup",
+      email: confirmationEmail,
+      options: { emailRedirectTo: getAuthRedirectUrl() },
+    });
+    setPending("");
+    if (error) {
+      setAuthError(
+        error.message.toLowerCase().includes("rate")
+          ? "Has solicitado varios correos seguidos. Espera un momento antes de volver a intentarlo."
+          : "No se pudo reenviar el enlace. Comprueba el correo e inténtalo de nuevo más tarde.",
+      );
+      return;
+    }
+    setAuthMessage(
+      "Si esta cuenta necesita confirmación, enviaremos un nuevo enlace. Revisa también la carpeta de spam.",
+    );
   }
 
   async function signOut() {
@@ -232,6 +260,16 @@ export function GuidePortalPage() {
                   {authMessage}
                 </p>
               )}
+              {mode === "in" && confirmationEmail && (
+                <button
+                  type="button"
+                  onClick={() => void resendConfirmation()}
+                  disabled={Boolean(pending)}
+                  className="w-fit text-left text-sm font-semibold text-terracota-700 underline underline-offset-2 disabled:opacity-60"
+                >
+                  {pending === "resend" ? "Enviando enlace…" : "Reenviar correo de confirmación"}
+                </button>
+              )}
               {mode === "up" && (
                 <p className="text-xs leading-5 text-tinta-400">
                   Al crear una cuenta aceptas nuestro{" "}
@@ -246,7 +284,7 @@ export function GuidePortalPage() {
                 </p>
               )}
               <button
-                disabled={pending === "auth"}
+                disabled={Boolean(pending)}
                 className="rounded-full bg-terracota-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-terracota-700 disabled:opacity-60"
               >
                 {pending === "auth"
