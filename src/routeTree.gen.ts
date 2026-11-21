@@ -15,20 +15,34 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as ComunidadRouteImport } from './routes/comunidad'
 import { Route as ExploraRouteImport } from './routes/explora'
+import { Route as GuiaRouteImport } from './routes/guia'
 import { Route as PrivacidadRouteImport } from './routes/privacidad'
 import { Route as SobreRouteImport } from './routes/sobre'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as ApiGuideRouteImport } from './routes/api/guide'
 import { Route as ApiHandoffRouteImport } from './routes/api/handoff'
+import { Route as ApiVisitsRouteImport } from './routes/api/visits'
 import { Route as AsistenteIndexRouteImport } from './routes/asistente.index'
 import { Route as AsistenteThreadIdRouteImport } from './routes/asistente.$threadId'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as ExperienciasIndexRouteImport } from './routes/experiencias.index'
 import { Route as ExperienciasSlugRouteImport } from './routes/experiencias.$slug'
 import { Route as LugarSlugRouteImport } from './routes/lugar.$slug'
 import { Route as NoticiasIndexRouteImport } from './routes/noticias.index'
 import { Route as NoticiasArticleIdRouteImport } from './routes/noticias.$articleId'
+import { Route as ReservaResultadoRouteImport } from './routes/reserva.resultado'
 import { Route as RutasIndexRouteImport } from './routes/rutas.index'
 import { Route as RutasSlugRouteImport } from './routes/rutas.$slug'
+import { Route as VisitasSlugRouteImport } from './routes/visitas.$slug'
+import { Route as ApiAdminGuidesRouteImport } from './routes/api/admin.guides'
+import { Route as ApiBookingsCheckoutRouteImport } from './routes/api/bookings.checkout'
+import { Route as ApiBookingsConfirmRouteImport } from './routes/api/bookings.confirm'
+import { Route as ApiGuideMessagesRouteImport } from './routes/api/guide.messages'
+import { Route as ApiGuideSlotsRouteImport } from './routes/api/guide.slots'
+import { Route as ApiGuideVisitRouteImport } from './routes/api/guide.visit'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api/stripe.webhook'
+import { Route as ApiAdminGuidesMessagesRouteImport } from './routes/api/admin.guides.messages'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -59,6 +73,11 @@ const ExploraRoute = ExploraRouteImport.update({
   path: '/explora',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuiaRoute = GuiaRouteImport.update({
+  id: '/guia',
+  path: '/guia',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacidadRoute = PrivacidadRouteImport.update({
   id: '/privacidad',
   path: '/privacidad',
@@ -79,9 +98,19 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiGuideRoute = ApiGuideRouteImport.update({
+  id: '/api/guide',
+  path: '/api/guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiHandoffRoute = ApiHandoffRouteImport.update({
   id: '/api/handoff',
   path: '/api/handoff',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiVisitsRoute = ApiVisitsRouteImport.update({
+  id: '/api/visits',
+  path: '/api/visits',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AsistenteIndexRoute = AsistenteIndexRouteImport.update({
@@ -93,6 +122,11 @@ const AsistenteThreadIdRoute = AsistenteThreadIdRouteImport.update({
   id: '/asistente/$threadId',
   path: '/asistente/$threadId',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
 } as any)
 const ExperienciasIndexRoute = ExperienciasIndexRouteImport.update({
   id: '/experiencias/',
@@ -119,6 +153,11 @@ const NoticiasArticleIdRoute = NoticiasArticleIdRouteImport.update({
   path: '/noticias/$articleId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ReservaResultadoRoute = ReservaResultadoRouteImport.update({
+  id: '/reserva/resultado',
+  path: '/reserva/resultado',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RutasIndexRoute = RutasIndexRouteImport.update({
   id: '/rutas/',
   path: '/rutas/',
@@ -129,71 +168,158 @@ const RutasSlugRoute = RutasSlugRouteImport.update({
   path: '/rutas/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VisitasSlugRoute = VisitasSlugRouteImport.update({
+  id: '/visitas/$slug',
+  path: '/visitas/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminGuidesRoute = ApiAdminGuidesRouteImport.update({
+  id: '/api/admin/guides',
+  path: '/api/admin/guides',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookingsCheckoutRoute = ApiBookingsCheckoutRouteImport.update({
+  id: '/api/bookings/checkout',
+  path: '/api/bookings/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiBookingsConfirmRoute = ApiBookingsConfirmRouteImport.update({
+  id: '/api/bookings/confirm',
+  path: '/api/bookings/confirm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiGuideMessagesRoute = ApiGuideMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => ApiGuideRoute,
+} as any)
+const ApiGuideSlotsRoute = ApiGuideSlotsRouteImport.update({
+  id: '/slots',
+  path: '/slots',
+  getParentRoute: () => ApiGuideRoute,
+} as any)
+const ApiGuideVisitRoute = ApiGuideVisitRouteImport.update({
+  id: '/visit',
+  path: '/visit',
+  getParentRoute: () => ApiGuideRoute,
+} as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe/webhook',
+  path: '/api/stripe/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminGuidesMessagesRoute = ApiAdminGuidesMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => ApiAdminGuidesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/guia': typeof GuiaRoute
   '/privacidad': typeof PrivacidadRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/guide': typeof ApiGuideRouteWithChildren
   '/api/handoff': typeof ApiHandoffRoute
+  '/api/visits': typeof ApiVisitsRoute
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/noticias/$articleId': typeof NoticiasArticleIdRoute
+  '/reserva/resultado': typeof ReservaResultadoRoute
   '/rutas/$slug': typeof RutasSlugRoute
+  '/visitas/$slug': typeof VisitasSlugRoute
   '/asistente/': typeof AsistenteIndexRoute
   '/experiencias/': typeof ExperienciasIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRouteWithChildren
+  '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
+  '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
+  '/api/guide/messages': typeof ApiGuideMessagesRoute
+  '/api/guide/slots': typeof ApiGuideSlotsRoute
+  '/api/guide/visit': typeof ApiGuideVisitRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/guides/messages': typeof ApiAdminGuidesMessagesRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/guia': typeof GuiaRoute
   '/privacidad': typeof PrivacidadRoute
   '/sobre': typeof SobreRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/guide': typeof ApiGuideRouteWithChildren
   '/api/handoff': typeof ApiHandoffRoute
+  '/api/visits': typeof ApiVisitsRoute
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/noticias/$articleId': typeof NoticiasArticleIdRoute
+  '/reserva/resultado': typeof ReservaResultadoRoute
   '/rutas/$slug': typeof RutasSlugRoute
+  '/visitas/$slug': typeof VisitasSlugRoute
   '/asistente': typeof AsistenteIndexRoute
   '/experiencias': typeof ExperienciasIndexRoute
   '/noticias': typeof NoticiasIndexRoute
   '/rutas': typeof RutasIndexRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRouteWithChildren
+  '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
+  '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
+  '/api/guide/messages': typeof ApiGuideMessagesRoute
+  '/api/guide/slots': typeof ApiGuideSlotsRoute
+  '/api/guide/visit': typeof ApiGuideVisitRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/guides/messages': typeof ApiAdminGuidesMessagesRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/auth': typeof AuthRoute
+  '/auth': typeof AuthRouteWithChildren
   '/aviso-legal': typeof AvisoLegalRoute
   '/comunidad': typeof ComunidadRoute
   '/explora': typeof ExploraRoute
+  '/guia': typeof GuiaRoute
   '/privacidad': typeof PrivacidadRoute
   '/sobre': typeof SobreRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
+  '/api/guide': typeof ApiGuideRouteWithChildren
   '/api/handoff': typeof ApiHandoffRoute
+  '/api/visits': typeof ApiVisitsRoute
   '/asistente/$threadId': typeof AsistenteThreadIdRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/experiencias/$slug': typeof ExperienciasSlugRoute
   '/lugar/$slug': typeof LugarSlugRoute
   '/noticias/$articleId': typeof NoticiasArticleIdRoute
+  '/reserva/resultado': typeof ReservaResultadoRoute
   '/rutas/$slug': typeof RutasSlugRoute
+  '/visitas/$slug': typeof VisitasSlugRoute
   '/asistente/': typeof AsistenteIndexRoute
   '/experiencias/': typeof ExperienciasIndexRoute
   '/noticias/': typeof NoticiasIndexRoute
   '/rutas/': typeof RutasIndexRoute
+  '/api/admin/guides': typeof ApiAdminGuidesRouteWithChildren
+  '/api/bookings/checkout': typeof ApiBookingsCheckoutRoute
+  '/api/bookings/confirm': typeof ApiBookingsConfirmRoute
+  '/api/guide/messages': typeof ApiGuideMessagesRoute
+  '/api/guide/slots': typeof ApiGuideSlotsRoute
+  '/api/guide/visit': typeof ApiGuideVisitRoute
+  '/api/stripe/webhook': typeof ApiStripeWebhookRoute
+  '/api/admin/guides/messages': typeof ApiAdminGuidesMessagesRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -203,20 +329,34 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/comunidad'
     | '/explora'
+    | '/guia'
     | '/privacidad'
     | '/sobre'
     | '/admin'
     | '/api/chat'
+    | '/api/guide'
     | '/api/handoff'
+    | '/api/visits'
     | '/asistente/$threadId'
+    | '/auth/callback'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/noticias/$articleId'
+    | '/reserva/resultado'
     | '/rutas/$slug'
+    | '/visitas/$slug'
     | '/asistente/'
     | '/experiencias/'
     | '/noticias/'
     | '/rutas/'
+    | '/api/admin/guides'
+    | '/api/bookings/checkout'
+    | '/api/bookings/confirm'
+    | '/api/guide/messages'
+    | '/api/guide/slots'
+    | '/api/guide/visit'
+    | '/api/stripe/webhook'
+    | '/api/admin/guides/messages'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -224,20 +364,34 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/comunidad'
     | '/explora'
+    | '/guia'
     | '/privacidad'
     | '/sobre'
     | '/admin'
     | '/api/chat'
+    | '/api/guide'
     | '/api/handoff'
+    | '/api/visits'
     | '/asistente/$threadId'
+    | '/auth/callback'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/noticias/$articleId'
+    | '/reserva/resultado'
     | '/rutas/$slug'
+    | '/visitas/$slug'
     | '/asistente'
     | '/experiencias'
     | '/noticias'
     | '/rutas'
+    | '/api/admin/guides'
+    | '/api/bookings/checkout'
+    | '/api/bookings/confirm'
+    | '/api/guide/messages'
+    | '/api/guide/slots'
+    | '/api/guide/visit'
+    | '/api/stripe/webhook'
+    | '/api/admin/guides/messages'
   id:
     | '__root__'
     | '/'
@@ -246,42 +400,65 @@ export interface FileRouteTypes {
     | '/aviso-legal'
     | '/comunidad'
     | '/explora'
+    | '/guia'
     | '/privacidad'
     | '/sobre'
     | '/_authenticated/admin'
     | '/api/chat'
+    | '/api/guide'
     | '/api/handoff'
+    | '/api/visits'
     | '/asistente/$threadId'
+    | '/auth/callback'
     | '/experiencias/$slug'
     | '/lugar/$slug'
     | '/noticias/$articleId'
+    | '/reserva/resultado'
     | '/rutas/$slug'
+    | '/visitas/$slug'
     | '/asistente/'
     | '/experiencias/'
     | '/noticias/'
     | '/rutas/'
+    | '/api/admin/guides'
+    | '/api/bookings/checkout'
+    | '/api/bookings/confirm'
+    | '/api/guide/messages'
+    | '/api/guide/slots'
+    | '/api/guide/visit'
+    | '/api/stripe/webhook'
+    | '/api/admin/guides/messages'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AuthRoute: typeof AuthRoute
+  AuthRoute: typeof AuthRouteWithChildren
   AvisoLegalRoute: typeof AvisoLegalRoute
   ComunidadRoute: typeof ComunidadRoute
   ExploraRoute: typeof ExploraRoute
+  GuiaRoute: typeof GuiaRoute
   PrivacidadRoute: typeof PrivacidadRoute
   SobreRoute: typeof SobreRoute
   ApiChatRoute: typeof ApiChatRoute
+  ApiGuideRoute: typeof ApiGuideRouteWithChildren
   ApiHandoffRoute: typeof ApiHandoffRoute
+  ApiVisitsRoute: typeof ApiVisitsRoute
   AsistenteThreadIdRoute: typeof AsistenteThreadIdRoute
   ExperienciasSlugRoute: typeof ExperienciasSlugRoute
   LugarSlugRoute: typeof LugarSlugRoute
   NoticiasArticleIdRoute: typeof NoticiasArticleIdRoute
+  ReservaResultadoRoute: typeof ReservaResultadoRoute
   RutasSlugRoute: typeof RutasSlugRoute
+  VisitasSlugRoute: typeof VisitasSlugRoute
   AsistenteIndexRoute: typeof AsistenteIndexRoute
   ExperienciasIndexRoute: typeof ExperienciasIndexRoute
   NoticiasIndexRoute: typeof NoticiasIndexRoute
   RutasIndexRoute: typeof RutasIndexRoute
+  ApiAdminGuidesRoute: typeof ApiAdminGuidesRouteWithChildren
+  ApiBookingsCheckoutRoute: typeof ApiBookingsCheckoutRoute
+  ApiBookingsConfirmRoute: typeof ApiBookingsConfirmRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -328,6 +505,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExploraRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guia': {
+      id: '/guia'
+      path: '/guia'
+      fullPath: '/guia'
+      preLoaderRoute: typeof GuiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacidad': {
       id: '/privacidad'
       path: '/privacidad'
@@ -356,11 +540,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/guide': {
+      id: '/api/guide'
+      path: '/api/guide'
+      fullPath: '/api/guide'
+      preLoaderRoute: typeof ApiGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/handoff': {
       id: '/api/handoff'
       path: '/api/handoff'
       fullPath: '/api/handoff'
       preLoaderRoute: typeof ApiHandoffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/visits': {
+      id: '/api/visits'
+      path: '/api/visits'
+      fullPath: '/api/visits'
+      preLoaderRoute: typeof ApiVisitsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/asistente/': {
@@ -376,6 +574,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/asistente/$threadId'
       preLoaderRoute: typeof AsistenteThreadIdRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/experiencias/': {
       id: '/experiencias/'
@@ -412,6 +617,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NoticiasArticleIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reserva/resultado': {
+      id: '/reserva/resultado'
+      path: '/reserva/resultado'
+      fullPath: '/reserva/resultado'
+      preLoaderRoute: typeof ReservaResultadoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/rutas/': {
       id: '/rutas/'
       path: '/rutas'
@@ -425,6 +637,69 @@ declare module '@tanstack/react-router' {
       fullPath: '/rutas/$slug'
       preLoaderRoute: typeof RutasSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/visitas/$slug': {
+      id: '/visitas/$slug'
+      path: '/visitas/$slug'
+      fullPath: '/visitas/$slug'
+      preLoaderRoute: typeof VisitasSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/guides': {
+      id: '/api/admin/guides'
+      path: '/api/admin/guides'
+      fullPath: '/api/admin/guides'
+      preLoaderRoute: typeof ApiAdminGuidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bookings/checkout': {
+      id: '/api/bookings/checkout'
+      path: '/api/bookings/checkout'
+      fullPath: '/api/bookings/checkout'
+      preLoaderRoute: typeof ApiBookingsCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bookings/confirm': {
+      id: '/api/bookings/confirm'
+      path: '/api/bookings/confirm'
+      fullPath: '/api/bookings/confirm'
+      preLoaderRoute: typeof ApiBookingsConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/guide/messages': {
+      id: '/api/guide/messages'
+      path: '/messages'
+      fullPath: '/api/guide/messages'
+      preLoaderRoute: typeof ApiGuideMessagesRouteImport
+      parentRoute: typeof ApiGuideRoute
+    }
+    '/api/guide/slots': {
+      id: '/api/guide/slots'
+      path: '/slots'
+      fullPath: '/api/guide/slots'
+      preLoaderRoute: typeof ApiGuideSlotsRouteImport
+      parentRoute: typeof ApiGuideRoute
+    }
+    '/api/guide/visit': {
+      id: '/api/guide/visit'
+      path: '/visit'
+      fullPath: '/api/guide/visit'
+      preLoaderRoute: typeof ApiGuideVisitRouteImport
+      parentRoute: typeof ApiGuideRoute
+    }
+    '/api/stripe/webhook': {
+      id: '/api/stripe/webhook'
+      path: '/api/stripe/webhook'
+      fullPath: '/api/stripe/webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/guides/messages': {
+      id: '/api/admin/guides/messages'
+      path: '/messages'
+      fullPath: '/api/admin/guides/messages'
+      preLoaderRoute: typeof ApiAdminGuidesMessagesRouteImport
+      parentRoute: typeof ApiAdminGuidesRoute
     }
   }
 }
@@ -440,26 +715,73 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface AuthRouteChildren {
+  AuthCallbackRoute: typeof AuthCallbackRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthCallbackRoute: AuthCallbackRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface ApiGuideRouteChildren {
+  ApiGuideMessagesRoute: typeof ApiGuideMessagesRoute
+  ApiGuideSlotsRoute: typeof ApiGuideSlotsRoute
+  ApiGuideVisitRoute: typeof ApiGuideVisitRoute
+}
+
+const ApiGuideRouteChildren: ApiGuideRouteChildren = {
+  ApiGuideMessagesRoute: ApiGuideMessagesRoute,
+  ApiGuideSlotsRoute: ApiGuideSlotsRoute,
+  ApiGuideVisitRoute: ApiGuideVisitRoute,
+}
+
+const ApiGuideRouteWithChildren = ApiGuideRoute._addFileChildren(
+  ApiGuideRouteChildren,
+)
+
+interface ApiAdminGuidesRouteChildren {
+  ApiAdminGuidesMessagesRoute: typeof ApiAdminGuidesMessagesRoute
+}
+
+const ApiAdminGuidesRouteChildren: ApiAdminGuidesRouteChildren = {
+  ApiAdminGuidesMessagesRoute: ApiAdminGuidesMessagesRoute,
+}
+
+const ApiAdminGuidesRouteWithChildren = ApiAdminGuidesRoute._addFileChildren(
+  ApiAdminGuidesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AuthRoute: AuthRoute,
+  AuthRoute: AuthRouteWithChildren,
   AvisoLegalRoute: AvisoLegalRoute,
   ComunidadRoute: ComunidadRoute,
   ExploraRoute: ExploraRoute,
+  GuiaRoute: GuiaRoute,
   PrivacidadRoute: PrivacidadRoute,
   SobreRoute: SobreRoute,
   ApiChatRoute: ApiChatRoute,
+  ApiGuideRoute: ApiGuideRouteWithChildren,
   ApiHandoffRoute: ApiHandoffRoute,
+  ApiVisitsRoute: ApiVisitsRoute,
   AsistenteThreadIdRoute: AsistenteThreadIdRoute,
   ExperienciasSlugRoute: ExperienciasSlugRoute,
   LugarSlugRoute: LugarSlugRoute,
   NoticiasArticleIdRoute: NoticiasArticleIdRoute,
+  ReservaResultadoRoute: ReservaResultadoRoute,
   RutasSlugRoute: RutasSlugRoute,
+  VisitasSlugRoute: VisitasSlugRoute,
   AsistenteIndexRoute: AsistenteIndexRoute,
   ExperienciasIndexRoute: ExperienciasIndexRoute,
   NoticiasIndexRoute: NoticiasIndexRoute,
   RutasIndexRoute: RutasIndexRoute,
+  ApiAdminGuidesRoute: ApiAdminGuidesRouteWithChildren,
+  ApiBookingsCheckoutRoute: ApiBookingsCheckoutRoute,
+  ApiBookingsConfirmRoute: ApiBookingsConfirmRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

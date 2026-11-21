@@ -1,12 +1,14 @@
-import { useParams, Link, Navigate } from '@/lib/router-compat';
-import { ArrowLeft, Clock, Check } from 'lucide-react';
-import { useExperiences } from '@/lib/editable-content';
-import { DemoBadge } from '@/components/DemoBadge';
+import { useParams, Link, Navigate } from "@/lib/router-compat";
+import { ArrowLeft, Clock, Check } from "lucide-react";
+import { useExperiences } from "@/lib/editable-content";
+import { getPlaceById } from "@/data/content";
+import { DemoBadge } from "@/components/DemoBadge";
+import { EditorialSources } from "@/components/EditorialSources";
 
 const typeLabels: Record<string, string> = {
-  gastronomica: 'Gastronómica',
-  cultural: 'Cultural',
-  cotidiana: 'Cotidiana',
+  gastronomica: "Gastronómica",
+  cultural: "Cultural",
+  cotidiana: "Cotidiana",
 };
 
 export function ExperienceDetailPage() {
@@ -57,9 +59,7 @@ export function ExperienceDetailPage() {
 
             <div className="mt-8">
               <h2 className="font-serif text-2xl font-semibold text-tinta-800">De qué se trata</h2>
-              <p className="mt-4 text-base leading-relaxed text-tinta-600">
-                {exp.description}
-              </p>
+              <p className="mt-4 text-base leading-relaxed text-tinta-600">{exp.description}</p>
             </div>
 
             <div className="mt-10">
@@ -75,6 +75,56 @@ export function ExperienceDetailPage() {
                 ))}
               </ul>
             </div>
+            {exp.locations && exp.locations.length > 0 && (
+              <section className="mt-10" aria-labelledby="experience-locations-title">
+                <h2
+                  id="experience-locations-title"
+                  className="font-serif text-2xl font-semibold text-tinta-800"
+                >
+                  Lugares para situar la experiencia
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-tinta-600">
+                  Son referencias concretas para organizar el recorrido, no una garantía de
+                  apertura, acceso o disponibilidad. Comprueba las condiciones actuales antes de ir.
+                </p>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  {exp.locations.map((location) => {
+                    const place = getPlaceById(location.placeId);
+                    if (!place) return null;
+
+                    return (
+                      <Link
+                        key={location.placeId}
+                        to={`/lugar/${place.slug}`}
+                        className="group overflow-hidden rounded-2xl border border-tinta-100 bg-white transition-colors hover:border-terracota-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracota-600"
+                      >
+                        <img
+                          src={place.image}
+                          alt={place.imageAlt}
+                          loading="lazy"
+                          className="h-40 w-full object-cover"
+                        />
+                        <div className="p-4">
+                          <h3 className="font-serif text-lg font-semibold text-tinta-800 group-hover:text-terracota-700">
+                            {place.name}
+                          </h3>
+                          <p className="mt-2 text-sm leading-relaxed text-tinta-600">
+                            {place.excerpt}
+                          </p>
+                          <p className="mt-3 text-sm leading-relaxed text-tinta-500">
+                            {location.note}
+                          </p>
+                          <span className="mt-3 inline-block text-xs font-semibold text-terracota-700">
+                            Ver ficha del lugar
+                          </span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </section>
+            )}
+            <EditorialSources sources={exp.sources ?? []} />
           </div>
 
           <aside className="lg:sticky lg:top-24 lg:self-start space-y-6">

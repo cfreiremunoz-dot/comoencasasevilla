@@ -1,15 +1,16 @@
-import { useState, useEffect } from 'react';
-import { Link, NavLink, useLocation } from '@/lib/router-compat';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { Link, NavLink, useLocation } from "@/lib/router-compat";
+import { Menu, X } from "lucide-react";
 
 const navItems = [
-  { to: '/explora', label: 'Explora' },
-  { to: '/rutas', label: 'Rutas' },
-  { to: '/experiencias', label: 'Experiencias' },
-  { to: '/comunidad', label: 'Comunidad' },
-  { to: '/noticias', label: 'Noticias' },
-  { to: '/asistente', label: 'Asistente' },
-  { to: '/sobre', label: 'Sobre el proyecto' },
+  { to: "/explora", label: "Explora" },
+  { to: "/rutas", label: "Rutas" },
+  { to: "/experiencias", label: "Experiencias" },
+  { to: "/guia", label: "Guías" },
+  { to: "/comunidad", label: "Comunidad" },
+  { to: "/noticias", label: "Noticias" },
+  { to: "/asistente", label: "Asistente" },
+  { to: "/sobre", label: "Sobre el proyecto" },
 ];
 
 export function Header() {
@@ -20,8 +21,8 @@ export function Header() {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -29,20 +30,26 @@ export function Header() {
   }, [location.pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-crema-100/95 backdrop-blur-md shadow-sm shadow-tinta-900/5'
-          : 'bg-crema-100/[0.88] backdrop-blur-md shadow-sm shadow-tinta-900/5'
+          ? "bg-crema-100/95 backdrop-blur-md shadow-sm shadow-tinta-900/5"
+          : "bg-crema-100/[0.88] backdrop-blur-md shadow-sm shadow-tinta-900/5"
       }`}
     >
       <div className="container-page flex h-16 items-center justify-between gap-4 sm:h-20">
-        <Link to="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-80" aria-label="Inicio">
+        <Link
+          to="/"
+          className="flex items-center gap-2.5 transition-opacity hover:opacity-80"
+          aria-label="Inicio"
+        >
           <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full sm:h-14 sm:w-14">
             <img
               src="/logo-comoencasa-circle.png"
@@ -68,8 +75,8 @@ export function Header() {
               className={({ isActive }) =>
                 `rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 ${
                   isActive
-                    ? 'bg-terracota-50 text-terracota-700'
-                    : 'text-tinta-600 hover:bg-crema-200 hover:text-tinta-800'
+                    ? "bg-terracota-50 text-terracota-700"
+                    : "text-tinta-600 hover:bg-crema-200 hover:text-tinta-800"
                 }`
               }
             >
@@ -81,7 +88,7 @@ export function Header() {
         <button
           className="flex h-10 w-10 items-center justify-center rounded-full text-tinta-700 transition-colors hover:bg-crema-200 xl:hidden"
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+          aria-label={open ? "Cerrar menú" : "Abrir menú"}
         >
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -98,8 +105,8 @@ export function Header() {
                 className={({ isActive }) =>
                   `rounded-xl px-4 py-3.5 text-lg font-medium transition-colors ${
                     isActive
-                      ? 'bg-crema-50 text-terracota-700'
-                      : 'text-crema-50 hover:bg-terracota-700'
+                      ? "bg-crema-50 text-terracota-700"
+                      : "text-crema-50 hover:bg-terracota-700"
                   }`
                 }
               >

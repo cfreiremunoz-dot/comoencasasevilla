@@ -62,7 +62,7 @@ export async function uploadPhoto(file: File): Promise<string> {
 export const SITE_TEXT_DEFAULTS = {
   hero_title_1: 'Sevilla no solo se visita.',
   hero_title_2: 'Se vive.',
-  hero_subtitle: 'Descubre la ciudad desde dentro, con mirada local.',
+  hero_subtitle: 'Bares de barrio, alojamientos independientes y rincones recomendados con mirada local.',
 } as const;
 export type SiteTextKey = keyof typeof SITE_TEXT_DEFAULTS;
 

@@ -22,11 +22,11 @@ export interface PlaceInfo {
 export const placeInfo: Record<string, PlaceInfo> = {
   'p-triana': { address: 'Barrio de Triana, entrando por el Puente de Isabel II', price: 'Gratis pasear', hours: 'Todo el día' },
   'p-alameda': { address: 'Alameda de Hércules, 41002 Sevilla', price: 'Gratis · cañas desde 2 €', hours: 'Todo el día; ambiente fuerte por la tarde-noche' },
-  'p-mercado-triana': { address: 'Calle San Jorge, 6, 41010 Sevilla', price: 'Gratis entrar · tapas 3–6 €', hours: 'Lun–sáb por la mañana (puestos de comida hasta más tarde)', website: 'https://www.mercadodetrianasevilla.com' },
-  'p-mercado-feria': { address: 'Calle Feria, 61, 41003 Sevilla', price: 'Gratis entrar · tapas 3–6 €', hours: 'Mar–sáb por la mañana; gastrobares también a mediodía' },
-  'p-bellas-artes': { address: 'Plaza del Museo, 9, 41001 Sevilla', price: '1,50 € · gratis para ciudadanos de la UE', hours: 'Mar–sáb 9:00–21:00 · dom y festivos 9:00–15:00', website: 'https://www.museosdeandalucia.es/web/museodebellasartesdesevilla' },
+  'p-mercado-triana': { address: 'Calle San Jorge, 6, 41010 Sevilla', price: 'Entrada libre; compras y consumiciones según el puesto', hours: 'Consulta horarios de puestos y servicios en la web oficial', website: 'https://www.mercadodetrianasevilla.com' },
+  'p-mercado-feria': { address: 'Calle Feria, 61, 41003 Sevilla', price: 'Entrada libre; compras y consumiciones según el puesto', hours: 'Confirma horarios y puestos abiertos antes de desplazarte' },
+  'p-bellas-artes': { address: 'Plaza del Museo, 9, 41001 Sevilla', price: 'Consulta tarifas y gratuidades vigentes', hours: 'Consulta horarios, salas abiertas y festivos en la web oficial', website: 'https://www.museosdeandalucia.es/web/museodebellasartesdesevilla' },
   'p-maria-luisa': { address: 'Paseo de las Delicias, 41013 Sevilla', price: 'Gratis', hours: 'Todos los días, aprox. 8:00–22:00 (24:00 en verano)' },
-  'p-plaza-espana': { address: 'Av. de Isabel la Católica, 41004 Sevilla', price: 'Gratis · barca en el canal unos 6 €', hours: 'Todo el día' },
+  'p-plaza-espana': { address: 'Av. de Isabel la Católica, 41004 Sevilla', price: 'Espacio exterior de acceso libre; actividades con coste propio', hours: 'Comprueba horarios y condiciones de alquiler de barcas' },
   'p-guadalquivir': { address: 'Paseo de Cristóbal Colón y calle Betis', price: 'Gratis', hours: 'Todo el día' },
   'p-bodeguita-casablanca': {
     price: 'Tapas 2,50–5 € · vino o caña 1,50–3 €',
@@ -51,13 +51,10 @@ export const placeInfo: Record<string, PlaceInfo> = {
     ],
   },
   'p-ceramica-triana': {
-    address: 'Calle Callao y alrededores, Triana',
-    price: 'Gratis el museo los martes · talleres 30–60 €',
-    options: [
-      { name: 'Centro Cerámica Triana', address: 'Calle Antillano Campos, 14', note: 'Museo en la antigua fábrica Santa Ana, con hornos originales.', price: 'Entrada ~2,10 €' },
-      { name: 'Cerámica Santa Ana', address: 'Calle San Jorge, 31', note: 'Tienda-taller histórica (desde 1870) de azulejo pintado a mano.' },
-      { name: 'Cerámica Triana (calle Callao)', address: 'Calle Callao, Triana', note: 'Pequeñas tiendas donde ver pintar azulejos.' },
-    ],
+    address: 'Calle Callao, 16, 41010 Sevilla',
+    price: 'Consulta la tarifa vigente en la web municipal',
+    hours: 'Consulta horarios y programación con el Ayuntamiento de Sevilla',
+    website: 'https://www.sevilla.org/servicios/cultura',
   },
   'p-azulejos-rincones': {
     price: 'Gratis',
@@ -67,20 +64,20 @@ export const placeInfo: Record<string, PlaceInfo> = {
       { name: 'Casa de Pilatos', address: 'Plaza de Pilatos, 1', note: 'Una de las mejores colecciones de azulejo del siglo XVI.', price: 'Entrada ~12 €' },
     ],
   },
-  'p-naranjos': { price: 'Gratis', hours: 'Floración (azahar): de marzo a abril', options: [
-    { name: 'Patio de los Naranjos', address: 'Catedral de Sevilla', note: 'El patio de naranjos más famoso de la ciudad.' },
-    { name: 'Plaza de Doña Elvira', address: 'Barrio de Santa Cruz', note: 'Plaza pequeña con naranjos y azulejos.' },
+  'p-naranjos': { price: 'Paseo por espacios públicos gratuito', hours: 'La floración depende de las condiciones de cada año', options: [
+    { name: 'Patio de los Naranjos', address: 'Catedral de Sevilla', note: 'Comprueba el acceso y los horarios en la web oficial de la Catedral.' },
+    { name: 'Plaza de Doña Elvira', address: 'Barrio de Santa Cruz', note: 'Plaza pública; respeta el descanso de residentes y el paso peatonal.' },
   ] },
   'p-puente-isabel': { address: 'Une Plaza de Cuba con el Altozano', price: 'Gratis', hours: 'Todo el día' },
   'p-calle-pureza': { address: 'Calle Pureza, Triana', price: 'Gratis', hours: 'Capilla de los Marineros abierta mañana y tarde' },
   'p-plaza-alfalfa': { address: 'Plaza de la Alfalfa, 41004 Sevilla', price: 'Gratis · tapas 3–5 €' },
   'p-plaza-pelique': { address: 'Plaza de San Leandro, 41003 Sevilla', price: 'Yemas de San Leandro ~8 € la caja' },
-  'p-calle-feria': { address: 'Calle Feria, 41003 Sevilla', price: 'Gratis', hours: 'Mercadillo "El Jueves": jueves por la mañana' },
-  'p-mercado-encarnacion': { address: 'Plaza de la Encarnación, 41003 Sevilla', price: 'Gratis entrar', hours: 'Lun–sáb por la mañana' },
-  'p-torre-oro': { address: 'Paseo de Cristóbal Colón, s/n', price: '3 € · gratis los lunes', hours: 'Lun–vie 9:30–18:45 · sáb y dom 10:30–18:45' },
-  'p-catedral-giralda': { address: 'Av. de la Constitución, s/n', price: '13 € online (incluye Giralda) · gratis algunos lunes por la tarde con reserva', hours: 'Lun 11:00–15:30 · mar–sáb 11:00–17:00 · dom 14:30–18:00', website: 'https://www.catedraldesevilla.es' },
+  'p-calle-feria': { address: 'Calle Feria, 41003 Sevilla', price: 'Acceso al espacio público gratuito', hours: 'Confirma por separado el horario del mercado municipal y del mercadillo semanal' },
+  'p-mercado-encarnacion': { address: 'Plaza de la Encarnación, 41003 Sevilla', price: 'Entrada libre; compras y consumiciones según el puesto', hours: 'Consulta horarios del mercado; el mirador tiene acceso distinto', website: 'https://setasdesevilla.com/' },
+  'p-torre-oro': { address: 'Paseo de Cristóbal Colón, s/n', price: 'Consulta tarifas vigentes antes de la visita', hours: 'Confirma horarios del museo y días festivos con la entidad responsable' },
+  'p-catedral-giralda': { address: 'Av. de la Constitución, s/n', price: 'Consulta entradas, tarifas y visitas gratuitas en la web oficial', hours: 'Consulta horarios y excepciones por fecha en la web oficial', website: 'https://www.catedraldesevilla.es/visita-cultural/' },
   'p-plaza-nueva': { address: 'Plaza Nueva, 41001 Sevilla', price: 'Gratis' },
-  'p-setas-parasol': { address: 'Plaza de la Encarnación, s/n', price: 'Mirador 15 € (incluye experiencia)', hours: 'Todos los días 9:30–24:00 aprox.', website: 'https://setasdesevilla.com' },
+  'p-setas-parasol': { address: 'Plaza de la Encarnación, s/n', price: 'Consulta entradas y tarifas en la web oficial', hours: 'Consulta horarios y última entrada en la web oficial', website: 'https://setasdesevilla.com/' },
 
   // Bares
   'p-rinconcillo': { address: 'Calle Gerona, 40', price: 'Tapas 3–5 € · espinacas con garbanzos', hours: 'Todos los días 13:00–1:30', website: 'https://elrinconcillo.es' },

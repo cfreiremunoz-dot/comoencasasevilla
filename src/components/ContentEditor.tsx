@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
-import { categories, places, routes as staticRoutes, experiences as staticExperiences } from '@/data/content';
+import { categories, allPlaces, allRoutes as staticRoutes, allExperiences as staticExperiences } from '@/data/content';
 import type { Experience, Route, RouteStop, StopType } from '@/data/types';
 import { STORAGE_PREFIX, slugify, useExperiences, useRoutes } from '@/lib/editable-content';
 import { uploadPhoto } from '@/lib/recommendations';
@@ -13,7 +13,7 @@ const stopTypes: [StopType, string][] = [
   ['barrio', 'Barrio'], ['mercado', 'Mercado'], ['gastronomia', 'Gastronomía'], ['comercio', 'Comercio'],
   ['cultural', 'Cultural'], ['naturaleza', 'Naturaleza'], ['encuentro', 'Lugar de encuentro'], ['historia', 'Historia'],
 ];
-const sortedPlaces = [...places].sort((a, b) => a.name.localeCompare(b.name));
+const sortedPlaces = [...allPlaces].sort((a, b) => a.name.localeCompare(b.name));
 
 type Table = 'site_routes' | 'site_experiences';
 

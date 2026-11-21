@@ -4,12 +4,15 @@ import { useSearchParams } from '@/lib/router-compat';
 import { ExplorePlaceCard } from '@/components/ExplorePlaceCard';
 import { NearbyPlaces } from '@/components/NearbyPlaces';
 import { CategoryIcon } from '@/components/CategoryIcon';
-import { categories, places, zones } from '@/data/content';
+import { allPlaces, categories, places, zones } from '@/data/content';
 import type { CategoryId, Place, ZoneId } from '@/data/types';
 
 const categoryFilters: Array<{ id: CategoryId | 'todas'; label: string }> = [
   { id: 'todas', label: 'Todo' },
-  ...categories.map((category) => ({ id: category.id, label: category.shortName })),
+  ...categories
+    .filter((category) => allPlaces.some((place) => place.category === category.id))
+    .map((category) => ({ id: category.id, label: category.shortName })),
+
 ];
 
 export function ExplorePage() {
@@ -27,7 +30,9 @@ export function ExplorePage() {
   const filteredPlaces = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
-    return places.filter((place: Place) => {
+    const sourcePlaces = category === 'cultura' ? allPlaces : places;
+
+    return sourcePlaces.filter((place: Place) => {
       const matchesQuery = !normalizedQuery || [
         place.name,
         place.excerpt,
@@ -74,10 +79,10 @@ export function ExplorePage() {
               Guía local · Sevilla
             </p>
             <h1 className="font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-tinta-800 sm:text-6xl">
-              Descubre la Sevilla que se vive
+              Descubre la Sevilla de barrio
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-tinta-600 sm:text-lg">
-              Lugares, sabores y rincones para mirar la ciudad con los ojos de quien la habita.
+              Bares, alojamientos independientes y rincones recomendados por su carácter local, lejos de los sitios de siempre.
             </p>
           </div>
 

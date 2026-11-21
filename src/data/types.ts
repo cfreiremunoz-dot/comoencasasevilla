@@ -1,13 +1,13 @@
 export type CategoryId =
-  | 'gastronomia'
-  | 'barrios'
-  | 'cultura'
-  | 'comercios'
-  | 'mercados'
-  | 'naturaleza'
-  | 'tradiciones'
-  | 'rincones'
-  | 'alojamiento';
+  | "gastronomia"
+  | "barrios"
+  | "cultura"
+  | "comercios"
+  | "mercados"
+  | "naturaleza"
+  | "tradiciones"
+  | "rincones"
+  | "alojamiento";
 
 export interface Category {
   id: CategoryId;
@@ -19,23 +19,16 @@ export interface Category {
 }
 
 export type ZoneId =
-  | 'centro'
-  | 'triana'
-  | 'macarena'
-  | 'nervion'
-  | 'sur'
-  | 'este'
-  | 'norte'
-  | 'aljarafe';
+  "centro" | "triana" | "macarena" | "nervion" | "sur" | "este" | "norte" | "aljarafe";
 
 export interface Zone {
   id: ZoneId;
   name: string;
 }
 
-export type BudgetLevel = 'gratis' | 'economico' | 'medio' | 'alto';
+export type BudgetLevel = "gratis" | "economico" | "medio" | "alto";
 
-export type DemoTag = 'demo';
+export type DemoTag = "demo";
 
 export interface Place {
   id: string;
@@ -57,14 +50,14 @@ export interface Place {
 }
 
 export type StopType =
-  | 'barrio'
-  | 'mercado'
-  | 'gastronomia'
-  | 'comercio'
-  | 'cultural'
-  | 'naturaleza'
-  | 'encuentro'
-  | 'historia';
+  | "barrio"
+  | "mercado"
+  | "gastronomia"
+  | "comercio"
+  | "cultural"
+  | "naturaleza"
+  | "encuentro"
+  | "historia";
 
 export interface RouteStop {
   order: number;
@@ -77,6 +70,11 @@ export interface RouteStop {
   walkMinutesFromPrevious?: number;
 }
 
+export interface EditorialSource {
+  label: string;
+  url: string;
+}
+
 export interface Route {
   id: string;
   slug: string;
@@ -87,7 +85,7 @@ export interface Route {
   category: CategoryId;
   duration: string;
   distance: string;
-  difficulty: 'facil' | 'moderado' | 'intenso';
+  difficulty: "facil" | "moderado" | "intenso";
   description: string;
   stops: RouteStop[];
   isDemo: boolean;
@@ -96,6 +94,12 @@ export interface Route {
   endPoint?: string;
   budgetNote?: string;
   warnings?: string[];
+  sources?: EditorialSource[];
+}
+
+export interface ExperienceLocation {
+  placeId: string;
+  note: string;
 }
 
 export interface Experience {
@@ -105,11 +109,13 @@ export interface Experience {
   subtitle: string;
   image: string;
   imageAlt: string;
-  type: 'gastronomica' | 'cultural' | 'cotidiana';
+  type: "gastronomica" | "cultural" | "cotidiana";
   duration: string;
   description: string;
   highlights: string[];
   isDemo: boolean;
+  locations?: ExperienceLocation[];
+  sources?: EditorialSource[];
 }
 
 export interface CommunityPost {

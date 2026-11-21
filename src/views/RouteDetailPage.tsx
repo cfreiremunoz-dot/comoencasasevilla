@@ -9,6 +9,7 @@ import {
 import { useRoutes } from '@/lib/editable-content';
 import { getPlaceById, getCategoryById } from '@/data/content';
 import { DemoBadge } from '@/components/DemoBadge';
+import { EditorialSources } from '@/components/EditorialSources';
 import { MapView, type MapMarker } from '@/components/MapView';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { haversineDistance, formatDistance } from '@/utils/distance';
@@ -156,6 +157,7 @@ export function RouteDetailPage() {
               <h2 className="font-serif text-2xl font-semibold text-tinta-800">Sobre esta ruta</h2>
               <p className="mt-4 text-base leading-relaxed text-tinta-600">{route.description}</p>
             </div>
+            <EditorialSources sources={route.sources ?? []} />
 
             <div id="paradas" className="mt-10 scroll-mt-24">
               <h2 className="font-serif text-2xl font-semibold text-tinta-800">Paradas del recorrido</h2>
@@ -249,8 +251,8 @@ export function RouteDetailPage() {
                                       {pi.address && (
                                         <a href={mapsUrl(pi.address)} target="_blank" rel="noopener noreferrer" className="hover:text-terracota-600 hover:underline">📍 {pi.address}</a>
                                       )}
-                                      {pi.price && <span>💶 {pi.price}</span>}
-                                      {pi.hours && <span>🕒 {pi.hours}</span>}
+                                      {pi.price && <span>💶 Precio orientativo: {pi.price}</span>}
+                                      {pi.hours && <span>🕒 Horario orientativo: {pi.hours}</span>}
                                     </div>
                                   );
                                 })()}
