@@ -78,12 +78,14 @@ function PrivacyPage() {
               Asistente de inteligencia artificial
             </h2>
             <p>
-              Las preguntas y el contexto de la conversación se envían a través de{" "}
-              <code>@lovable.dev/ai-gateway</code> al modelo configurado{" "}
-              <code>openai/gpt-6-astra</code> para generar respuestas. El historial se guarda en el
-              almacenamiento local del navegador desde el que se utiliza el asistente y puede
-              eliminarse desde la lista de conversaciones. La eliminación local no borra posibles
-              registros del gateway o del proveedor del modelo.
+              Si está configurada la variable <code>GEMINI_API_KEY</code>, las preguntas y el
+              contexto de la conversación se envían a la API de Google Gemini para generar
+              respuestas. Para consultas generales, haya o no clave, se buscan términos extraídos de
+              la última pregunta en Wikipedia en español; no se envía allí el historial completo.
+              Sin clave de Gemini, el asistente combina esos resultados con la información de
+              ComoEnCasa. El historial se guarda en el almacenamiento local del navegador y puede
+              eliminarse desde la lista de conversaciones. La eliminación local no borra los
+              posibles registros conservados por los proveedores externos.
             </p>
             <p className="mt-4">
               No escribáis contraseñas, documentos de identidad, datos bancarios ni información
@@ -112,11 +114,11 @@ function PrivacyPage() {
             <p>
               El inventario técnico observado en el código incluye Vercel para alojar la aplicación;
               Supabase para autenticación, base de datos y almacenamiento de aportaciones y
-              consultas; y <code>@lovable.dev/ai-gateway</code>, con el modelo{" "}
-              <code>openai/gpt-6-astra</code>, para el asistente. Antes de aprobar la política deben
-              confirmarse las entidades proveedoras y subencargadas, sus condiciones de
-              conservación, las ubicaciones del tratamiento y, si procede, las garantías aplicables
-              a transferencias internacionales.
+              consultas; Google Gemini API cuando está configurada una clave; y la API pública de
+              Wikipedia en español para consultas externas generales, tanto si Gemini está
+              configurado como si no. Antes de aprobar la política deben confirmarse las entidades
+              proveedoras y subencargadas, sus condiciones de conservación, las ubicaciones del
+              tratamiento y, si procede, las garantías aplicables a transferencias internacionales.
             </p>
             <p className="mt-4">
               Los mapas cargan mosaicos desde OpenStreetMap. Los enlaces de indicaciones abren
@@ -179,8 +181,8 @@ function PrivacyPage() {
                 lo elimina desde la interfaz; actualmente no se configura una caducidad automática.
               </li>
               <li>
-                Copias de seguridad, registros técnicos y registros del gateway/modelo: fijar los
-                periodos según las condiciones verificadas de cada proveedor y eliminarlos mediante
+                Copias de seguridad y registros técnicos de los proveedores de IA y búsqueda
+                externa: fijar los periodos según sus condiciones verificadas y eliminarlos mediante
                 sus ciclos de borrado, evitando conservarlos más de lo necesario.
               </li>
             </ul>

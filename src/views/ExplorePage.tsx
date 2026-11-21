@@ -4,14 +4,15 @@ import { useSearchParams } from '@/lib/router-compat';
 import { ExplorePlaceCard } from '@/components/ExplorePlaceCard';
 import { NearbyPlaces } from '@/components/NearbyPlaces';
 import { CategoryIcon } from '@/components/CategoryIcon';
-import { categories, places, zones } from '@/data/content';
+import { allPlaces, categories, places, zones } from '@/data/content';
 import type { CategoryId, Place, ZoneId } from '@/data/types';
 
 const categoryFilters: Array<{ id: CategoryId | 'todas'; label: string }> = [
   { id: 'todas', label: 'Todo' },
   ...categories
-    .filter((category) => places.some((place) => place.category === category.id))
+    .filter((category) => allPlaces.some((place) => place.category === category.id))
     .map((category) => ({ id: category.id, label: category.shortName })),
+
 ];
 
 export function ExplorePage() {
@@ -29,7 +30,9 @@ export function ExplorePage() {
   const filteredPlaces = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
-    return places.filter((place: Place) => {
+    const sourcePlaces = category === 'cultura' ? allPlaces : places;
+
+    return sourcePlaces.filter((place: Place) => {
       const matchesQuery = !normalizedQuery || [
         place.name,
         place.excerpt,
