@@ -114,6 +114,8 @@ function ChatWindow({ threadId }: { threadId: string }) {
           { id: assistantId, role: "assistant", parts: [{ type: "text", text: acc }] },
         ]);
       }
+      acc += decoder.decode();
+      if (!acc.trim()) throw new Error("Azahar no ha generado una respuesta.");
       const final = [
         ...history,
         {
@@ -130,7 +132,7 @@ function ChatWindow({ threadId }: { threadId: string }) {
       const msg = stopped
         ? acc || "_Respuesta detenida._"
         : acc ||
-          "Ahora mismo no puedo conectar con Azahar. Puedes consultar los lugares y rutas de ComoEnCasa mientras vuelve a estar disponible.";
+          "Azahar no está disponible ahora; los modelos gratuitos pueden tener límites temporales. Inténtalo de nuevo más tarde.";
       const final = [
         ...history,
         {

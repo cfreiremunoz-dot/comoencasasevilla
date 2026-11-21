@@ -78,13 +78,15 @@ function PrivacyPage() {
               Asistente de inteligencia artificial
             </h2>
             <p>
-              Si está configurada la variable <code>GEMINI_API_KEY</code>, las preguntas y el
-              contexto de la conversación se envían a la API de Google Gemini para generar
-              respuestas. Para consultas generales, haya o no clave, se buscan términos extraídos de
-              la última pregunta en Wikipedia en español; no se envía allí el historial completo.
-              Sin clave de Gemini, el asistente combina esos resultados con la información de
-              ComoEnCasa. El historial se guarda en el almacenamiento local del navegador y puede
-              eliminarse desde la lista de conversaciones. La eliminación local no borra los
+              Las preguntas y el contexto de la conversación se envían a Vercel AI Gateway para
+              generar respuestas con modelos de terceros. La configuración actual prioriza modelos
+              cuyo precio publicado en el catálogo de Gateway es de 0 USD por entrada y salida; aun
+              así, pueden existir límites de uso y la disponibilidad o el precio pueden cambiar. Los
+              proveedores externos pueden conservar los mensajes y utilizarlos para mejorar sus
+              modelos, según sus propias condiciones. Para consultas generales se buscan en
+              Wikipedia en español términos extraídos de la última pregunta; no se envía allí el
+              historial completo. El historial se guarda en el almacenamiento local del navegador y
+              puede eliminarse desde la lista de conversaciones. La eliminación local no borra los
               posibles registros conservados por los proveedores externos.
             </p>
             <p className="mt-4">
@@ -114,11 +116,11 @@ function PrivacyPage() {
             <p>
               El inventario técnico observado en el código incluye Vercel para alojar la aplicación;
               Supabase para autenticación, base de datos y almacenamiento de aportaciones y
-              consultas; Google Gemini API cuando está configurada una clave; y la API pública de
-              Wikipedia en español para consultas externas generales, tanto si Gemini está
-              configurado como si no. Antes de aprobar la política deben confirmarse las entidades
-              proveedoras y subencargadas, sus condiciones de conservación, las ubicaciones del
-              tratamiento y, si procede, las garantías aplicables a transferencias internacionales.
+              consultas; Vercel AI Gateway y los proveedores de modelos de IA para generar
+              respuestas; y la API pública de Wikipedia en español para consultas externas
+              generales. Antes de aprobar la política deben confirmarse las entidades proveedoras y
+              subencargadas, sus condiciones de conservación, las ubicaciones del tratamiento y, si
+              procede, las garantías aplicables a transferencias internacionales.
             </p>
             <p className="mt-4">
               Los mapas cargan mosaicos desde OpenStreetMap. Los enlaces de indicaciones abren
