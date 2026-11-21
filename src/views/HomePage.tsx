@@ -120,7 +120,7 @@ export function HomePage() {
   const showSearchResults = submittedQuery.length > 0;
 
   return (
-    <div className="animate-fade-in overflow-hidden">
+    <div className="overflow-hidden">
       <section className="relative flex min-h-[min(760px,100svh)] items-end overflow-hidden bg-tinta-800">
         <img
           src={heroPlazaEspana}
