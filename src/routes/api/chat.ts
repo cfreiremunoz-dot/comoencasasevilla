@@ -354,7 +354,16 @@ export const Route = createFileRoute("/api/chat")({
             })),
             abortSignal: request.signal,
             maxOutputTokens: 900,
-            providerOptions: { gateway: { models: ["reflection/beam-free"] } },
+            providerOptions: {
+              gateway: {
+                models: [
+                  "reflection/beam-free",
+                  "recursive/flint-v1.0",
+                  "humansand/ampersand-v0.1",
+                  "stealth/glyph-cluster",
+                ],
+              },
+            },
             onError: ({ error }) => {
               const statusCode =
                 error && typeof error === "object" && "statusCode" in error
